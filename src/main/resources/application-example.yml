@@ -1,0 +1,14 @@
+# 공통 부분
+server:
+  port: 8080
+
+spring:
+  application:
+    name: tutor-management
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://port/test
+    username: project
+    password: testest
+
