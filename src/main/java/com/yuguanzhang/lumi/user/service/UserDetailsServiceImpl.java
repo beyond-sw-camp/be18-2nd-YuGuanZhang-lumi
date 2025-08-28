@@ -1,0 +1,27 @@
+package com.yuguanzhang.lumi.user.service;
+
+import com.yuguanzhang.lumi.user.dto.UserDetailsDto;
+import com.yuguanzhang.lumi.user.User;
+import com.yuguanzhang.lumi.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+    private final UserRepository userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        // email 기준으로 유저 조회
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new UsernameNotFoundException("User not found with email: " + email));
+
+        // User 엔티티 → UserDetailsDto 변환
+        return new UserDetailsDto(user.getEmail(), user.getPassword());
+    }
+}

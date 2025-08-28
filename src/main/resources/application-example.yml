@@ -11,3 +11,4 @@ spring:
     url: jdbc:mariadb://port/test
     username: project
     password: testest
+
