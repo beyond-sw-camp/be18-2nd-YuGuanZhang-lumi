@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@Builder
 @Getter
 public class SignupRequestDto {
 
@@ -13,7 +14,6 @@ public class SignupRequestDto {
     private final String password;
     private final String provider;
 
-    @Builder
     public SignupRequestDto(String email, String name, String password, String provider) {
         this.email = email;
         this.name = name;

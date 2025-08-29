@@ -16,7 +16,7 @@ public class SignupController {
     /*
         브라우저 form에서 회원가입
      */
-    @GetMapping("/api/sign_up")
+    @GetMapping("/api/sign-up")
     public String signup() {
         return "sign_up";
     }
@@ -24,7 +24,7 @@ public class SignupController {
     /*
         브라우저 form에서 POST
      */
-    @PostMapping(value = "/api/sign_up", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/api/sign-up", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String processSignupForm(SignupRequestDto signupRequestDto) {
         userService.processSignup(signupRequestDto);
         return "redirect:/api/login"; // 회원가입 후 로그인 페이지로

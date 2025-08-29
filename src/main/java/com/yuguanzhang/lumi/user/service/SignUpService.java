@@ -3,14 +3,14 @@ package com.yuguanzhang.lumi.user.service;
 import com.yuguanzhang.lumi.user.dto.SignupRequestDto;
 import com.yuguanzhang.lumi.user.entity.User;
 import com.yuguanzhang.lumi.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor   // 생성자 주입 (final 필드 권장)
-@Transactional
+@RequiredArgsConstructor
+
 public class SignUpService {
 
     private final UserRepository userRepository;
@@ -24,7 +24,8 @@ public class SignUpService {
         userRepository.save(users);  // DB 저장
     }
 
-    // 이메일 기준으로 회원을 찾을 때 동작
+    // 이메일 기준으로 회원을 찾을 때 동작, 나중에 기능 만드면 따로 때는것도 고려해보면 좋을거 같음
+    @Transactional(readOnly = true)
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
 
