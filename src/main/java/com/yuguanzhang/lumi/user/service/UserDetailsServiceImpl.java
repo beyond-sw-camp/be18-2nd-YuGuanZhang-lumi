@@ -1,7 +1,7 @@
 package com.yuguanzhang.lumi.user.service;
 
 import com.yuguanzhang.lumi.user.dto.UserDetailsDto;
-import com.yuguanzhang.lumi.user.User;
+import com.yuguanzhang.lumi.user.entity.User;
 import com.yuguanzhang.lumi.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

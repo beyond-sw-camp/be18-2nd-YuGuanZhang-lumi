@@ -1,4 +1,4 @@
-package com.yuguanzhang.lumi.user;
+package com.yuguanzhang.lumi.user.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,16 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
-
-@Data
 @Entity
 @Getter
 @Table(name = "users")
@@ -28,16 +21,19 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id")
+    private Long user_id;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "provider")
     private String provider;
 
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(name = "password")
     private String password;
 
 }

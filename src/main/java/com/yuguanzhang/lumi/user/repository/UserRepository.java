@@ -1,6 +1,6 @@
 package com.yuguanzhang.lumi.user.repository;
 
-import com.yuguanzhang.lumi.user.User;
+import com.yuguanzhang.lumi.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

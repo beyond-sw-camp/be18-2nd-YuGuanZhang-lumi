@@ -1,4 +1,4 @@
-package com.yuguanzhang.lumi.user.Controller;
+package com.yuguanzhang.lumi.user.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
