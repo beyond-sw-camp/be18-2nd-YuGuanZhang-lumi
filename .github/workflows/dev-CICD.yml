@@ -2,6 +2,8 @@ name: dev-CICD.yml
 on:
   push:
     branches: ["develop"]
+  pull_request:
+    branches: [ "develop" ]
 
 jobs:
   build:
@@ -45,6 +47,7 @@ jobs:
           # 3. 도커 이미지 푸시
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DEV_DOCKERHUB_REPOSITORY }}
   deploy:
+    if: github.event_name == 'push'
     needs: build # build 작업이 성공한 후에만 deploy 작업 실행
     runs-on: ubuntu-latest
 
