@@ -23,6 +23,7 @@ public class SignupRequestDto {
 
     public User toUser(PasswordEncoder passwordEncoder) {
         return User.builder().email(email).name(name).password(passwordEncoder.encode(password))
-                .provider(provider).build();
+                .provider(provider == null ? "local" : provider).build();
     }
+
 }
