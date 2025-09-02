@@ -3,12 +3,54 @@ server:
   port: 8080
 
 spring:
+  # .env import
+  config:
+    import: optional:file:.env[.properties]
   application:
-    name: tutor-management
+    name: lumi
+  profiles:
+    active: local
+  # 이미지 파일 용량 제한
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 500MB
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        database-platform: org.hibernate.dialect.MariaDBDialect
+  # 레디스 추가 필요
 
+---
+# local
+spring:
+  config:
+    activate:
+      on-profile: local
+  # DB 연동
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://port/test
-    username: project
-    password: testest
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${LOCAL_DB_USERNAME}
+    password: ${LOCAL_DB_PASSWORD}
 
+---
+# dev
+spring:
+  config:
+    activate:
+      on-profile: dev
+  # DB 연동
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ${DEV_DATASOURCE_URL}
+    username: ${DEV_DB_USERNAME}
+    password: ${DEV_DB_PASSWORD}
+
+logging:
+  level:
+    org.springframework: INFO
