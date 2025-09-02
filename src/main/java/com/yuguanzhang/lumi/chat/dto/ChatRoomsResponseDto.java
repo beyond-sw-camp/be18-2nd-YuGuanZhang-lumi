@@ -14,7 +14,6 @@ public class ChatRoomsResponseDto {
     private final String roomName;
     private final Long opponentId;
     private final String opponentName;
-    private final LocalDateTime createdAt;
     private final LocalDateTime lastMessageTime;
     private final String lastMessage;
     private final Long unreadMessageCount;
