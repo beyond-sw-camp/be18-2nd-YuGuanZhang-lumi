@@ -29,16 +29,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain chain) throws ServletException, IOException {
         try {
-            String token = resolveToken(request);
-            if (token != null && jwtService.validateToken(token)) {
-                String username = jwtService.getUsername(token);
+            String token = resolveToken(
+                    request); // HTTP 헤더 "Authorization" 에서 "Bearer <JWT토큰>" 형태로 들어온 값을 꺼냄. 없다면 null 리턴.
+            if (token != null && jwtService.validateToken(token)) { // 토큰이 만료 안 됐는지, 서명 위조 안 됐는지 확인.
+                String username =
+                        jwtService.getUsername(token); // 토큰 안에 들어있는 username(보통 sub claim)을 가져옴.
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails, null,
-                                userDetails.getAuthorities());
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request));
+                                userDetails.getAuthorities()); // 권한(ROLE_USER, ROLE_ADMIN 등)을 같이 넣어줌
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(
+                        request)); // 요청 정보(IP, 세션 등)도 함께 저장.
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
