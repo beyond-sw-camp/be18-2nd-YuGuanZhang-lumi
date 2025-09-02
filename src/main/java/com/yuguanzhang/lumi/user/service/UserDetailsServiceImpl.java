@@ -22,6 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 () -> new UsernameNotFoundException("User not found with email: " + email));
 
         // User 엔티티 → UserDetailsDto 변환
-        return new UserDetailsDto(user.getEmail(), user.getPassword());
+        return new UserDetailsDto(user);
     }
 }
