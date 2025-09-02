@@ -1,8 +1,9 @@
 package com.yuguanzhang.lumi.common.jwt.service;
 
-import com.yuguanzhang.lumi.common.jwt.service.JwtService;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -10,8 +11,12 @@ import java.util.Date;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    private final String secretKey = "Keys.secretKeyFor(SignatureAlgorithm.HS256)"; // 단순 예시
+    private final String secretKey; // 단순 예시
     private final long expirationMs = 3600000;
+
+    public JwtServiceImpl(@Value("${jwt.secret}") String secretKey) {
+        this.secretKey = secretKey;
+    }
 
     @Override
     public String generateToken(String username) {
