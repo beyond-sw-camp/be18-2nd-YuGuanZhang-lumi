@@ -5,7 +5,11 @@ import com.yuguanzhang.lumi.chat.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface ChatRepository extends JpaRepository<Chat, Long> {
+    List<Chat> findByRoom_RoomId(Long roomId);
+
     // 마지막 메세지
     Chat findTopByRoomOrderByCreatedAtDesc(Room room);
 

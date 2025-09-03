@@ -23,34 +23,34 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name="Chats")
+@Table(name = "Chats")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="chat_id")
-    private Long messageId;
+    @Column(name = "chat_id")
+    private Long chatId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="room_id")
+    @JoinColumn(name = "room_id")
     private Room room;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
 
-    @Column(name="content", nullable = false)
+    @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name="is_read")
+    @Column(name = "is_read")
     private Boolean isRead = false;
 
-    @Column(name="created_at")
+    @Column(name = "created_at")
     @CreatedDate
     private LocalDateTime createdAt;
 }

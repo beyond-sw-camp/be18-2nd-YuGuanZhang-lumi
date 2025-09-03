@@ -12,9 +12,9 @@ import java.util.List;
 @Builder
 @Getter
 @AllArgsConstructor
-public class MessagesResponseDto {
+public class ChatsResponseDto {
     private final Long roomId;
-    private final Long messageId;
+    private final Long chatId;
     private final MessageType messageType;
     private final Long senderId;
     private final String senderName;

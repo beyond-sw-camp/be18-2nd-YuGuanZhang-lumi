@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RoomUserRepository extends JpaRepository<RoomUser, RoomUserId> {
-
     // 내가 참여한 방
     List<RoomUser> findByRoomUserId_User_UserId(Long userId);
 

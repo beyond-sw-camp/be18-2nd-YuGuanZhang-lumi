@@ -1,6 +1,7 @@
 package com.yuguanzhang.lumi.chat.service;
 
 import com.yuguanzhang.lumi.chat.dto.ChatRoomsResponseDto;
+import com.yuguanzhang.lumi.chat.dto.ChatsResponseDto;
 import com.yuguanzhang.lumi.chat.entity.Chat;
 import com.yuguanzhang.lumi.chat.entity.Room;
 import com.yuguanzhang.lumi.chat.entity.RoomUser;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
     private final RoomUserRepository roomUserRepository;
-    private final ChatRepository messageRepository;
+    private final ChatRepository chatRepository;
 
 
     @Override
@@ -28,32 +29,44 @@ public class ChatServiceImpl implements ChatService {
 
         List<ChatRoomsResponseDto> result = new ArrayList<>();
 
-        for(RoomUser ru: roomUsers) {
+        for (RoomUser ru : roomUsers) {
             Room room = ru.getRoomUserId().getRoom();
 
             // 채팅방의 상대방
-            RoomUser senderRoomUser = roomUserRepository.findByRoomUserId_Room_RoomIdAndRoomUserId_User_UserIdNot(room.getRoomId(), userId).getFirst();
+            RoomUser senderRoomUser =
+                    roomUserRepository.findByRoomUserId_Room_RoomIdAndRoomUserId_User_UserIdNot(
+                            room.getRoomId(), userId).getFirst();
 
             // 상대방 정보
             User sender = senderRoomUser.getRoomUserId().getUser();
 
-            Chat lastMessage = messageRepository.findTopByRoomOrderByCreatedAtDesc(room);
+            Chat lastMessage = chatRepository.findTopByRoomOrderByCreatedAtDesc(room);
 
-            Long unreadCount = messageRepository.countUnreadMessages(room, userId);
+            Long unreadCount = chatRepository.countUnreadMessages(room, userId);
 
-            ChatRoomsResponseDto dto = ChatRoomsResponseDto.builder()
-                    .roomId(room.getRoomId())
-                    .roomName(room.getName())
-                    .opponentId(sender.getUserId())
-                    .opponentName(sender.getName())
-                    .lastMessageTime(lastMessage != null ? lastMessage.getCreatedAt() : null)
-                    .lastMessage(lastMessage !=null ? lastMessage.getContent() : null)
-                    .unreadMessageCount(unreadCount)
-                    .build();
+            ChatRoomsResponseDto dto =
+                    ChatRoomsResponseDto.builder().roomId(room.getRoomId()).roomName(room.getName())
+                            .opponentId(sender.getUserId()).opponentName(sender.getName())
+                            .lastMessageTime(
+                                    lastMessage != null ? lastMessage.getCreatedAt() : null)
+                            .lastMessage(lastMessage != null ? lastMessage.getContent() : null)
+                            .unreadMessageCount(unreadCount).build();
 
             result.add(dto);
         }
         return result;
 
+    }
+
+    @Override
+    public List<ChatsResponseDto> getChats(Long roomId) {
+        List<Chat> chatList = chatRepository.findByRoom_RoomId(roomId);
+
+        return chatList.stream()
+                .map(chat -> ChatsResponseDto.builder().roomId(chat.getRoom().getRoomId())
+                        .chatId(chat.getChatId()).messageType(chat.getMessageType())
+                        .senderId(chat.getUser().getUserId()).senderName(chat.getUser().getName())
+                        .message(chat.getContent()).createdAt(chat.getCreatedAt()).build())
+                .toList();
     }
 }
