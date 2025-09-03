@@ -10,34 +10,52 @@ import java.util.Date;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    private final String secretKey;
-    private final long expirationMs;
+    private final String secret;
+    private final long accessExpMillis;
+    private final long refreshExpMillis;
 
-    public JwtServiceImpl(@Value("${jwt.secret}") String secretKey,
-            @Value("${jwt.expiration}") long expirationMs) {
-        this.secretKey = secretKey;
-        this.expirationMs = expirationMs;
+    public JwtServiceImpl(@Value("${jwt.secret}") String secret,
+            @Value("${jwt.access-expiration}") long accessExpMillis,
+            @Value("${jwt.refresh-expiration}") long refreshExpMillis) {
+        this.secret = secret;
+        this.accessExpMillis = accessExpMillis;
+        this.refreshExpMillis = refreshExpMillis;
     }
 
+    @Override
+    public String generateAccessToken(String username) {
+        return Jwts.builder().setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + accessExpMillis))
+                .signWith(SignatureAlgorithm.HS256, secret.getBytes()).compact();
+    }
 
     @Override
-    public String generateToken(String username) {
-        return Jwts.builder().setSubject(username) // 토큰에 "누구인지" 저장
-                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
-                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes()).compact();
+    public String generateRefreshToken(String username) {
+        return Jwts.builder().setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpMillis))
+                .signWith(SignatureAlgorithm.HS256, secret.getBytes()).compact();
     }
 
     @Override
     public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey.getBytes()) // 같은 키로 검증
-                .parseClaimsJws(token) // 토큰 해석
-                .getBody().getSubject();
+        return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody()
+                .getSubject();
     }
 
     @Override
-    public boolean validateToken(String token) {
+    public boolean validateAccessToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean validateRefreshToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;

@@ -31,7 +31,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String token = resolveToken(
                     request); // HTTP 헤더 "Authorization" 에서 "Bearer <JWT토큰>" 형태로 들어온 값을 꺼냄. 없다면 null 리턴.
-            if (token != null && jwtService.validateToken(token)) { // 토큰이 만료 안 됐는지, 서명 위조 안 됐는지 확인.
+            if (token != null && jwtService.validateAccessToken(
+                    token)) { // 토큰이 만료 안 됐는지, 서명 위조 안 됐는지 확인.
                 String username =
                         jwtService.getUsername(token); // 토큰 안에 들어있는 username(보통 sub claim)을 가져옴.
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);

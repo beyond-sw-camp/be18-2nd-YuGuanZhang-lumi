@@ -2,11 +2,11 @@ package com.yuguanzhang.lumi.common.jwt.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-public class LoginResponseDto {
-    private String email;
-    private String accessToken;
+@NoArgsConstructor
+public class RefreshRequestDto {
     private String refreshToken;
 }
