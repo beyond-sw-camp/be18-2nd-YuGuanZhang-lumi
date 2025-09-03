@@ -13,17 +13,20 @@ public class SignupRequestDto {
     private final String name;
     private final String password;
     private final String provider;
+    private final Boolean isPrivacyAgreement;
 
-    public SignupRequestDto(String email, String name, String password, String provider) {
+    public SignupRequestDto(String email, String name, String password, String provider,
+            Boolean isPrivacyAgreement) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.provider = provider;
+        this.isPrivacyAgreement = isPrivacyAgreement;
     }
 
     public User toUser(PasswordEncoder passwordEncoder) {
         return User.builder().email(email).name(name).password(passwordEncoder.encode(password))
-                .provider(provider == null ? "local" : provider).build();
+                .provider(provider == null ? "local" : provider)
+                .isPrivacyAgreement(isPrivacyAgreement).build();
     }
-
 }

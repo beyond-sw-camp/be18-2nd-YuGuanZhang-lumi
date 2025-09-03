@@ -44,12 +44,6 @@ public class User {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    @Column(name = "refresh_token", length = 255)
-    private String refreshToken;
-
-    @Column(name = "token_expired_at")
-    private LocalDateTime tokenExpiredAt;
-
     @Column(name = "is_privacy_agreement", nullable = false)
     private Boolean isPrivacyAgreement;
 

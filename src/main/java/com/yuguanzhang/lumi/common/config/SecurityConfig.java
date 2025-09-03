@@ -52,8 +52,9 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers("/", "/login", "/sign-up", "/api/jwt/login",
-                                        "/api/jwt/refresh", "/api/jwt/logout", "/api/public/**").permitAll()
-                                .anyRequest()
+                                        "/api/jwt/refresh", "/api/jwt/logout", "/api/jwt/sign-up",
+                                        // <-- 이 부분을 추가해야 합니다.
+                                        "/api/public/**").permitAll().anyRequest()
                                 .authenticated()) // /api/public/** 테스트용 인증 필요없는 url 확인하려고 넣음 나중에 삭제할거임
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter,
