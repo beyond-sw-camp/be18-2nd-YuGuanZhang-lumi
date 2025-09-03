@@ -53,4 +53,8 @@ public class Chat {
     @Column(name = "created_at")
     @CreatedDate
     private LocalDateTime createdAt;
+
+    public void updateIsRead() {
+        this.isRead = true;
+    }
 }

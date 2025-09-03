@@ -21,4 +21,12 @@ public class ResponseDto<T> {
         this.message = status.getReasonPhrase();
         this.data = data;
     }
+
+    // null 반환
+    public ResponseDto(HttpStatus status) {
+        this.success = status.is2xxSuccessful();
+        this.statusCode = status.value();
+        this.message = status.getReasonPhrase();
+        this.data = null;
+    }
 }

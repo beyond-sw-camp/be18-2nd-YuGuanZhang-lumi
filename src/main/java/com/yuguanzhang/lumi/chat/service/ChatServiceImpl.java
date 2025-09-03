@@ -8,8 +8,10 @@ import com.yuguanzhang.lumi.chat.entity.RoomUser;
 import com.yuguanzhang.lumi.chat.repository.ChatRepository;
 import com.yuguanzhang.lumi.chat.repository.RoomUserRepository;
 import com.yuguanzhang.lumi.user.entity.User;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +61,16 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<ChatsResponseDto> getChats(Long roomId) {
+    @Transactional
+    public List<ChatsResponseDto> getChats(Long userId, Long roomId) {
         List<Chat> chatList = chatRepository.findByRoom_RoomId(roomId);
+
+        chatList.forEach(chat -> {
+            if (Boolean.FALSE.equals(chat.getIsRead()) && !chat.getUser().getUserId()
+                    .equals(userId)) {
+                chat.updateIsRead();
+            }
+        });
 
         return chatList.stream()
                 .map(chat -> ChatsResponseDto.builder().roomId(chat.getRoom().getRoomId())
@@ -68,5 +78,20 @@ public class ChatServiceImpl implements ChatService {
                         .senderId(chat.getUser().getUserId()).senderName(chat.getUser().getName())
                         .message(chat.getContent()).createdAt(chat.getCreatedAt()).build())
                 .toList();
+    }
+
+    @Override
+    @Transactional
+    public void deleteChat(Long userId, Long roomId, Long chatId) {
+        // 채팅 메세지 조회 (에러처리 필요)
+        Chat chat = chatRepository.findByRoom_RoomIdAndChatId(roomId, chatId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 채팅 메세지를 찾을 수 없습니다."));
+
+        // 커스텀 에러 처리 필요
+        // if (!chat.getUser().getUserId().equals(userId)) {
+        //     throw new CustomError("이 메세지를 삭제할 권한이 없습니다.");
+        // }
+
+        chatRepository.delete(chat);
     }
 }

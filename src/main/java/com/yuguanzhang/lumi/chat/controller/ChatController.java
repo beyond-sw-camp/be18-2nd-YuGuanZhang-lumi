@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,17 +35,24 @@ public class ChatController {
 
     @GetMapping("/{room_id}")
     public ResponseEntity<ResponseDto<List<ChatsResponseDto>>> getChats(
-            @PathVariable("room_id") Long roomId) {
-        List<ChatsResponseDto> chats = chatService.getChats(roomId);
+            @AuthenticationPrincipal UserDetailsDto user, @PathVariable("room_id") Long roomId) {
+        List<ChatsResponseDto> chats = chatService.getChats(user.getUser().getUserId(), roomId);
 
         ResponseDto<List<ChatsResponseDto>> response = new ResponseDto<>(HttpStatus.OK, chats);
-
 
         return ResponseEntity.ok(response);
     }
 
-    @Override
-    public String toString() {
-        return "ChatController{" + "chatService=" + chatService + '}';
+    @DeleteMapping("/{room_id}/chats/{chat_id}")
+    public ResponseEntity<ResponseDto<Void>> deleteChat(
+            @AuthenticationPrincipal UserDetailsDto user, @PathVariable("room_id") Long roomId,
+            @PathVariable("chat_id") Long chatId) {
+
+        chatService.deleteChat(user.getUser().getUserId(), roomId, chatId);
+
+        ResponseDto<Void> response = new ResponseDto<>(HttpStatus.OK, null);
+
+        return ResponseEntity.ok(response);
+
     }
 }

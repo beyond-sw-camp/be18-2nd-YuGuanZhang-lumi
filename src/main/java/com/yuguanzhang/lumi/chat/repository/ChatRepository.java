@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ChatRepository extends JpaRepository<Chat, Long> {
     List<Chat> findByRoom_RoomId(Long roomId);
@@ -14,6 +15,8 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
     Chat findTopByRoomOrderByCreatedAtDesc(Room room);
 
     // 안 읽은 메세지 개수
-    @Query("SELECT COUNT(m) FROM Chat m WHERE m.room = :room AND m.user.userId = :userId AND m.isRead = false")
+    @Query("SELECT COUNT(m) FROM Chat m WHERE m.room = :room AND m.user.userId != :userId AND m.isRead = false")
     Long countUnreadMessages(Room room, Long userId);
+
+    Optional<Chat> findByRoom_RoomIdAndChatId(Long roomId, Long chatId);
 }

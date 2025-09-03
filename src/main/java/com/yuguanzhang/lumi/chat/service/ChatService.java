@@ -8,5 +8,7 @@ import java.util.List;
 public interface ChatService {
     List<ChatRoomsResponseDto> getChatRooms(Long userId);
 
-    List<ChatsResponseDto> getChats(Long roomId);
+    List<ChatsResponseDto> getChats(Long userId, Long roomId);
+
+    void deleteChat(Long userId, Long roomId, Long chatId);
 }
