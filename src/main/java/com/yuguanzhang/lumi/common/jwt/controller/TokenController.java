@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/jwt")
 @RequiredArgsConstructor
 public class TokenController {
 
@@ -17,7 +16,7 @@ public class TokenController {
     private final RefreshTokenStore refreshTokenStore;
 
     // 리프레시 토큰으로 새로운 Access Token 발급
-    @PostMapping("/refresh")
+    @PostMapping("/api/refresh")
     public ResponseEntity<LoginResponseDto> refresh(@RequestBody RefreshRequestDto request) {
         String refreshToken = request.getRefreshToken();
 
@@ -33,14 +32,14 @@ public class TokenController {
             return ResponseEntity.status(401).build();
         }
 
-        // 3) 새 Access 발급 (회전 안 함)
+        // 3) 새 Access 발급
         String newAccess = jwtService.generateAccessToken(email);
 
         return ResponseEntity.ok(new LoginResponseDto(email, newAccess, refreshToken));
     }
 
     // 로그아웃: 리프레시 토큰 삭제
-    @PostMapping("/logout")
+    @PostMapping("/api/logout")
     public ResponseEntity<Void> logout(@RequestBody RefreshRequestDto request) {
         String refreshToken = request.getRefreshToken();
         if (jwtService.validateRefreshToken(refreshToken)) {
