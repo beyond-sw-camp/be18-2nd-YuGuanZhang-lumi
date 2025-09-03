@@ -1,4 +1,4 @@
-package com.yuguanzhang.lumi.channel.entity.enums;
+package com.yuguanzhang.lumi.channel.enums;
 
 public enum RoleType {
     STUDENT,

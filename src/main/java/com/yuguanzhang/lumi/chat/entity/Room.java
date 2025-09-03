@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -30,8 +32,10 @@ public class Room {
     private String name;
 
     @Column(name="created_at")
+    @CreatedDate
     private LocalDateTime createdAt;
 
     @Column(name="updated_at")
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 }

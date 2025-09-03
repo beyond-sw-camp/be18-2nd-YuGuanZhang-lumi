@@ -1,6 +1,6 @@
 package com.yuguanzhang.lumi.channel.entity;
 
-import com.yuguanzhang.lumi.channel.entity.enums.RoleType;
+import com.yuguanzhang.lumi.channel.enums.RoleType;
 import com.yuguanzhang.lumi.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

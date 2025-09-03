@@ -1,11 +1,10 @@
 package com.yuguanzhang.lumi.chat.service;
 
-import com.yuguanzhang.lumi.channel.repository.ChannelUserRepository;
 import com.yuguanzhang.lumi.chat.dto.ChatRoomsResponseDto;
-import com.yuguanzhang.lumi.chat.entity.Message;
+import com.yuguanzhang.lumi.chat.entity.Chat;
 import com.yuguanzhang.lumi.chat.entity.Room;
 import com.yuguanzhang.lumi.chat.entity.RoomUser;
-import com.yuguanzhang.lumi.chat.repository.MessageRepository;
+import com.yuguanzhang.lumi.chat.repository.ChatRepository;
 import com.yuguanzhang.lumi.chat.repository.RoomUserRepository;
 import com.yuguanzhang.lumi.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
     private final RoomUserRepository roomUserRepository;
-    private final MessageRepository messageRepository;
+    private final ChatRepository messageRepository;
 
 
     @Override
@@ -38,7 +37,7 @@ public class ChatServiceImpl implements ChatService {
             // 상대방 정보
             User sender = senderRoomUser.getRoomUserId().getUser();
 
-            Message lastMessage = messageRepository.findTopByRoomOrderByCreatedAtDesc(room);
+            Chat lastMessage = messageRepository.findTopByRoomOrderByCreatedAtDesc(room);
 
             Long unreadCount = messageRepository.countUnreadMessages(room, userId);
 

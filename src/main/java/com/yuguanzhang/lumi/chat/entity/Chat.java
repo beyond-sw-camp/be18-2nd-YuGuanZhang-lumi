@@ -23,14 +23,14 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name="messages")
+@Table(name="Chats")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Message {
+public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="message_id")
+    @Column(name="chat_id")
     private Long messageId;
 
     @ManyToOne(fetch = FetchType.LAZY)

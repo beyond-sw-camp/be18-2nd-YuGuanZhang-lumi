@@ -1,4 +1,6 @@
 package com.yuguanzhang.lumi.chat.enums;
 
-public class MessageType {
+public enum MessageType {
+    CHAT,
+    FILE
 }
