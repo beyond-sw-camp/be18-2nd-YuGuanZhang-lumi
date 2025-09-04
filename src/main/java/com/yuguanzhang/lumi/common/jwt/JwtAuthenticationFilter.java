@@ -1,6 +1,6 @@
 package com.yuguanzhang.lumi.common.jwt;
 
-import com.yuguanzhang.lumi.common.jwt.service.JwtService;
+import com.yuguanzhang.lumi.common.jwt.service.jwt.JwtService;
 import com.yuguanzhang.lumi.user.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

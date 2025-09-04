@@ -1,8 +1,9 @@
-package com.yuguanzhang.lumi.common.jwt.service;
+package com.yuguanzhang.lumi.common.jwt.service.auth;
 
 import com.yuguanzhang.lumi.common.jwt.dto.LoginRequestDto;
 import com.yuguanzhang.lumi.common.jwt.dto.LoginResponseDto;
 import com.yuguanzhang.lumi.common.jwt.refresh.RefreshTokenStore;
+import com.yuguanzhang.lumi.common.jwt.service.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
 
         // Redis에 Refresh 토큰 저장
         refreshTokenStore.save(userDetails.getUsername(), refreshToken, 604800000); // 7일
-        
+
         // 생성한 JWT와 사용자 이름을 LoginResponseDto에 담아 반환
         return new LoginResponseDto(userDetails.getUsername(), accessToken, refreshToken);
     }

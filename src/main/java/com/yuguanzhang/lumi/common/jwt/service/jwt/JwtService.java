@@ -1,4 +1,4 @@
-package com.yuguanzhang.lumi.common.jwt.service;
+package com.yuguanzhang.lumi.common.jwt.service.jwt;
 
 public interface JwtService {
     String generateAccessToken(String username);

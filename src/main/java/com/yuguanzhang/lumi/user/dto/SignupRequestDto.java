@@ -1,6 +1,7 @@
 package com.yuguanzhang.lumi.user.dto;
 
 import com.yuguanzhang.lumi.user.entity.User;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,8 @@ public class SignupRequestDto {
     private final String name;
     private final String password;
     private final String provider;
+
+    @NotNull(message = "개인정보 동의가 필요합니다.")
     private final Boolean isPrivacyAgreement;
 
     public SignupRequestDto(String email, String name, String password, String provider,
