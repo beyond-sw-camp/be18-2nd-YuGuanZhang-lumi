@@ -16,5 +16,5 @@ public class ChatRoomsResponseDto {
     private final String opponentName;
     private final LocalDateTime lastMessageTime;
     private final String lastMessage;
-    private final Long unreadMessageCount;
+    private final int unreadMessageCount;
 }
