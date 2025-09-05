@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+// implements UserDetails 시큐리티가 제공하는 라이브러리
 public class UserDetailsDto implements UserDetails {
 
     private final String email;

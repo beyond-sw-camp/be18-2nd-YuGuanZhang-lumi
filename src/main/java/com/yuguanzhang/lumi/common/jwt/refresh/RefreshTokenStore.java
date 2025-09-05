@@ -10,6 +10,7 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class RefreshTokenStore {
     private final StringRedisTemplate redis;
+    // StringRedisTemplate Spring에서 제공하는 Redis 접근용 클래스
 
     private String key(String email) {
         return "Refresh:" + email;

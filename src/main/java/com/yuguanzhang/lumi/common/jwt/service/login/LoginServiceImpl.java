@@ -1,4 +1,4 @@
-package com.yuguanzhang.lumi.common.jwt.service.auth;
+package com.yuguanzhang.lumi.common.jwt.service.login;
 
 import com.yuguanzhang.lumi.common.jwt.dto.LoginRequestDto;
 import com.yuguanzhang.lumi.common.jwt.dto.LoginResponseDto;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+public class LoginServiceImpl implements LoginService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final RefreshTokenStore refreshTokenStore;
@@ -32,6 +32,8 @@ public class AuthServiceImpl implements AuthService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         // AccessToken, RefreshToken 발급
+        // AccessToken은 지금 저장 안하고 있음, 프론트 개발 시 어디에 저장할 지 정해야 (메모리/세션/쿠키)
+        // RefreshToken은 redis에서도 저장해야하고 프런트에서도 저장하고 있어야한다고 함
         String accessToken = jwtService.generateAccessToken(userDetails.getUsername());
         String refreshToken = jwtService.generateRefreshToken(userDetails.getUsername());
 

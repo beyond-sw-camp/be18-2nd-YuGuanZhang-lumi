@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class TokenController {
+public class RefreshController {
 
     private final JwtService jwtService;
     private final RefreshTokenStore refreshTokenStore;

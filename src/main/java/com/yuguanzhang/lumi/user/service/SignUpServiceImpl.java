@@ -28,6 +28,7 @@ public class SignUpServiceImpl implements SignUpService {
         userRepository.save(user);
     }
 
+    // 이메일 중복 체크 나중에 고도화 할 때..
     @Override
     @Transactional(readOnly = true)
     public User findByEmail(String email) {
