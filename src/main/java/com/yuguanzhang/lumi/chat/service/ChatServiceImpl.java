@@ -28,6 +28,8 @@ import java.util.NoSuchElementException;
 public class ChatServiceImpl implements ChatService {
     private final RoomUserRepository roomUserRepository;
     private final ChatRepository chatRepository;
+    private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
 
 
     @Override
@@ -107,4 +109,40 @@ public class ChatServiceImpl implements ChatService {
 
         chatRepository.delete(chat);
     }
+
+    @Override
+    @Transactional
+    public RoomUser postChat(ChatRequestDto chatRequestDto, Long userId, Long roomId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("채팅방 정보를 찾을 수 없습니다."));
+
+        Chat chat = Chat.builder().room(room).user(user).content(chatRequestDto.getMessage())
+                .messageType(chatRequestDto.getMessageType()).isRead(false)
+                .createdAt(LocalDateTime.now()).build();
+
+        chatRepository.save(chat);
+
+        log.info("chat: {}", chat);
+
+        // 받는 사람 RoomUser의 lastMessage와 안읽은 메세지 수 업데이트
+        RoomUser receiverRoomUser =
+                roomUserRepository.findByRoomUserId_Room_RoomIdAndRoomUserId_User_UserIdNot(roomId,
+                        userId).orElseThrow(() -> new NoSuchElementException("상대방이 존재하지 않습니다."));
+
+        receiverRoomUser.updateLastMessage(chat.getContent(), chat.getCreatedAt());
+        receiverRoomUser.increaseUnreadCount();
+        roomUserRepository.save(receiverRoomUser);
+
+        // 보낸 사람 RoomUser의 lastMessage 업데이트
+        RoomUser senderRoomUser =
+                roomUserRepository.findByRoomUserId_Room_RoomIdAndRoomUserId_User_UserId(roomId,
+                        userId).orElseThrow();
+        senderRoomUser.updateLastMessage(chat.getContent(), chat.getCreatedAt());
+        roomUserRepository.save(senderRoomUser);
+
+        return receiverRoomUser;
+    }
+
 }
