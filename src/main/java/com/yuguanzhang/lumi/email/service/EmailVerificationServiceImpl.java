@@ -2,10 +2,13 @@ package com.yuguanzhang.lumi.email.service;
 
 import com.yuguanzhang.lumi.email.entity.EmailVerification;
 import com.yuguanzhang.lumi.email.repository.EmailVerificationRepository;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +20,9 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 public class EmailVerificationServiceImpl implements EmailVerificationService {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(EmailVerificationServiceImpl.class); // ✅ 로거 선언
 
     private final RedisTemplate<String, String> redisTemplate;
     private final JavaMailSender mailSender;
@@ -53,12 +59,23 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 
         String link = "http://localhost:8080/api/email/verify?token=" + token;
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("[lumi] 이메일 인증");
-        message.setText("이메일 인증을 위해 아래 링크를 클릭해주세요:\n" + link);
+        // ✅ SimpleMailMessage 대신 MimeMessage 사용
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(email);
+            helper.setSubject("[lumi] 이메일 인증");
 
-        mailSender.send(message);
+            // ✅ HTML 형식으로 링크 생성
+            String htmlContent =
+                    "<html><body>" + "<p>이메일 인증을 위해 아래 링크를 클릭해주세요:</p>" + "<a href=\"" + link + "\">" + link + "</a>" + "</body></html>";
+            helper.setText(htmlContent, true);
+
+            mailSender.send(message);
+        } catch (Exception e) {
+            // ✅ printStackTrace()를 로거로 변경
+            logger.error("이메일 전송 중 오류가 발생했습니다: {}", e.getMessage(), e);
+        }
     }
 
     @Override
