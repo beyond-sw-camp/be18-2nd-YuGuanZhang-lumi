@@ -49,8 +49,8 @@ public class SecurityConfig {
                         SessionCreationPolicy.STATELESS)) // 세션 사용 안함
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers("/", "/api/login", "/api/sign-up",
-                                        "/api/refresh", "/api/logout", "/api/public/**").permitAll()
-                                .anyRequest().authenticated())
+                                        "/api/refresh", "/api/logout", "/api/public/**", "/api/email/**")
+                                .permitAll().anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class);
 
