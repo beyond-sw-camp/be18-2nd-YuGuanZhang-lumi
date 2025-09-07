@@ -4,8 +4,7 @@ import com.yuguanzhang.lumi.email.entity.EmailVerification;
 import com.yuguanzhang.lumi.email.repository.EmailVerificationRepository;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -19,10 +18,8 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmailVerificationServiceImpl implements EmailVerificationService {
-
-    private static final Logger logger =
-            LoggerFactory.getLogger(EmailVerificationServiceImpl.class); // ✅ 로거 선언
 
     private final RedisTemplate<String, String> redisTemplate;
     private final JavaMailSender mailSender;
@@ -38,16 +35,15 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         Optional<EmailVerification> existingVerification =
                 emailVerificationRepository.findByEmail(email);
 
+        // isPresent() 객체가 값을 가지고 있는지 여부를 확인하는 메서드
         if (existingVerification.isPresent()) {
             EmailVerification existing = existingVerification.get();
-            // Update the existing record with new token and expiration time
             EmailVerification updatedVerification =
-                    EmailVerification.builder().id(existing.getId()).email(existing.getEmail())
-                            .verification_code(token).verified(false).expiration_at(expirationTime)
-                            .build();
+                    EmailVerification.builder().verificationId(existing.getVerificationId())
+                            .email(existing.getEmail()).verification_code(token).verified(false)
+                            .expiration_at(expirationTime).build();
             emailVerificationRepository.save(updatedVerification);
         } else {
-            // Create a new record if one does not exist
             EmailVerification verification =
                     EmailVerification.builder().email(email).verification_code(token)
                             .verified(false).expiration_at(expirationTime).build();
@@ -59,22 +55,19 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 
         String link = "http://localhost:8080/api/email/verify?token=" + token;
 
-        // ✅ SimpleMailMessage 대신 MimeMessage 사용
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(email);
             helper.setSubject("[lumi] 이메일 인증");
 
-            // ✅ HTML 형식으로 링크 생성
             String htmlContent =
                     "<html><body>" + "<p>이메일 인증을 위해 아래 링크를 클릭해주세요:</p>" + "<a href=\"" + link + "\">" + link + "</a>" + "</body></html>";
             helper.setText(htmlContent, true);
 
             mailSender.send(message);
         } catch (Exception e) {
-            // ✅ printStackTrace()를 로거로 변경
-            logger.error("이메일 전송 중 오류가 발생했습니다: {}", e.getMessage(), e);
+            log.error("이메일 전송 중 오류가 발생했습니다: {}", e.getMessage(), e);
         }
     }
 
@@ -83,6 +76,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     public boolean verifyEmail(String token) {
         // Redis에서 토큰으로 이메일 정보 조회
         String redisKey = "email:verify:" + token;
+        // opsForValue()는 가장 기본적인 키-값(key-value) 구조에 대한 연산자(operations)를 제공합니다.
         String email = redisTemplate.opsForValue().get(redisKey);
 
         if (email == null) {
@@ -103,7 +97,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 
             // DB에 저장된 인증 코드와 Redis에서 가져온 토큰이 일치하는지 확인
             if (verification.getVerification_code().equals(token)) {
-                // ✅ 인증 성공: 엔티티의 상태를 직접 변경하는 전용 메서드를 사용합니다.
+                // 인증 성공: 엔티티의 상태를 직접 변경하는 전용 메서드를 사용합니다.
                 verification.markAsVerified();
                 // @Transactional 덕분에 별도의 save() 호출 없이도 상태가 반영됩니다.
 

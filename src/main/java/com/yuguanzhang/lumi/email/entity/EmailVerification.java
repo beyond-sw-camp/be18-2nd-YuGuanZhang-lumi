@@ -25,8 +25,8 @@ public class EmailVerification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    @Column(name = "verification_id", updatable = false, nullable = false)
+    private UUID verificationId;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -43,5 +43,5 @@ public class EmailVerification {
     public void markAsVerified() {
         this.verified = true;
     }
-    
+
 }
