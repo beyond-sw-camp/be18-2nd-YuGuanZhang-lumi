@@ -77,6 +77,19 @@ jobs:
           port: ${{ secrets.DEV_SSH_PORT }}
           source: "./docker-compose.yaml, ./.env"
           target: ${{ secrets.DEV_PROJECT_PATH }}
+          debug: true
+
+      - name: Test SSH connection
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_PUBLIC_IPV4_DNS }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.EC2_SSH_PORT }}
+          debug: true
+          script: |
+            echo "Testing SSH connection"
+            uptime
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@v1
