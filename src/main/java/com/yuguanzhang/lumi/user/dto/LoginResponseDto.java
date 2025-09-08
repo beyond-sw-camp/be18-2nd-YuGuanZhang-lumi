@@ -1,4 +1,4 @@
-package com.yuguanzhang.lumi.common.jwt.dto;
+package com.yuguanzhang.lumi.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

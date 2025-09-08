@@ -1,10 +1,10 @@
 package com.yuguanzhang.lumi.common.jwt.controller;
 
-import com.yuguanzhang.lumi.common.jwt.dto.LoginResponseDto;
+import com.yuguanzhang.lumi.user.dto.LoginResponseDto;
 import com.yuguanzhang.lumi.common.jwt.dto.RefreshRequestDto;
 import com.yuguanzhang.lumi.common.jwt.refresh.RefreshTokenStore;
 import com.yuguanzhang.lumi.common.jwt.service.jwt.JwtService;
-import com.yuguanzhang.lumi.common.jwt.service.logout.LogoutService;
+import com.yuguanzhang.lumi.user.service.logout.LogoutService;
 import com.yuguanzhang.lumi.common.jwt.service.Refresh.RefreshService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

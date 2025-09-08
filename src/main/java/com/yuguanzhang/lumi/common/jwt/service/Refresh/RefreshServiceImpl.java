@@ -1,6 +1,6 @@
 package com.yuguanzhang.lumi.common.jwt.service.Refresh;
 
-import com.yuguanzhang.lumi.common.jwt.dto.LoginResponseDto;
+import com.yuguanzhang.lumi.user.dto.LoginResponseDto;
 import com.yuguanzhang.lumi.common.jwt.dto.RefreshRequestDto;
 import com.yuguanzhang.lumi.common.jwt.refresh.RefreshTokenStore;
 import com.yuguanzhang.lumi.common.jwt.service.jwt.JwtService;

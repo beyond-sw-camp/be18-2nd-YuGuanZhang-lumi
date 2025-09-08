@@ -1,8 +1,8 @@
-package com.yuguanzhang.lumi.common.jwt.controller;
+package com.yuguanzhang.lumi.user.controller;
 
-import com.yuguanzhang.lumi.common.jwt.dto.LoginRequestDto;
-import com.yuguanzhang.lumi.common.jwt.dto.LoginResponseDto;
-import com.yuguanzhang.lumi.common.jwt.service.login.LoginService;
+import com.yuguanzhang.lumi.user.dto.LoginRequestDto;
+import com.yuguanzhang.lumi.user.dto.LoginResponseDto;
+import com.yuguanzhang.lumi.user.service.login.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
