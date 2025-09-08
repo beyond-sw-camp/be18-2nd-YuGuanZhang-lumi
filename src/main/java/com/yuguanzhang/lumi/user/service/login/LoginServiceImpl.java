@@ -1,7 +1,7 @@
 package com.yuguanzhang.lumi.user.service.login;
 
-import com.yuguanzhang.lumi.user.dto.LoginRequestDto;
-import com.yuguanzhang.lumi.user.dto.LoginResponseDto;
+import com.yuguanzhang.lumi.user.dto.login.LoginRequestDto;
+import com.yuguanzhang.lumi.user.dto.login.LoginResponseDto;
 import com.yuguanzhang.lumi.common.jwt.refresh.RefreshTokenStore;
 import com.yuguanzhang.lumi.common.jwt.service.jwt.JwtService;
 import lombok.RequiredArgsConstructor;

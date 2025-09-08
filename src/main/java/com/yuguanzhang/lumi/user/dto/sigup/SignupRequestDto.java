@@ -1,4 +1,4 @@
-package com.yuguanzhang.lumi.user.dto;
+package com.yuguanzhang.lumi.user.dto.sigup;
 
 import com.yuguanzhang.lumi.user.entity.User;
 import jakarta.validation.constraints.NotNull;

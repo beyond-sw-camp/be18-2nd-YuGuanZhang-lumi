@@ -2,6 +2,8 @@ package com.yuguanzhang.lumi.email.service;
 
 import com.yuguanzhang.lumi.email.entity.EmailVerification;
 import com.yuguanzhang.lumi.email.repository.EmailVerificationRepository;
+import com.yuguanzhang.lumi.user.entity.User;
+import com.yuguanzhang.lumi.user.repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     private final RedisTemplate<String, String> redisTemplate;
     private final JavaMailSender mailSender;
     private final EmailVerificationRepository emailVerificationRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -98,7 +101,12 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
             // DB에 저장된 인증 코드와 Redis에서 가져온 토큰이 일치하는지 확인
             if (verification.getVerification_code().equals(token)) {
                 // 인증 성공: 엔티티의 상태를 직접 변경하는 전용 메서드를 사용합니다.
-                verification.markAsVerified();
+                Optional<User> optionalUser = userRepository.findByEmail(email);
+                if (optionalUser.isPresent()) {
+                    User user = optionalUser.get();
+                    user.markAsVerified();
+                    userRepository.save(user);
+                }
                 // @Transactional 덕분에 별도의 save() 호출 없이도 상태가 반영됩니다.
 
                 // Redis 토큰 삭제
@@ -111,6 +119,6 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 
     @Override
     public boolean isEmailVerified(String email) {
-        return emailVerificationRepository.existsByEmailAndVerifiedIsTrue(email);
+        return userRepository.findByEmail(email).map(User::getIsVerified).orElse(false);
     }
 }

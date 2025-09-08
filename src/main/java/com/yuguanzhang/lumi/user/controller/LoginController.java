@@ -1,7 +1,7 @@
 package com.yuguanzhang.lumi.user.controller;
 
-import com.yuguanzhang.lumi.user.dto.LoginRequestDto;
-import com.yuguanzhang.lumi.user.dto.LoginResponseDto;
+import com.yuguanzhang.lumi.user.dto.login.LoginRequestDto;
+import com.yuguanzhang.lumi.user.dto.login.LoginResponseDto;
 import com.yuguanzhang.lumi.user.service.login.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

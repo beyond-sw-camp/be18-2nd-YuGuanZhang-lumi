@@ -51,4 +51,11 @@ public class User {
 
     @Column(name = "is_privacy_agreement", nullable = false)
     private Boolean isPrivacyAgreement;
+
+    @Column(name = "isVerified")
+    private Boolean isVerified;
+
+    public void markAsVerified() {
+        this.isVerified = true;
+    }
 }

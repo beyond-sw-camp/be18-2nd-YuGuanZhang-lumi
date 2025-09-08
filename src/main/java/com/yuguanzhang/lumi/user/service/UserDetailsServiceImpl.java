@@ -26,8 +26,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 () -> new UsernameNotFoundException("User not found with email: " + email));
 
         // 이메일 인증 여부 확인
-        if (!emailVerificationRepository.existsByEmailAndVerifiedIsTrue(email)) {
-            throw new UsernameNotFoundException("이메일이 확인되지 않음");
+        if (Boolean.FALSE.equals(user.getIsVerified())) {
+            throw new UsernameNotFoundException("이메일이 확인되지 않았습니다.");
         }
 
         // User 엔티티 → UserDetailsDto 변환

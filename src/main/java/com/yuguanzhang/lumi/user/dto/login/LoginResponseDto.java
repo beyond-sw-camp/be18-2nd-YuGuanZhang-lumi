@@ -1,4 +1,4 @@
-package com.yuguanzhang.lumi.user.dto;
+package com.yuguanzhang.lumi.user.dto.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

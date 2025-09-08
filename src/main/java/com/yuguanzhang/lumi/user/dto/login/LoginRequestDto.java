@@ -1,4 +1,4 @@
-package com.yuguanzhang.lumi.user.dto;
+package com.yuguanzhang.lumi.user.dto.login;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
