@@ -72,6 +72,21 @@ jobs:
           touch ./.env
           echo "${{ secrets.DEV_ENV }}" > .env
         shell: bash
+        
+      - name: Test SSH connection
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_PUBLIC_IPV4_DNS }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.EC2_SSH_PORT }}
+          script: |
+            echo "[DEBUG] 현재 접속 사용자 확인:"
+            whoami
+            echo "[DEBUG] 홈 디렉토리 확인:"
+            echo $HOME
+            echo "Testing SSH connection"
+            uptime
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@v1
