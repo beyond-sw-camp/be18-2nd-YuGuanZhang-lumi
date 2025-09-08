@@ -76,10 +76,10 @@ jobs:
       - name: Test SSH connection
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.DEV_PUBLIC_IPV4_DNS }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.EC2_SSH_PORT }}
+          host: ${{ secrets.DEV_PUBLIC_IP }}
+          username: ${{ secrets.DEV_USER }}
+          key: ${{ secrets.DEV_SSH_KEY }}
+          port: ${{ secrets.DEV_SSH_PORT }}
           script: |
             echo "[DEBUG] 현재 접속 사용자 확인:"
             whoami
