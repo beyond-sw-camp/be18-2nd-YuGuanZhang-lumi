@@ -1,5 +1,6 @@
 package com.yuguanzhang.lumi.chat.entity;
 
+import com.yuguanzhang.lumi.common.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,10 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,21 +18,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Room {
+public class Room extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="room_id")
+    @Column(name = "room_id")
     private Long roomId;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
-
-    @Column(name="created_at")
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @Column(name="updated_at")
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 }

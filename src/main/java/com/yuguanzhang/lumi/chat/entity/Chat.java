@@ -1,6 +1,7 @@
 package com.yuguanzhang.lumi.chat.entity;
 
 import com.yuguanzhang.lumi.chat.enums.MessageType;
+import com.yuguanzhang.lumi.common.entity.BaseCreatedEntity;
 import com.yuguanzhang.lumi.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,9 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -27,7 +25,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Chat {
+public class Chat extends BaseCreatedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chat_id")
@@ -49,10 +47,6 @@ public class Chat {
 
     @Column(name = "is_read")
     private Boolean isRead = false;
-
-    @Column(name = "created_at")
-    @CreatedDate
-    private LocalDateTime createdAt;
 
     public void updateIsRead() {
         this.isRead = true;

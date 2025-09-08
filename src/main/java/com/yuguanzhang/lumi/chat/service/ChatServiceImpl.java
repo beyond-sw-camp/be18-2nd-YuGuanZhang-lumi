@@ -17,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -119,8 +118,7 @@ public class ChatServiceImpl implements ChatService {
                 .orElseThrow(() -> new IllegalArgumentException("채팅방 정보를 찾을 수 없습니다."));
 
         Chat chat = Chat.builder().room(room).user(user).content(chatRequestDto.getMessage())
-                .messageType(chatRequestDto.getMessageType()).isRead(false)
-                .createdAt(LocalDateTime.now()).build();
+                .messageType(chatRequestDto.getMessageType()).isRead(false).build();
 
         chatRepository.save(chat);
 
