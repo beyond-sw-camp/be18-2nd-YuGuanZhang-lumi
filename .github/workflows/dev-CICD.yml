@@ -59,6 +59,15 @@ jobs:
           echo "${{ secrets.DEV_ENV }}" > .env
         shell: bash
 
+      - name: Check SCP connection with detailed logs
+        run: |
+          # ssh-agent를 통해 키를 불러와서 별도 파일 지정 없이 바로 scp를 실행합니다.
+          # -v 옵션으로 상세 로그를 확인합니다.
+          scp -v -o StrictHostKeyChecking=no \
+          -P ${{ secrets.DEV_SSH_PORT }} \
+          ./docker-compose.yaml \
+          ${{ secrets.DEV_USER }}@${{ secrets.DEV_PUBLIC_IP }}:${{ secrets.DEV_PROJECT_PATH }}
+
       - name: Copy files via SSH
         uses: appleboy/scp-action@v1
         with:
