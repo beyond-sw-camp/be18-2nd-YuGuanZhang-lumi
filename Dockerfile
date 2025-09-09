@@ -9,4 +9,4 @@ ARG JAR_FILE=build/libs/*SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
 
 # 컨테이너가 실행될 때 동작하는 명령어 정의
-ENTRYPOINT ["java", "-jar", "/spring-boot/app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=${USE_PROFILE}", "-Duser.timezone=Asia/Seoul", "-jar", "/spring-boot/app.jar"]

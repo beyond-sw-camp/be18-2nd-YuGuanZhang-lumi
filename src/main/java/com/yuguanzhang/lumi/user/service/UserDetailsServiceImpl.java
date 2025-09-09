@@ -25,6 +25,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // UsernamePasswordAuthenticationToken = Spring Security에서 제공하는 클래스
 
         // User 엔티티 → UserDetailsDto 변환
-        return new UserDetailsDto(user.getEmail(), user.getPassword());
+        return new UserDetailsDto(user);
     }
 }

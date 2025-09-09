@@ -47,9 +47,10 @@ public class SecurityConfig {
                 })             // CORS 허용
                 .sessionManagement(session -> session.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS)) // 세션 사용 안함
-                .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/", "/api/login", "/api/sign-up",
-                                        "/api/refresh", "/api/logout", "/api/public/**").permitAll()
+                .authorizeHttpRequests(auth -> // 로그인, 회원가입 등 공개 API는 허용
+                        auth.requestMatchers("/api/login", "/api/sign-up").permitAll()
+                                .requestMatchers("/api/chatrooms/**").authenticated()
+                                // 그 외 모든 요청은 인증된 사용자만 접근 가능
                                 .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class);
