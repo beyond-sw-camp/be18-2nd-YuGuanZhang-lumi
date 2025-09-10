@@ -26,7 +26,7 @@ public class User {
     @Column(name = "user_id", updatable = false, nullable = false)
     private UUID userId;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "provider")
@@ -52,10 +52,14 @@ public class User {
     @Column(name = "is_privacy_agreement", nullable = false)
     private Boolean isPrivacyAgreement;
 
-    @Column(name = "isVerified")
-    private Boolean isVerified;
+    @Column(name = "is_verified")
+    private boolean isVerified = false;
 
     public void markAsVerified() {
         this.isVerified = true;
+    }
+
+    public boolean getIsVerified() {
+        return this.isVerified;
     }
 }

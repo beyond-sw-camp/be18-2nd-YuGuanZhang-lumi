@@ -1,6 +1,8 @@
 package com.yuguanzhang.lumi.common.config;
 
 import com.yuguanzhang.lumi.common.jwt.JwtAuthenticationFilter;
+import com.yuguanzhang.lumi.user.handler.AccessDeniedHandlerImpl;
+import com.yuguanzhang.lumi.user.handler.AuthenticationEntryPointImpl;
 import com.yuguanzhang.lumi.user.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -47,11 +49,12 @@ public class SecurityConfig {
                 })             // CORS 허용
                 .sessionManagement(session -> session.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS)) // 세션 사용 안함
-                .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/", "/api/login", "/api/sign-up",
-                                        "/api/refresh", "/api/logout", "/api/public/**", "/api/email/**")
-                                .permitAll().anyRequest().authenticated())
-                .addFilterBefore(jwtAuthenticationFilter,
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(
+                                new AuthenticationEntryPointImpl())
+                        .accessDeniedHandler(new AccessDeniedHandlerImpl())).authorizeHttpRequests(
+                        auth -> auth.requestMatchers("/", "/api/login", "/api/sign-up", "/api/refresh",
+                                        "/api/logout", "/api/public/**", "/api/email/**").permitAll().anyRequest()
+                                .authenticated()).addFilterBefore(jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

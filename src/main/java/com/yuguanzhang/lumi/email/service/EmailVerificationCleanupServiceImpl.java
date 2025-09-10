@@ -18,13 +18,12 @@ public class EmailVerificationCleanupServiceImpl implements EmailVerificationCle
 
 
     @Override
-    @Scheduled(fixedDelay = 900000) // 60초 = 60000ms
+    @Scheduled(fixedDelay = 600000)
     @Transactional
     public void cleanupExpiredVerifications() {
-        log.info("만료된 이메일 인증 기록 삭제 작업을 시작합니다.");
+        log.info("만료된 이메일 인증 상태 변경 작업을 시작합니다.");
         LocalDateTime now = LocalDateTime.now();
-        // 만료 시간이 현재 시간보다 이전인 모든 레코드 삭제
-        emailVerificationRepository.deleteByExpirationAtBefore(now);
-        log.info("만료된 이메일 인증 기록 삭제 작업 완료. 시간: {}", now);
+        emailVerificationRepository.updateStatusToExpiredForVerifications(now);
+        log.info("만료된 이메일 인증 상태 변경 완료. 시간: {}", now);
     }
 }

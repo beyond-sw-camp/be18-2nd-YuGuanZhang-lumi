@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 () -> new UsernameNotFoundException("User not found with email: " + email));
 
         // 이메일 인증 여부 확인
-        if (Boolean.FALSE.equals(user.getIsVerified())) {
+        if (!user.getIsVerified()) {
             throw new UsernameNotFoundException("이메일이 확인되지 않았습니다.");
         }
 
@@ -34,4 +34,3 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new UserDetailsDto(user.getEmail(), user.getPassword());
     }
 }
-

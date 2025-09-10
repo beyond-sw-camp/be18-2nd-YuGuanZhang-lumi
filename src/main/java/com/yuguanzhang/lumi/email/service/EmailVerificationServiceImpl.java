@@ -1,6 +1,7 @@
 package com.yuguanzhang.lumi.email.service;
 
 import com.yuguanzhang.lumi.email.entity.EmailVerification;
+import com.yuguanzhang.lumi.email.enums.VerificationStatus;
 import com.yuguanzhang.lumi.email.repository.EmailVerificationRepository;
 import com.yuguanzhang.lumi.user.entity.User;
 import com.yuguanzhang.lumi.user.repository.UserRepository;
@@ -32,33 +33,41 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     @Transactional
     public void sendVerificationEmail(String email) {
         String token = UUID.randomUUID().toString();
-        // 10분 유효기간 설정
         LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(10);
 
-        Optional<EmailVerification> existingVerification =
-                emailVerificationRepository.findByEmail(email);
+        Optional<User> existingUser = userRepository.findByEmail(email);
+        if (existingUser.isEmpty()) {
+            log.error("User with email {} not found. Cannot send verification email.", email);
+            return;
+        }
+        User user = existingUser.get();
 
-        // isPresent() 객체가 값을 가지고 있는지 여부를 확인하는 메서드
+        Optional<EmailVerification> existingVerification =
+                emailVerificationRepository.findByUser(user);
+
+        EmailVerification verification;
         if (existingVerification.isPresent()) {
-            EmailVerification existing = existingVerification.get();
-            EmailVerification updatedVerification =
-                    EmailVerification.builder().verificationId(existing.getVerificationId())
-                            .email(existing.getEmail()).verification_code(token).verified(false)
-                            .expiration_at(expirationTime).build();
-            emailVerificationRepository.save(updatedVerification);
+            // 이미 존재하면 기존 객체를 가져와 메서드를 통해 상태를 업데이트합니다.
+            log.info("기존 인증 기록을 업데이트합니다. 사용자: {}", user.getEmail());
+            verification = existingVerification.get();
+            verification.updateForResend(token, expirationTime);
         } else {
-            EmailVerification verification =
-                    EmailVerification.builder().email(email).verification_code(token)
-                            .verified(false).expiration_at(expirationTime).build();
-            emailVerificationRepository.save(verification);
+            // 존재하지 않으면 새로운 객체를 Builder를 통해 생성합니다.
+            log.info("새로운 인증 기록을 생성합니다. 사용자: {}", user.getEmail());
+            verification = EmailVerification.builder().user(user).verification_code(token)
+                    .status(VerificationStatus.UNREAD).expiration_at(expirationTime).build();
         }
 
-        String redisKey = "email:verify:" + token;
-        redisTemplate.opsForValue().set(redisKey, email, 10, TimeUnit.MINUTES);
-
-        String link = "http://localhost:8080/api/email/verify?token=" + token;
-
+        // 이메일 전송 로직을 try-catch로 감싸서 오류를 처리합니다.
         try {
+            // 이메일 인증 기록을 먼저 저장합니다.
+            emailVerificationRepository.save(verification);
+
+            String redisKey = "email:verify:" + token;
+            redisTemplate.opsForValue().set(redisKey, email, 10, TimeUnit.MINUTES);
+
+            String link = "http://localhost:8080/api/email/verify?token=" + token;
+
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(email);
@@ -69,51 +78,63 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
             helper.setText(htmlContent, true);
 
             mailSender.send(message);
+
+            log.info("이메일 발송 성공. 사용자: {}", user.getEmail());
         } catch (Exception e) {
             log.error("이메일 전송 중 오류가 발생했습니다: {}", e.getMessage(), e);
+            // 오류 발생 시 엔티티의 상태를 ERROR로 변경합니다.
+            verification.markAsError();
         }
     }
 
     @Override
     @Transactional
     public boolean verifyEmail(String token) {
-        // Redis에서 토큰으로 이메일 정보 조회
         String redisKey = "email:verify:" + token;
-        // opsForValue()는 가장 기본적인 키-값(key-value) 구조에 대한 연산자(operations)를 제공합니다.
         String email = redisTemplate.opsForValue().get(redisKey);
 
         if (email == null) {
-            // Redis에 토큰이 없거나 만료됨
+            log.warn("유효하지 않거나 만료된 토큰입니다: {}", token);
             return false;
         }
 
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            log.error("인증 이메일과 연결된 사용자가 데이터베이스에 없습니다. 이메일: {}", email);
+            return false;
+        }
+        User user = optionalUser.get();
+
         Optional<EmailVerification> optionalVerification =
-                emailVerificationRepository.findByEmail(email);
+                emailVerificationRepository.findByUser(user);
 
         if (optionalVerification.isPresent()) {
             EmailVerification verification = optionalVerification.get();
 
-            // 만료 시간 체크
+            // 1. 만료 시간을 확인합니다.
             if (LocalDateTime.now().isAfter(verification.getExpiration_at())) {
+                log.warn("토큰이 만료되었습니다. 사용자: {}", user.getEmail());
+                verification.markAsExpired();
                 return false;
             }
 
-            // DB에 저장된 인증 코드와 Redis에서 가져온 토큰이 일치하는지 확인
-            if (verification.getVerification_code().equals(token)) {
-                // 인증 성공: 엔티티의 상태를 직접 변경하는 전용 메서드를 사용합니다.
-                Optional<User> optionalUser = userRepository.findByEmail(email);
-                if (optionalUser.isPresent()) {
-                    User user = optionalUser.get();
-                    user.markAsVerified();
-                    userRepository.save(user);
-                }
-                // @Transactional 덕분에 별도의 save() 호출 없이도 상태가 반영됩니다.
-
-                // Redis 토큰 삭제
-                redisTemplate.delete(redisKey);
-                return true;
+            // 2. 토큰이 유효한지 확인합니다.
+            if (!verification.getVerification_code().equals(token)) {
+                log.warn("인증 코드가 일치하지 않습니다. 토큰: {}", token);
+                return false;
             }
+
+            // 인증 성공: User와 EmailVerification의 상태를 변경합니다.
+            log.info("이메일 인증 성공. 사용자: {}", user.getEmail());
+            user.markAsVerified();
+            verification.markAsVerified();
+
+            // Redis에서 토큰 삭제
+            redisTemplate.delete(redisKey);
+            return true;
         }
+
+        log.warn("사용자({})에 대한 인증 기록을 찾을 수 없습니다.", user.getEmail());
         return false;
     }
 

@@ -27,7 +27,7 @@ public class EmailVerificationController {
     public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
         boolean verified = emailVerificationService.verifyEmail(token);
         if (verified) {
-            return ResponseEntity.ok("이메일 인증이 완료되었습니다. 이제 로그인할 수 있습니다.");
+            return ResponseEntity.ok("이메일 인증이 완료되었습니다.");
         } else {
             return ResponseEntity.badRequest().body("이메일 인증에 실패했거나 만료되었습니다.");
         }

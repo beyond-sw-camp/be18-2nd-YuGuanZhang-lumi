@@ -10,5 +10,5 @@ public interface JwtService {
     boolean validateAccessToken(String token);
 
     boolean validateRefreshToken(String token);
-    
+
 }
