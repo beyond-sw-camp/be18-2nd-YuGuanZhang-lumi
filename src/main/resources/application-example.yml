@@ -47,7 +47,8 @@ spring:
       host: ${LOCAL_REDIS_HOST}
       port: 6379
       password: ${LOCAL_REDIS_PASSWORD}
-
+file:
+  upload-dir: ./uploads
 
 ---
 # dev 프로필 설정
@@ -65,6 +66,9 @@ spring:
       host: ${DEV_REDIS_HOST}
       port: 6379
       password: ${DEV_REDIS_PASSWORD}
+
+file:
+  upload-dir: ${DEV_UPLOAD_DIR}
 
 logging:
   level:
