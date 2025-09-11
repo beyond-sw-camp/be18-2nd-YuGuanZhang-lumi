@@ -38,7 +38,7 @@ public class LoginServiceImpl implements LoginService {
         String refreshToken = jwtService.generateRefreshToken(userDetails.getUsername());
 
         // Redis에 Refresh 토큰 저장
-        refreshTokenStore.save(userDetails.getUsername(), refreshToken, 604800000); // 7일
+        refreshTokenStore.save(userDetails.getUsername(), refreshToken, 60000);
 
         // 생성한 JWT와 사용자 이름을 LoginResponseDto에 담아 반환
         return new LoginResponseDto(userDetails.getUsername(), accessToken, refreshToken);

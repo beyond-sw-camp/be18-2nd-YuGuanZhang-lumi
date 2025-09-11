@@ -23,7 +23,7 @@ public class EmailVerificationCleanupServiceImpl implements EmailVerificationCle
     public void cleanupExpiredVerifications() {
         log.info("만료된 이메일 인증 상태 변경 작업을 시작합니다.");
         LocalDateTime now = LocalDateTime.now();
-        emailVerificationRepository.updateStatusToExpiredForVerifications(now);
+        emailVerificationRepository.updateVerifications(now);
         log.info("만료된 이메일 인증 상태 변경 완료. 시간: {}", now);
     }
 }

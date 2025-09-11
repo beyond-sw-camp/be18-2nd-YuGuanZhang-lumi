@@ -1,3 +1,5 @@
+// File: com.yuguanzhang.lumi.email.entity.EmailVerification.java
+
 package com.yuguanzhang.lumi.email.entity;
 
 import com.yuguanzhang.lumi.email.enums.VerificationStatus;
@@ -6,7 +8,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,12 +32,15 @@ import java.util.UUID;
 public class EmailVerification {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "verification_id", updatable = false, nullable = false)
-    private UUID verificationId;
+    private Long verificationId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
     @Column(name = "verification_code")
@@ -62,9 +66,15 @@ public class EmailVerification {
         this.status = VerificationStatus.ERROR;
     }
 
+    // 이메일 재전송 시 UNREAD로 전환
     public void updateForResend(String newToken, LocalDateTime newExpirationTime) {
         this.verification_code = newToken;
         this.expiration_at = newExpirationTime;
         this.status = VerificationStatus.UNREAD;
+    }
+
+    // User 엔티티와의 연관관계 설정 메서드
+    public void setUser(User user) {
+        this.user = user;
     }
 }

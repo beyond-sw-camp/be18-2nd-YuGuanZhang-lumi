@@ -16,12 +16,12 @@ import java.util.UUID;
 @Repository
 public interface EmailVerificationRepository extends JpaRepository<EmailVerification, UUID> {
 
-    Optional<EmailVerification> findByUser(User user);
-
-    boolean existsByUserAndStatus(User user, VerificationStatus status);
+    Optional<EmailVerification> findByEmail(String email);
+    // 특정 유저의 특정 상태 인증이 존재하는지 여부 / 나중에 고도화 할 때 사용할려고 넣은거임
+    // boolean existsByUserAndStatus(User user, VerificationStatus status);
 
     @Modifying
     @Transactional
     @Query("UPDATE EmailVerification ev SET ev.status = 'EXPIRED', ev.verification_code = NULL WHERE ev.expiration_at < :expirationTime")
-    void updateStatusToExpiredForVerifications(LocalDateTime expirationTime);
+    void updateVerifications(LocalDateTime expirationTime);
 }
