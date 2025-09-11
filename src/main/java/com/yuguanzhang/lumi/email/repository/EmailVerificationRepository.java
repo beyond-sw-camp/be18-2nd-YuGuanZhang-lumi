@@ -2,7 +2,6 @@ package com.yuguanzhang.lumi.email.repository;
 
 import com.yuguanzhang.lumi.email.entity.EmailVerification;
 import com.yuguanzhang.lumi.email.enums.VerificationStatus;
-import com.yuguanzhang.lumi.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

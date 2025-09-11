@@ -53,6 +53,9 @@ public class EmailVerification {
     @Column(name = "expiration_at", nullable = false)
     private LocalDateTime expiration_at;
 
+    @Column(name = "dateTime_at", nullable = false)
+    private LocalDateTime dateTime_at;
+
     public void markAsVerified() {
         this.status = VerificationStatus.VERIFIED;
     }
@@ -77,4 +80,9 @@ public class EmailVerification {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public void setDateTime_at(LocalDateTime dateTime_at) {
+        this.dateTime_at = dateTime_at;
+    }
+
 }

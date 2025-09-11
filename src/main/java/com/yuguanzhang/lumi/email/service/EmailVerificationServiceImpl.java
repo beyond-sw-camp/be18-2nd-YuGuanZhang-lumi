@@ -28,7 +28,6 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     private final RedisTemplate<String, String> redisTemplate;
     private final JavaMailSender mailSender;
     private final EmailVerificationRepository emailVerificationRepository;
-    // private final UserRepository userRepository; // ✅ UserRepository는 더 이상 필요 없습니다.
 
     @Override
     @Transactional
@@ -39,16 +38,21 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 
         String token = UUID.randomUUID().toString();
         LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(10);
+        LocalDateTime now = LocalDateTime.now();
 
         EmailVerification verification;
+        // email 컬럼이 unique로 걸려 있어서 같은 이메일로 여러 개 인증 레코드를 만들면 충돌
+        // 그래서 updateForResend 이걸로 기존 인증 요청 상태를 바꿈
         if (existingVerification.isPresent()) {
             log.info("기존 인증 기록을 업데이트합니다. 이메일: {}", email);
             verification = existingVerification.get();
             verification.updateForResend(token, expirationTime);
+            verification.setDateTime_at(now);
         } else {
             log.info("새로운 인증 기록을 생성합니다. 이메일: {}", email);
-            verification = EmailVerification.builder().email(email) // ✅ User가 아닌 email 필드를 사용합니다.
-                    .verification_code(token).status(VerificationStatus.UNREAD)
+            // 회원가입 전에 이메일 인증 가능 구조
+            verification = EmailVerification.builder().email(email).verification_code(token)
+                    .status(VerificationStatus.UNREAD).dateTime_at(now)
                     .expiration_at(expirationTime).build();
         }
 
@@ -81,6 +85,9 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     @Override
     @Transactional
     public boolean verifyEmail(String token) {
+
+        // 회원이 이메일에 온 링크를 클릭하면 서버는 토큰만 받음
+        // 이 토큰이 누구 이메일에 해당하는지 알아야 하니까, Redis에서 token → email 매핑을 꺼냄.
         String redisKey = "email:verify:" + token;
         String email = redisTemplate.opsForValue().get(redisKey);
 
@@ -89,7 +96,6 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
             return false;
         }
 
-        // ✅ DB에서 이메일로 인증 기록을 찾습니다.
         Optional<EmailVerification> optionalVerification =
                 emailVerificationRepository.findByEmail(email);
         if (optionalVerification.isEmpty()) {
@@ -118,8 +124,8 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 
     @Override
     public boolean isEmailVerified(String email) {
-        // ✅ DB에서 이메일 인증 기록을 찾아 상태가 'VERIFIED'인지 확인합니다.
-        return emailVerificationRepository.findByEmail(email).map(EmailVerification::getStatus)
+        return emailVerificationRepository.findByEmail(email)
+                .map(EmailVerification::getStatus) // Optional<EmailVerification> → Optional<VerificationStatus> 로 변환
                 .filter(status -> status == VerificationStatus.VERIFIED).isPresent();
     }
 }
