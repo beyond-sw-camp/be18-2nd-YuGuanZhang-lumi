@@ -2,6 +2,7 @@ package com.yuguanzhang.lumi.chat.entity;
 
 import com.yuguanzhang.lumi.chat.enums.MessageType;
 import com.yuguanzhang.lumi.common.entity.BaseCreatedEntity;
+import com.yuguanzhang.lumi.file.entity.FileEntity;
 import com.yuguanzhang.lumi.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,11 +14,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -47,6 +52,9 @@ public class Chat extends BaseCreatedEntity {
 
     @Column(name = "is_read")
     private Boolean isRead = false;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<FileEntity> files = new ArrayList<>();
 
     public void updateIsRead() {
         this.isRead = true;

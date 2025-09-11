@@ -51,12 +51,7 @@ public class ChatServiceImpl implements ChatService {
             // 상대방 정보
             User sender = senderRoomUser.getRoomUserId().getUser();
 
-            ChatRoomsResponseDto dto =
-                    ChatRoomsResponseDto.builder().roomId(room.getRoomId()).roomName(room.getName())
-                            .opponentId(sender.getUserId()).opponentName(sender.getName())
-                            .lastMessageTime(ru.getLastMessageTime())
-                            .lastMessage(ru.getLastMessageContent())
-                            .unreadMessageCount(ru.getUnreadCount()).build();
+            ChatRoomsResponseDto dto = ChatRoomsResponseDto.fromEntity(room, sender, ru);
 
             result.add(dto);
         }
@@ -84,12 +79,7 @@ public class ChatServiceImpl implements ChatService {
         roomUser.resetUnreadCount();
         roomUserRepository.save(roomUser);
 
-        return chatList.stream()
-                .map(chat -> ChatsResponseDto.builder().roomId(chat.getRoom().getRoomId())
-                        .chatId(chat.getChatId()).messageType(chat.getMessageType())
-                        .senderId(chat.getUser().getUserId()).senderName(chat.getUser().getName())
-                        .message(chat.getContent()).createdAt(chat.getCreatedAt()).build())
-                .toList();
+        return chatList.stream().map(ChatsResponseDto::fromEntity).toList();
     }
 
     @Override
@@ -117,8 +107,7 @@ public class ChatServiceImpl implements ChatService {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("채팅방 정보를 찾을 수 없습니다."));
 
-        Chat chat = Chat.builder().room(room).user(user).content(chatRequestDto.getMessage())
-                .messageType(chatRequestDto.getMessageType()).isRead(false).build();
+        Chat chat = chatRequestDto.toEntity(room, user);
 
         chatRepository.save(chat);
 
@@ -131,14 +120,12 @@ public class ChatServiceImpl implements ChatService {
 
         receiverRoomUser.updateLastMessage(chat.getContent(), chat.getCreatedAt());
         receiverRoomUser.increaseUnreadCount();
-        roomUserRepository.save(receiverRoomUser);
 
         // 보낸 사람 RoomUser의 lastMessage 업데이트
         RoomUser senderRoomUser =
                 roomUserRepository.findByRoomUserId_Room_RoomIdAndRoomUserId_User_UserId(roomId,
                         userId).orElseThrow();
         senderRoomUser.updateLastMessage(chat.getContent(), chat.getCreatedAt());
-        roomUserRepository.save(senderRoomUser);
 
         return receiverRoomUser;
     }
