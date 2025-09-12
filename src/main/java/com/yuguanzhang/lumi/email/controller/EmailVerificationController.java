@@ -1,10 +1,10 @@
 package com.yuguanzhang.lumi.email.controller;
 
-import com.yuguanzhang.lumi.common.exception.dto.BaseResponseDto;
+import com.yuguanzhang.lumi.common.dto.BaseResponseDto;
 import com.yuguanzhang.lumi.email.dto.EmailVerificationDto;
 import com.yuguanzhang.lumi.email.service.EmailVerificationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,17 +17,18 @@ public class EmailVerificationController {
 
     private final EmailVerificationService emailVerificationService;
 
+    // 이메일 인증 메일 발송
     @PostMapping("/api/email/send")
-    public ResponseEntity<BaseResponseDto<Void>> sendEmailVerification(
+    public BaseResponseDto<Void> sendEmailVerification(
             @RequestBody EmailVerificationDto emailVerificationDto) {
-        // 비즈니스 로직은 서비스 계층으로 분리
         emailVerificationService.sendVerificationEmail(emailVerificationDto.getEmail());
-        // 성공 응답만 반환
-        return ResponseEntity.ok(BaseResponseDto.success(null, "이메일 인증 메일이 발송되었습니다.", 200));
+        return BaseResponseDto.of(HttpStatus.OK, null);
     }
 
+    // 이메일 토큰 검증
     @GetMapping("/api/email/verify")
-    public String verifyEmail(@RequestParam("token") String token) {
-        return emailVerificationService.verifyEmail(token);
+    public BaseResponseDto<String> verifyEmail(@RequestParam("token") String token) {
+        String resultMessage = emailVerificationService.verifyEmail(token);
+        return BaseResponseDto.of(HttpStatus.OK, resultMessage);
     }
 }

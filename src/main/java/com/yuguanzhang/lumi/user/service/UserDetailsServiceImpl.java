@@ -32,6 +32,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         // User 엔티티 → UserDetailsDto 변환
-        return new UserDetailsDto(user.getEmail(), user.getPassword(), user.getName());
+        return new UserDetailsDto(user);
     }
 }

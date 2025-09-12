@@ -1,27 +1,19 @@
 package com.yuguanzhang.lumi.user.dto;
 
+import com.yuguanzhang.lumi.user.entity.User;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
-// implements UserDetails 시큐리티가 제공하는 라이브러리
+@Getter
+@RequiredArgsConstructor
 public class UserDetailsDto implements UserDetails {
 
-    private final String email;
-    private final String password;
-    private final String name;
-
-    public UserDetailsDto(String email, String password, String name) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
+    private final User user;
 
     // 사용자가 가진 권한(ROLE)을 반환.
     @Override
@@ -32,13 +24,13 @@ public class UserDetailsDto implements UserDetails {
     // 로그인할 때 "사용자 이름"으로 뭘 쓸지를 지정.
     @Override
     public String getUsername() {
-        return email;
+        return user.getEmail(); // 여기서는 email 쓰는 게 더 자연스러움
     }
 
     // 로그인할 때 비밀번호 반환
     @Override
     public String getPassword() {
-        return password;
+        return user.getPassword();
     }
 
 

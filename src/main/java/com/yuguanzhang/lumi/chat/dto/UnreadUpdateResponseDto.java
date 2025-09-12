@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Builder
 @Getter
@@ -14,5 +15,5 @@ public class UnreadUpdateResponseDto {
     private final int unreadCount;
     private final String lastMessage;
     private final LocalDateTime lastMessageTime;
-    private final Long opponentId;
+    private final UUID opponentId;
 }
