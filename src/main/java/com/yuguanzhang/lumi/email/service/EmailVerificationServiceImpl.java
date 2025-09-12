@@ -84,34 +84,32 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 
     @Override
     @Transactional
-    public boolean verifyEmail(String token) {
-
-        // 회원이 이메일에 온 링크를 클릭하면 서버는 토큰만 받음
-        // 이 토큰이 누구 이메일에 해당하는지 알아야 하니까, Redis에서 token → email 매핑을 꺼냄.
+    public String verifyEmail(String token) {
         String redisKey = "email:verify:" + token;
         String email = redisTemplate.opsForValue().get(redisKey);
 
         if (email == null) {
             log.warn("유효하지 않거나 만료된 토큰입니다: {}", token);
-            return false;
+            // 예외 발생: GlobalExceptionHandler가 처리
+            throw new IllegalArgumentException("이메일 인증에 실패했거나 만료되었습니다.");
         }
 
         Optional<EmailVerification> optionalVerification =
                 emailVerificationRepository.findByEmail(email);
         if (optionalVerification.isEmpty()) {
             log.error("인증 기록을 찾을 수 없습니다. 이메일: {}", email);
-            return false;
+            throw new IllegalArgumentException("이메일 인증에 실패했습니다.");
         }
 
         EmailVerification verification = optionalVerification.get();
         if (LocalDateTime.now().isAfter(verification.getExpiration_at())) {
             log.warn("토큰이 만료되었습니다. 이메일: {}", email);
             verification.markAsExpired();
-            return false;
+            throw new IllegalArgumentException("이메일 인증에 실패했거나 만료되었습니다.");
         }
         if (!verification.getVerification_code().equals(token)) {
             log.warn("인증 코드가 일치하지 않습니다. 토큰: {}", token);
-            return false;
+            throw new IllegalArgumentException("이메일 인증에 실패했습니다.");
         }
 
         log.info("이메일 인증 성공. 이메일: {}", email);
@@ -119,7 +117,8 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 
         // Redis에서 토큰 삭제
         redisTemplate.delete(redisKey);
-        return true;
+        
+        return "<html><body><h3>이메일 인증이 완료되었습니다.</h3></body></html>";
     }
 
     @Override
