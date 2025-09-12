@@ -8,6 +8,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Builder
 @Getter
@@ -16,7 +17,7 @@ public class ChatsResponseDto {
     private final Long roomId;
     private final Long chatId;
     private final MessageType messageType;
-    private final Long senderId;
+    private final UUID senderId;
     private final String senderName;
     private final String message;
     private final LocalDateTime createdAt;

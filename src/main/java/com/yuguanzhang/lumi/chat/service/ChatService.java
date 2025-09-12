@@ -6,13 +6,14 @@ import com.yuguanzhang.lumi.chat.dto.ChatsResponseDto;
 import com.yuguanzhang.lumi.chat.entity.RoomUser;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ChatService {
-    List<ChatRoomsResponseDto> getChatRooms(Long userId);
+    List<ChatRoomsResponseDto> getChatRooms(UUID userId);
 
-    List<ChatsResponseDto> getChats(Long userId, Long roomId);
+    List<ChatsResponseDto> getChats(UUID userId, Long roomId);
 
-    void deleteChat(Long userId, Long roomId, Long chatId);
+    void deleteChat(UUID userId, Long roomId, Long chatId);
 
-    RoomUser postChat(ChatRequestDto chatRequestDto, Long userId, Long roomId);
+    RoomUser postChat(ChatRequestDto chatRequestDto, UUID userId, Long roomId);
 }

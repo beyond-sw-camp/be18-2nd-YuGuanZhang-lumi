@@ -1,27 +1,26 @@
 package com.yuguanzhang.lumi.user.controller;
 
-import com.yuguanzhang.lumi.user.service.SignUpService;
-import com.yuguanzhang.lumi.user.dto.SignupRequestDto;
+import com.yuguanzhang.lumi.common.dto.BaseResponseDto;
+import com.yuguanzhang.lumi.user.dto.sigup.SignupRequestDto;
+import com.yuguanzhang.lumi.user.dto.sigup.SignupResponseDto;
+import com.yuguanzhang.lumi.user.service.signup.SignUpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 public class SignupController {
 
-    private final SignUpService userService;
+    private final SignUpService signUpService;
 
     @PostMapping("/api/sign-up")
-    public ResponseEntity<String> signup(@RequestBody SignupRequestDto signupRequestDto) {
-        try {
-            userService.processSignup(signupRequestDto);
-            return ResponseEntity.ok("회원가입 성공");
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        }
+    public BaseResponseDto<SignupResponseDto> signup(
+            @RequestBody SignupRequestDto signupRequestDto) {
+        SignupResponseDto responseDto = signUpService.processSignup(signupRequestDto);
+
+        return BaseResponseDto.of(HttpStatus.OK, responseDto);
     }
 }
-
