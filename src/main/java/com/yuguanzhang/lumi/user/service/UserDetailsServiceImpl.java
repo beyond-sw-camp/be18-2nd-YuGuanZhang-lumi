@@ -24,6 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // email 기준으로 유저 조회
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("User not found with email: " + email));
+        // UsernamePasswordAuthenticationToken = Spring Security에서 제공하는 클래스
 
         // 이메일 인증 여부 확인
         if (!user.getIsVerified()) {
