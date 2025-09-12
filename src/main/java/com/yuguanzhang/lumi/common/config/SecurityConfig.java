@@ -53,7 +53,7 @@ public class SecurityConfig {
                                 new AuthenticationEntryPointImpl())
                         .accessDeniedHandler(new AccessDeniedHandlerImpl())).authorizeHttpRequests(
                         auth -> auth.requestMatchers("/", "/api/login", "/api/sign-up", "/api/refresh",
-                                        "/api/logout", "/api/public/**", "/api/email/**").permitAll().anyRequest()
+                                        "/api/logout", "/api/public/**", "/api/email/**").permitAll().requestMatchers("/api/chatrooms/**").authenticated().anyRequest()
                                 .authenticated()).addFilterBefore(jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class);
 
