@@ -2,17 +2,17 @@ package com.yuguanzhang.lumi.common.jwt.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
 public class LoginRequestDto {
 
     @Email
     @NotBlank
-    private String email;
+    private final String email;
 
     @NotBlank
-    private String password;
+    private final String password;
 }

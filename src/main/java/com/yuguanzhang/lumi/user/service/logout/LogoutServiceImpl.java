@@ -17,17 +17,11 @@ public class LogoutServiceImpl implements LogoutService {
     private final RefreshTokenStore refreshTokenStore;
     private final UserRepository userRepository;
 
-    String message = "로그아웃 실패";
-    String name = null;
-    String email = null;
-
     @Override
     public LogoutResponseDto logout(RefreshRequestDto request) {
         String refreshToken = request.getRefreshToken();
-        if (jwtService.validateRefreshToken(refreshToken)) {
-            String email = jwtService.getUsername(refreshToken);
-            refreshTokenStore.delete(email);
-        }
+        String name = null;
+        String email = null;
 
         if (jwtService.validateRefreshToken(refreshToken)) {
             // refreshToken에서 email 추출
@@ -40,9 +34,9 @@ public class LogoutServiceImpl implements LogoutService {
             User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
             name = user.getName();
-
         }
 
         return new LogoutResponseDto(name, email);
     }
+
 }

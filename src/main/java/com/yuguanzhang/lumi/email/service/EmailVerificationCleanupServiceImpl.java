@@ -16,7 +16,7 @@ public class EmailVerificationCleanupServiceImpl implements EmailVerificationCle
 
     private final EmailVerificationRepository emailVerificationRepository;
 
-
+    // 스케줄러 폴더로 따로 뺴서 인터페이스 대신 000Scheduler라는 클래스명으로 사용 나중에 고려
     @Override
     @Scheduled(fixedDelay = 600000)
     @Transactional

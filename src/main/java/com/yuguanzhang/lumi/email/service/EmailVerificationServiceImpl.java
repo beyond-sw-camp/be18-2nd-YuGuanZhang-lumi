@@ -63,6 +63,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
             String redisKey = "email:verify:" + token;
             redisTemplate.opsForValue().set(redisKey, email, 10, TimeUnit.MINUTES);
 
+            // 나중에 수정고려 8080이 아니라 실무에서 어떡해 하는지 봐야할 듯
             String link = "http://localhost:8080/api/email/verify?token=" + token;
 
             MimeMessage message = mailSender.createMimeMessage();
@@ -117,7 +118,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 
         // Redis에서 토큰 삭제
         redisTemplate.delete(redisKey);
-        
+
         return "<html><body><h3>이메일 인증이 완료되었습니다.</h3></body></html>";
     }
 

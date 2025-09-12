@@ -18,8 +18,8 @@ public class LogoutController {
     // 로그아웃: 리프레시 토큰 삭제
     @PostMapping("/api/logout")
     public BaseResponseDto<LogoutResponseDto> logout(@RequestBody RefreshRequestDto request) {
-        logoutService.logout(request);
         LogoutResponseDto response = logoutService.logout(request);
         return BaseResponseDto.of(HttpStatus.OK, response);
     }
+
 }

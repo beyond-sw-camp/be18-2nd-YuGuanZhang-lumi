@@ -35,7 +35,7 @@ public class SignUpServiceImpl implements SignUpService {
             throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
         }
 
-        User user = signupRequestDto.toUser(passwordEncoder);
+        User user = signupRequestDto.toEntity(passwordEncoder);
         user.markAsVerified();
         User savedUser = userRepository.save(user);
 

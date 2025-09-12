@@ -10,7 +10,7 @@ public class ResponseDto<T> {
 
     private final int statusCode;
 
-    private String message;
+    private String message; // 제거 아니라서 final 안 고침
 
     private final T data;
 
