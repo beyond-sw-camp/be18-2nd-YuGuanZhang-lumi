@@ -12,16 +12,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Entity
 @Getter
 @Table(name = "Rooms")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Room extends BaseTimeEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Room extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

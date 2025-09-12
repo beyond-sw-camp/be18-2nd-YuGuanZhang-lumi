@@ -1,7 +1,9 @@
 package com.yuguanzhang.lumi.chat.entity;
 
-import com.yuguanzhang.lumi.user.entity.User;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,19 +16,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoomUser {
-
     @EmbeddedId
     private RoomUserId roomUserId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("roomId")
-    @JoinColumn(name = "room_id")
-    private Room room;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @Column(name = "unread_count")
     private int unreadCount = 0;

@@ -40,7 +40,7 @@ public class ChatServiceImpl implements ChatService {
         List<ChatRoomsResponseDto> result = new ArrayList<>();
 
         for (RoomUser ru : roomUsers) {
-            Room room = ru.getRoomUserId().getRoom();
+            Room room = ru.getRoomUserId().getRoomId();
 
             // 채팅방의 상대
             RoomUser senderRoomUser =
