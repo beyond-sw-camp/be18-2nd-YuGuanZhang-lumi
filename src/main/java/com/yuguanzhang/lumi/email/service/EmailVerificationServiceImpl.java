@@ -47,13 +47,13 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
             log.info("기존 인증 기록을 업데이트합니다. 이메일: {}", email);
             verification = existingVerification.get();
             verification.updateForResend(token, expirationTime);
-            verification.setDateTime_at(now);
+            verification.setDateTimeAt(now);
         } else {
             log.info("새로운 인증 기록을 생성합니다. 이메일: {}", email);
             // 회원가입 전에 이메일 인증 가능 구조
-            verification = EmailVerification.builder().email(email).verification_code(token)
-                    .status(VerificationStatus.UNREAD).dateTime_at(now)
-                    .expiration_at(expirationTime).build();
+            verification = EmailVerification.builder().email(email).verificationCode(token)
+                    .status(VerificationStatus.UNREAD).dateTimeAt(now).expirationAt(expirationTime)
+                    .build();
         }
 
         try {
@@ -103,12 +103,12 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         }
 
         EmailVerification verification = optionalVerification.get();
-        if (LocalDateTime.now().isAfter(verification.getExpiration_at())) {
+        if (LocalDateTime.now().isAfter(verification.getExpirationAt())) {
             log.warn("토큰이 만료되었습니다. 이메일: {}", email);
             verification.markAsExpired();
             throw new IllegalArgumentException("이메일 인증에 실패했거나 만료되었습니다.");
         }
-        if (!verification.getVerification_code().equals(token)) {
+        if (!verification.getVerificationCode().equals(token)) {
             log.warn("인증 코드가 일치하지 않습니다. 토큰: {}", token);
             throw new IllegalArgumentException("이메일 인증에 실패했습니다.");
         }

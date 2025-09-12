@@ -40,7 +40,7 @@ public class SignUpServiceImpl implements SignUpService {
         User savedUser = userRepository.save(user);
 
         emailVerificationRepository.findByEmail(signupRequestDto.getEmail())
-                .ifPresent(verification -> verification.setUser(savedUser));
+                .ifPresent(verification -> verification.associateUser(savedUser));
 
         return new SignupResponseDto("회원가입 성공", savedUser.getEmail(), savedUser.getName());
     }

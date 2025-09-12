@@ -1,5 +1,3 @@
-// File: com.yuguanzhang.lumi.email.entity.EmailVerification.java
-
 package com.yuguanzhang.lumi.email.entity;
 
 import com.yuguanzhang.lumi.email.enums.VerificationStatus;
@@ -8,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,7 +19,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 
 @Entity
@@ -39,22 +37,22 @@ public class EmailVerification {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
     @Column(name = "verification_code")
-    private String verification_code;
+    private String verificationCode;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private VerificationStatus status;
 
     @Column(name = "expiration_at", nullable = false)
-    private LocalDateTime expiration_at;
+    private LocalDateTime expirationAt;
 
     @Column(name = "dateTime_at", nullable = false)
-    private LocalDateTime dateTime_at;
+    private LocalDateTime dateTimeAt;
 
     public void markAsVerified() {
         this.status = VerificationStatus.VERIFIED;
@@ -62,7 +60,7 @@ public class EmailVerification {
 
     public void markAsExpired() {
         this.status = VerificationStatus.EXPIRED;
-        this.verification_code = null;
+        this.verificationCode = null;
     }
 
     public void markAsError() {
@@ -71,18 +69,19 @@ public class EmailVerification {
 
     // 이메일 재전송 시 UNREAD로 전환
     public void updateForResend(String newToken, LocalDateTime newExpirationTime) {
-        this.verification_code = newToken;
-        this.expiration_at = newExpirationTime;
+        this.verificationCode = newToken;
+        this.expirationAt = newExpirationTime;
         this.status = VerificationStatus.UNREAD;
     }
 
     // User 엔티티와의 연관관계 설정 메서드
-    public void setUser(User user) {
+    public void associateUser(User user) {
         this.user = user;
     }
 
-    public void setDateTime_at(LocalDateTime dateTime_at) {
-        this.dateTime_at = dateTime_at;
+
+    public void setDateTimeAt(LocalDateTime dateTimeAt) {
+        this.dateTimeAt = dateTimeAt;
     }
 
 }
