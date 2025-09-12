@@ -1,5 +1,3 @@
-// File: com.yuguanzhang.lumi.user.service.signup.SignUpServiceImpl.java
-
 package com.yuguanzhang.lumi.user.service.signup;
 
 import com.yuguanzhang.lumi.email.repository.EmailVerificationRepository;
