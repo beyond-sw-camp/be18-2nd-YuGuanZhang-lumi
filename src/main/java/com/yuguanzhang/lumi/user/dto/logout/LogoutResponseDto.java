@@ -6,5 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class LogoutResponseDto {
-    private String message;
+    private String name;
+    private String email;
 }

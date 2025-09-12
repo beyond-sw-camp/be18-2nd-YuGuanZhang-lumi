@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final EmailVerificationRepository emailVerificationRepository; // 주입받기
+    private final EmailVerificationRepository emailVerificationRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -31,6 +31,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         // User 엔티티 → UserDetailsDto 변환
-        return new UserDetailsDto(user.getEmail(), user.getPassword());
+        return new UserDetailsDto(user.getEmail(), user.getPassword(), user.getName());
     }
 }

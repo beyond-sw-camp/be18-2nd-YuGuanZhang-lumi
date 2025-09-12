@@ -11,10 +11,16 @@ public class UserDetailsDto implements UserDetails {
 
     private final String email;
     private final String password;
+    private final String name;
 
-    public UserDetailsDto(String email, String password) {
+    public UserDetailsDto(String email, String password, String name) {
         this.email = email;
         this.password = password;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     // 사용자가 가진 권한(ROLE)을 반환.

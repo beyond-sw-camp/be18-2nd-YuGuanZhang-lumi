@@ -5,6 +5,7 @@ package com.yuguanzhang.lumi.user.service.signup;
 import com.yuguanzhang.lumi.email.repository.EmailVerificationRepository;
 import com.yuguanzhang.lumi.email.service.EmailVerificationService;
 import com.yuguanzhang.lumi.user.dto.sigup.SignupRequestDto;
+import com.yuguanzhang.lumi.user.dto.sigup.SignupResponseDto;
 import com.yuguanzhang.lumi.user.entity.User;
 import com.yuguanzhang.lumi.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class SignUpServiceImpl implements SignUpService {
 
     @Override
     @Transactional
-    public void processSignup(SignupRequestDto signupRequestDto) {
+    public SignupResponseDto processSignup(SignupRequestDto signupRequestDto) {
         if (signupRequestDto.getIsPrivacyAgreement() == null || !signupRequestDto.getIsPrivacyAgreement()) {
             throw new IllegalArgumentException("개인정보 동의가 필요합니다.");
         }
@@ -40,11 +41,10 @@ public class SignUpServiceImpl implements SignUpService {
         user.markAsVerified();
         User savedUser = userRepository.save(user);
 
-        // ✅ savedUser.getId()를 savedUser.getUserId()로 변경
         emailVerificationRepository.findByEmail(signupRequestDto.getEmail())
-                .ifPresent(verification -> {
-                    verification.setUser(savedUser);
-                });
+                .ifPresent(verification -> verification.setUser(savedUser));
+
+        return new SignupResponseDto("회원가입 성공", savedUser.getEmail(), savedUser.getName());
     }
 
     @Override

@@ -26,4 +26,17 @@ public class GlobalExceptionHandler {
                 .body(BaseResponseDto.fail(ex.getMessage(), HttpStatus.UNAUTHORIZED.value()));
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<BaseResponseDto<Void>> handleIllegalArgumentException(
+            IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(BaseResponseDto.fail(ex.getMessage(), HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<BaseResponseDto<Void>> handleGeneralException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(BaseResponseDto.fail("서버 오류가 발생했습니다.",
+                        HttpStatus.INTERNAL_SERVER_ERROR.value()));
+    }
 }
