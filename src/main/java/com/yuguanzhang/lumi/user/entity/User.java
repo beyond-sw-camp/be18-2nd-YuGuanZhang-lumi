@@ -55,6 +55,9 @@ public class User {
     @Column(name = "is_verified")
     private boolean isVerified = false;
 
+    @Column(name = "is_deleted", nullable = false)
+    private String isDeleted = "N";
+
     public void markAsVerified() {
         this.isVerified = true;
     }
@@ -62,4 +65,13 @@ public class User {
     public boolean getIsVerified() {
         return this.isVerified;
     }
+
+    public void setIsDeleted(String isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
 }
