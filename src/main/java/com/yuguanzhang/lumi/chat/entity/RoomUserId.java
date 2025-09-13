@@ -19,11 +19,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class RoomUserId implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="room_id")
+    @JoinColumn(name = "room_id")
     private Room room;
 
-    @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
 }

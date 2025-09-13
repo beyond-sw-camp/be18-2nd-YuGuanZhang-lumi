@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class ChatServiceImpl implements ChatService {
 
 
     @Override
-    public List<ChatRoomsResponseDto> getChatRooms(Long userId) {
+    public List<ChatRoomsResponseDto> getChatRooms(UUID userId) {
 
         // 사용자가 속한 방 목록 조회
         List<RoomUser> roomUsers = roomUserRepository.findByRoomUserId_User_UserId(userId);
@@ -61,7 +62,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public List<ChatsResponseDto> getChats(Long userId, Long roomId) {
+    public List<ChatsResponseDto> getChats(UUID userId, Long roomId) {
         List<Chat> chatList = chatRepository.findByRoom_RoomId(roomId);
 
         chatList.forEach(chat -> {
@@ -84,15 +85,13 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public void deleteChat(Long userId, Long roomId, Long chatId) {
+    public void deleteChat(UUID userId, Long roomId, Long chatId) {
         // 채팅 메세지 조회 (에러처리 필요)
         Chat chat = chatRepository.findByRoom_RoomIdAndChatId(roomId, chatId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 채팅 메세지를 찾을 수 없습니다."));
 
         // 커스텀 에러 처리 필요
-        // if (!chat.getUser().getUserId().equals(userId)) {
-        //     throw new CustomError("이 메세지를 삭제할 권한이 없습니다.");
-        // }
+
 
         // 삭제했을 때의 마지막 메세지 및 안 읽은 메세지 개수 업데이트 필요
 
@@ -101,7 +100,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public RoomUser postChat(ChatRequestDto chatRequestDto, Long userId, Long roomId) {
+    public RoomUser postChat(ChatRequestDto chatRequestDto, UUID userId, Long roomId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
         Room room = roomRepository.findById(roomId)

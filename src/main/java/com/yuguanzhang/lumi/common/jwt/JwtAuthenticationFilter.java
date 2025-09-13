@@ -28,6 +28,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain chain) throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+        if (path.startsWith("/api/email/")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         try {
             String token = resolveToken(
                     request); // HTTP 헤더 "Authorization" 에서 "Bearer <JWT토큰>" 형태로 들어온 값을 꺼냄. 없다면 null 리턴.

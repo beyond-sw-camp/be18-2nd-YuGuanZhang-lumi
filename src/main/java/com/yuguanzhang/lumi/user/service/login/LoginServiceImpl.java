@@ -1,9 +1,11 @@
-package com.yuguanzhang.lumi.common.jwt.service.login;
+package com.yuguanzhang.lumi.user.service.login;
 
-import com.yuguanzhang.lumi.common.jwt.dto.LoginRequestDto;
-import com.yuguanzhang.lumi.common.jwt.dto.LoginResponseDto;
+import com.yuguanzhang.lumi.user.dto.login.LoginRequestDto;
+import com.yuguanzhang.lumi.user.dto.login.LoginResponseDto;
 import com.yuguanzhang.lumi.common.jwt.refresh.RefreshTokenStore;
 import com.yuguanzhang.lumi.common.jwt.service.jwt.JwtService;
+import com.yuguanzhang.lumi.user.entity.User;
+import com.yuguanzhang.lumi.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,7 @@ public class LoginServiceImpl implements LoginService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final RefreshTokenStore refreshTokenStore;
+    private final UserRepository userRepository;
 
     @Value("${jwt.refresh-expiration}")
     private long refreshTtlMillis;
@@ -31,16 +34,19 @@ public class LoginServiceImpl implements LoginService {
         // 인증 성공하면 UserDetails 객체를 가져옴 (사용자 정보 포함)
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
+        // DB에서 유저 조회 (name을 가져오기 위해)
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
         // AccessToken, RefreshToken 발급
-        // AccessToken은 지금 저장 안하고 있음, 프론트 개발 시 어디에 저장할 지 정해야 (메모리/세션/쿠키)
-        // RefreshToken은 redis에서도 저장해야하고 프런트에서도 저장하고 있어야한다고 함
         String accessToken = jwtService.generateAccessToken(userDetails.getUsername());
         String refreshToken = jwtService.generateRefreshToken(userDetails.getUsername());
 
-        // Redis에 Refresh 토큰 저장
-        refreshTokenStore.save(userDetails.getUsername(), refreshToken, 604800000); // 7일
+        // Redis에 Refresh 토큰 저장 (설정값 TTL 사용)
+        refreshTokenStore.save(userDetails.getUsername(), refreshToken, refreshTtlMillis);
 
-        // 생성한 JWT와 사용자 이름을 LoginResponseDto에 담아 반환
-        return new LoginResponseDto(userDetails.getUsername(), accessToken, refreshToken);
+        // 생성한 JWT와 사용자 정보 반환
+        return new LoginResponseDto(user.getName(), userDetails.getUsername(),   // email
+                accessToken, refreshToken);
     }
 }

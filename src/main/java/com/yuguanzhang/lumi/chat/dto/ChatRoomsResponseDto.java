@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Builder
 @Getter
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 public class ChatRoomsResponseDto {
     private final Long roomId;
     private final String roomName;
-    private final Long opponentId;
+    private final UUID opponentId;
     private final String opponentName;
     private final LocalDateTime lastMessageTime;
     private final String lastMessage;
