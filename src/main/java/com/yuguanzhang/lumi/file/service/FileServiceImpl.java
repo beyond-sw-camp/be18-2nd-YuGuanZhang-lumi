@@ -1,12 +1,13 @@
 package com.yuguanzhang.lumi.file.service;
 
+import com.yuguanzhang.lumi.common.exception.GlobalException;
+import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.file.dto.FileDownloadDto;
 import com.yuguanzhang.lumi.file.dto.FilePathInfo;
 import com.yuguanzhang.lumi.file.dto.FileUploadResponseDto;
 import com.yuguanzhang.lumi.file.entity.FileEntity;
 import com.yuguanzhang.lumi.file.enums.EntityType;
 import com.yuguanzhang.lumi.file.repository.FileRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
@@ -28,7 +29,7 @@ public class FileServiceImpl implements FileService {
     private final FileRepository fileRepository;
 
     public FileServiceImpl(FileRepository fileRepository,
-            @Value("${file.upload-dir}") String uploadDir) {
+                           @Value("${file.upload-dir}") String uploadDir) {
         this.uploadDir = uploadDir;
         this.fileRepository = fileRepository;
     }
@@ -50,8 +51,9 @@ public class FileServiceImpl implements FileService {
         Files.copy(multipartFile.getInputStream(), copyofLocation.getFullPath());
 
         // 3. DB에 저장
-        FileEntity file = FileEntity.builder().filePath(copyofLocation.getRelativePath().toString())
-                .fileName(originalFileName).fileSize(multipartFile.getSize()).build();
+        FileEntity file = FileEntity.builder().filePath(copyofLocation.getRelativePath())
+                                    .fileName(originalFileName).fileSize(multipartFile.getSize())
+                                    .build();
 
         FileEntity savedFile = fileRepository.save(file);
 
@@ -63,8 +65,13 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional(readOnly = true)
     public FileDownloadDto downloadFile(Long fileId) {
-        FileEntity file = fileRepository.findByFileId(fileId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 파일을 찾을 수 없습니다."));
+        FileEntity file = fileRepository.findByFileId(fileId).orElseThrow(
+                () -> new GlobalException(ExceptionMessage.FILE_NOT_FOUND));
+
+        // 삭제된 파일이면 다운로드 불가
+        if (file.isDeleted()) {
+            throw new GlobalException(ExceptionMessage.FILE_ALREADY_DELETED);
+        }
 
         Path base = Paths.get(uploadDir).toAbsolutePath().normalize();
         Path target = base.resolve(file.getFilePath()).normalize();
@@ -73,7 +80,7 @@ public class FileServiceImpl implements FileService {
         log.info("target: {}", target);
 
         if (!target.startsWith(base)) {
-            throw new SecurityException("허용되지 않은 파일 경로입니다.");
+            throw new GlobalException(ExceptionMessage.FILE_PATH_INVALID);
         }
 
         try {
@@ -96,15 +103,15 @@ public class FileServiceImpl implements FileService {
             return new FileDownloadDto(resource, file.getFileName(), length, contentType);
 
         } catch (IOException error) {
-            throw new IllegalStateException("파일 정보 조회를 실패했습니다.", error);
+            throw new GlobalException(ExceptionMessage.FILE_INFO_ERROR);
         }
     }
 
     @Override
     @Transactional
     public void deleteFile(Long fileId) {
-        FileEntity file = fileRepository.findByFileId(fileId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 파일을 찾을 수 없습니다."));
+        FileEntity file = fileRepository.findByFileId(fileId).orElseThrow(
+                () -> new GlobalException(ExceptionMessage.FILE_NOT_FOUND));
 
         file.deleteFile();
     }
@@ -114,7 +121,8 @@ public class FileServiceImpl implements FileService {
         // 1. 날짜별 폴더 경로 생성
         LocalDate today = LocalDate.now();
         Path dir = Paths.get(uploadDir, domain.name(), String.valueOf(today.getYear()),
-                String.valueOf(today.getMonthValue()), String.valueOf(today.getDayOfMonth()));
+                             String.valueOf(today.getMonthValue()),
+                             String.valueOf(today.getDayOfMonth()));
 
         // 2. 해당 폴더 없으면 생성
         Files.createDirectories(dir);
@@ -123,8 +131,10 @@ public class FileServiceImpl implements FileService {
 
         // 3. DB 저장 경로
         String relativePath = Paths.get(domain.name(), // uploadDir 제외
-                String.valueOf(today.getYear()), String.valueOf(today.getMonthValue()),
-                String.valueOf(today.getDayOfMonth()), newFileName).toString();
+                                        String.valueOf(today.getYear()),
+                                        String.valueOf(today.getMonthValue()),
+                                        String.valueOf(today.getDayOfMonth()), newFileName)
+                                   .toString();
 
         log.info("FullPath: {}", fullPath);
         log.info("RelativePath: {}", relativePath);
