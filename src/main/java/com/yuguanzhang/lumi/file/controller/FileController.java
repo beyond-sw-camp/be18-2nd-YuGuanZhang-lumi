@@ -1,6 +1,6 @@
 package com.yuguanzhang.lumi.file.controller;
 
-import com.yuguanzhang.lumi.common.dto.ResponseDto;
+import com.yuguanzhang.lumi.common.dto.BaseResponseDto;
 import com.yuguanzhang.lumi.file.dto.FileDownloadDto;
 import com.yuguanzhang.lumi.file.dto.FileUploadResponseDto;
 import com.yuguanzhang.lumi.file.enums.EntityType;
@@ -34,15 +34,16 @@ public class FileController {
     private final FileService fileService;
 
     @PostMapping("/{domain}/files/upload")
-    public ResponseEntity<ResponseDto<FileUploadResponseDto>> uploadFile(
+    public ResponseEntity<BaseResponseDto<FileUploadResponseDto>> uploadFile(
             @PathVariable("domain") EntityType domain, @RequestPart("file") MultipartFile file)
             throws IOException {
 
         FileUploadResponseDto fileUpload = fileService.uploadFile(domain, file);
 
-        ResponseDto<FileUploadResponseDto> response = new ResponseDto<>(HttpStatus.OK, fileUpload);
+        BaseResponseDto<FileUploadResponseDto> response =
+                BaseResponseDto.of(HttpStatus.CREATED, fileUpload);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/files/{file_id}/download")
@@ -67,10 +68,10 @@ public class FileController {
 
 
     @DeleteMapping("/files/{file_id}")
-    public ResponseEntity<ResponseDto<Void>> deleteFile(@PathVariable("file_id") Long fileId) {
+    public ResponseEntity<BaseResponseDto<Void>> deleteFile(@PathVariable("file_id") Long fileId) {
         fileService.deleteFile(fileId);
 
-        ResponseDto<Void> response = new ResponseDto<>(HttpStatus.OK, null);
+        BaseResponseDto<Void> response = BaseResponseDto.of(HttpStatus.OK, null);
 
         return ResponseEntity.ok(response);
     }

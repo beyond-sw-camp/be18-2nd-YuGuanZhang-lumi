@@ -36,21 +36,21 @@ public class ChatServiceImpl implements ChatService {
     public List<ChatRoomsResponseDto> getChatRooms(UUID userId) {
 
         // 사용자가 속한 방 목록 조회
-        List<RoomUser> roomUsers = roomUserRepository.findByRoomUserId_User_UserId(userId);
+        List<RoomUser> roomUsers = roomUserRepository.findByRoomUserId_UserId(userId);
 
         List<ChatRoomsResponseDto> result = new ArrayList<>();
 
         for (RoomUser ru : roomUsers) {
-            Room room = ru.getRoomUserId().getRoom();
+            Room room = ru.getRoom();
 
             // 채팅방의 상대
             RoomUser senderRoomUser =
-                    roomUserRepository.findByRoomUserId_Room_RoomIdAndRoomUserId_User_UserIdNot(
+                    roomUserRepository.findByRoomUserId_RoomIdAndRoomUserId_UserIdNot(
                                     room.getRoomId(), userId)
                             .orElseThrow(() -> new NoSuchElementException("상대방이 존재하지 않습니다."));
 
             // 상대방 정보
-            User sender = senderRoomUser.getRoomUserId().getUser();
+            User sender = senderRoomUser.getUser();
 
             ChatRoomsResponseDto dto = ChatRoomsResponseDto.fromEntity(room, sender, ru);
 
@@ -74,8 +74,7 @@ public class ChatServiceImpl implements ChatService {
 
         // RoomUser unreadCount 초기화
         RoomUser roomUser =
-                roomUserRepository.findByRoomUserId_Room_RoomIdAndRoomUserId_User_UserId(roomId,
-                                userId)
+                roomUserRepository.findByRoomUserId_RoomIdAndRoomUserId_UserId(roomId, userId)
                         .orElseThrow(() -> new NoSuchElementException("해당 채팅방에 사용자를 찾을 수 없습니다."));
         roomUser.resetUnreadCount();
         roomUserRepository.save(roomUser);
@@ -114,16 +113,16 @@ public class ChatServiceImpl implements ChatService {
 
         // 받는 사람 RoomUser의 lastMessage와 안읽은 메세지 수 업데이트
         RoomUser receiverRoomUser =
-                roomUserRepository.findByRoomUserId_Room_RoomIdAndRoomUserId_User_UserIdNot(roomId,
-                        userId).orElseThrow(() -> new NoSuchElementException("상대방이 존재하지 않습니다."));
+                roomUserRepository.findByRoomUserId_RoomIdAndRoomUserId_UserIdNot(roomId, userId)
+                        .orElseThrow(() -> new NoSuchElementException("상대방이 존재하지 않습니다."));
 
         receiverRoomUser.updateLastMessage(chat.getContent(), chat.getCreatedAt());
         receiverRoomUser.increaseUnreadCount();
 
         // 보낸 사람 RoomUser의 lastMessage 업데이트
         RoomUser senderRoomUser =
-                roomUserRepository.findByRoomUserId_Room_RoomIdAndRoomUserId_User_UserId(roomId,
-                        userId).orElseThrow();
+                roomUserRepository.findByRoomUserId_RoomIdAndRoomUserId_UserId(roomId, userId)
+                        .orElseThrow();
         senderRoomUser.updateLastMessage(chat.getContent(), chat.getCreatedAt());
 
         return receiverRoomUser;
