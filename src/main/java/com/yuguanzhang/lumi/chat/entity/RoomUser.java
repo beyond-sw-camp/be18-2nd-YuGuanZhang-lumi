@@ -34,8 +34,8 @@ public class RoomUser {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "unread_count")
-    private int unreadCount = 0;
+    @Column(name = "has_unread")
+    private Boolean hasUnread = false;
 
     @Column(name = "last_message_content")
     private String lastMessageContent;
@@ -43,12 +43,16 @@ public class RoomUser {
     @Column(name = "last_message_time")
     private LocalDateTime lastMessageTime;
 
-    public void increaseUnreadCount() {
-        this.unreadCount++;
+    public boolean isHasUnread() {
+        return Boolean.TRUE.equals(this.hasUnread);
     }
 
-    public void resetUnreadCount() {
-        this.unreadCount = 0;
+    public void makeUnread() {
+        this.hasUnread = true;
+    }
+
+    public void resetUnread() {
+        this.hasUnread = false;
     }
 
     public void updateLastMessage(String content, LocalDateTime time) {

@@ -20,13 +20,14 @@ public class ChatRoomsResponseDto {
     private final String opponentName;
     private final LocalDateTime lastMessageTime;
     private final String lastMessage;
-    private final int unreadMessageCount;
+    private final boolean hasUnread;
 
     public static ChatRoomsResponseDto fromEntity(Room room, User sender, RoomUser ru) {
         return ChatRoomsResponseDto.builder().roomId(room.getRoomId()).roomName(room.getName())
-                .opponentId(sender.getUserId()).opponentName(sender.getName())
-                .lastMessageTime(ru.getLastMessageTime()).lastMessage(ru.getLastMessageContent())
-                .unreadMessageCount(ru.getUnreadCount()).build();
+                                   .opponentId(sender.getUserId()).opponentName(sender.getName())
+                                   .lastMessageTime(ru.getLastMessageTime())
+                                   .lastMessage(ru.getLastMessageContent())
+                                   .hasUnread(ru.isHasUnread()).build();
 
     }
 

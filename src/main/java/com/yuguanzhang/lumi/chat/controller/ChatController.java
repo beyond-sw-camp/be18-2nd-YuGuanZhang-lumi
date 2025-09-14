@@ -69,7 +69,8 @@ public class ChatController {
 
     @MessageMapping("/{room_id}/chats")
     public void sendMessage(@AuthenticationPrincipal UserDetailsDto user,
-            @Payload ChatRequestDto chatRequestDto, @DestinationVariable("room_id") Long roomId) {
+                            @Payload ChatRequestDto chatRequestDto,
+                            @DestinationVariable("room_id") Long roomId) {
 
         log.info("user: {}", user);
 
@@ -83,8 +84,10 @@ public class ChatController {
 
         // 채팅 목록 업데이트 이벤트
         template.convertAndSendToUser(receiverId, "/queue/unread",
-                new UnreadUpdateResponseDto(roomId, receiverRoomUser.getUnreadCount(),
-                        chatRequestDto.getMessage(), LocalDateTime.now(),
-                        user.getUser().getUserId()));
+                                      new UnreadUpdateResponseDto(roomId,
+                                                                  receiverRoomUser.isHasUnread(),
+                                                                  chatRequestDto.getMessage(),
+                                                                  LocalDateTime.now(),
+                                                                  user.getUser().getUserId()));
     }
 }
