@@ -5,7 +5,7 @@ import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.file.dto.FileDownloadDto;
 import com.yuguanzhang.lumi.file.dto.FilePathInfo;
 import com.yuguanzhang.lumi.file.dto.FileUploadResponseDto;
-import com.yuguanzhang.lumi.file.entity.FileEntity;
+import com.yuguanzhang.lumi.file.entity.File;
 import com.yuguanzhang.lumi.file.enums.EntityType;
 import com.yuguanzhang.lumi.file.repository.FileRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,8 @@ public class FileServiceImpl implements FileService {
             throws IOException {
         // 1. 새로운 파일명 생성
         String originalFileName = multipartFile.getOriginalFilename();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = UUID.randomUUID()
+                          .toString();
         String newFileName = uuid + "-" + originalFileName;
 
         // 2. 파일을 서버 로컬 디렉토리에 저장
@@ -51,11 +52,13 @@ public class FileServiceImpl implements FileService {
         Files.copy(multipartFile.getInputStream(), copyofLocation.getFullPath());
 
         // 3. DB에 저장
-        FileEntity file = FileEntity.builder().filePath(copyofLocation.getRelativePath())
-                                    .fileName(originalFileName).fileSize(multipartFile.getSize())
-                                    .build();
+        File file = File.builder()
+                        .filePath(copyofLocation.getRelativePath())
+                        .fileName(originalFileName)
+                        .fileSize(multipartFile.getSize())
+                        .build();
 
-        FileEntity savedFile = fileRepository.save(file);
+        File savedFile = fileRepository.save(file);
 
         log.info("savedFile: {}", savedFile);
 
@@ -65,16 +68,20 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional(readOnly = true)
     public FileDownloadDto downloadFile(Long fileId) {
-        FileEntity file = fileRepository.findByFileId(fileId).orElseThrow(
-                () -> new GlobalException(ExceptionMessage.FILE_NOT_FOUND));
+        File file = fileRepository.findByFileId(fileId)
+                                  .orElseThrow(() -> new GlobalException(
+                                          ExceptionMessage.FILE_NOT_FOUND));
 
         // 삭제된 파일이면 다운로드 불가
         if (file.isDeleted()) {
             throw new GlobalException(ExceptionMessage.FILE_ALREADY_DELETED);
         }
 
-        Path base = Paths.get(uploadDir).toAbsolutePath().normalize();
-        Path target = base.resolve(file.getFilePath()).normalize();
+        Path base = Paths.get(uploadDir)
+                         .toAbsolutePath()
+                         .normalize();
+        Path target = base.resolve(file.getFilePath())
+                          .normalize();
 
         log.info("base: {}", base);
         log.info("target: {}", target);
@@ -110,8 +117,9 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional
     public void deleteFile(Long fileId) {
-        FileEntity file = fileRepository.findByFileId(fileId).orElseThrow(
-                () -> new GlobalException(ExceptionMessage.FILE_NOT_FOUND));
+        File file = fileRepository.findByFileId(fileId)
+                                  .orElseThrow(() -> new GlobalException(
+                                          ExceptionMessage.FILE_NOT_FOUND));
 
         file.deleteFile();
     }
@@ -135,9 +143,6 @@ public class FileServiceImpl implements FileService {
                                         String.valueOf(today.getMonthValue()),
                                         String.valueOf(today.getDayOfMonth()), newFileName)
                                    .toString();
-
-        log.info("FullPath: {}", fullPath);
-        log.info("RelativePath: {}", relativePath);
 
         return new FilePathInfo(fullPath, relativePath);
     }
