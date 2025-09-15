@@ -66,12 +66,11 @@ public class User {
         return this.isVerified;
     }
 
-    public void setIsDeleted(String isDeleted) {
-        this.isDeleted = isDeleted;
+    public void markAsDeleted() {
+        this.isDeleted = "Y";
+        this.deletedAt = LocalDateTime.now();
+
     }
 
-    public void setDeletedAt(LocalDateTime deletedAt) {
-        this.deletedAt = deletedAt;
-    }
 
 }

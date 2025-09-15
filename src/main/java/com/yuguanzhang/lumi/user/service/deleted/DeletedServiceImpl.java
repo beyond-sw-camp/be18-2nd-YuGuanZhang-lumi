@@ -21,13 +21,10 @@ public class DeletedServiceImpl implements DeletedService {
     public DeletedResponseDto deleted(DeletedRequestDto requestDto) {
 
         User user = userRepository.findByEmail(requestDto.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("해당 이메일의 사용자가 없습니다."));
-
-
-        user.setIsDeleted("Y");
-        user.setDeletedAt(LocalDateTime.now());
-
-        userRepository.save(user);
+                                  .orElseThrow(
+                                          () -> new IllegalArgumentException("해당 이메일의 사용자가 없습니다."));
+        
+        user.markAsDeleted();
 
         return new DeletedResponseDto(user.getEmail());
     }
