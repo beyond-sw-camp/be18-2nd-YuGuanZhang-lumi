@@ -69,7 +69,10 @@ public class User {
     public void markAsDeleted() {
         this.isDeleted = "Y";
         this.deletedAt = LocalDateTime.now();
+    }
 
+    public boolean getIsDeleted() {
+        return "Y".equals(this.isDeleted);
     }
 
 
