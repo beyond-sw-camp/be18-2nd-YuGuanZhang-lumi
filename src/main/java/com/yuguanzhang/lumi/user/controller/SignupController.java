@@ -1,33 +1,26 @@
 package com.yuguanzhang.lumi.user.controller;
 
-import com.yuguanzhang.lumi.user.service.SignUpService;
-import com.yuguanzhang.lumi.user.dto.SignupRequestDto;
-import lombok.AllArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import com.yuguanzhang.lumi.common.dto.BaseResponseDto;
+import com.yuguanzhang.lumi.user.dto.sigup.SignupRequestDto;
+import com.yuguanzhang.lumi.user.dto.sigup.SignupResponseDto;
+import com.yuguanzhang.lumi.user.service.signup.SignUpService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@AllArgsConstructor
+@RestController
+@RequiredArgsConstructor
 public class SignupController {
 
-    private final SignUpService userService;
+    private final SignUpService signUpService;
 
-    /*
-        브라우저 form에서 회원가입
-     */
-    @GetMapping("/api/sign-up")
-    public String signup() {
-        return "sign_up";
+    @PostMapping("/api/sign-up")
+    public BaseResponseDto<SignupResponseDto> signup(
+            @RequestBody SignupRequestDto signupRequestDto) {
+        SignupResponseDto responseDto = signUpService.processSignup(signupRequestDto);
+
+        return BaseResponseDto.of(HttpStatus.OK, responseDto);
     }
-
-    /*
-        브라우저 form에서 POST
-     */
-    @PostMapping(value = "/api/sign-up", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String processSignupForm(SignupRequestDto signupRequestDto) {
-        userService.processSignup(signupRequestDto);
-        return "redirect:/api/login"; // 회원가입 후 로그인 페이지로
-    }
-
 }

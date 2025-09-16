@@ -15,20 +15,20 @@ public class BaseResponseDto<T> {
 
     private final String message;
 
-    private final List<T> items;
+    private final List<T> data;
 
     //단일 객체용
     public BaseResponseDto(HttpStatus status, T item) {
         this.code = status.value();
         this.message = status.getReasonPhrase();
-        this.items = Collections.singletonList(item);
+        this.data = Collections.singletonList(item);
     }
 
     //복수 객체용
     public BaseResponseDto(HttpStatus status, List<T> items) {
         this.code = status.value();
         this.message = status.getReasonPhrase();
-        this.items = items;
+        this.data = items;
     }
 
     //스테틱메소드가 있으면 new 선언하면서 안해도 되고, 타입도 신경 안써도 된다고 해서 넣었습니다.
