@@ -44,7 +44,7 @@ public class SignupRequestDto {
     public User toEntity(PasswordEncoder passwordEncoder) {
         return User.builder().email(email).name(name).password(passwordEncoder.encode(password))
                 .provider(provider == null ? "local" : provider)
-                .isPrivacyAgreement(isPrivacyAgreement).build();
+                .isPrivacyAgreement(isPrivacyAgreement).isDeleted("N").build();
     }
 }
 

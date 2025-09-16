@@ -17,9 +17,8 @@ public class SignupController {
     private final SignUpService signUpService;
 
     @PostMapping("/api/sign-up")
-    public BaseResponseDto<SignupResponseDto> signup(
-            @RequestBody SignupRequestDto signupRequestDto) {
-        SignupResponseDto responseDto = signUpService.processSignup(signupRequestDto);
+    public BaseResponseDto<SignupResponseDto> signup(@RequestBody SignupRequestDto request) {
+        SignupResponseDto responseDto = signUpService.processSignup(request);
 
         return BaseResponseDto.of(HttpStatus.OK, responseDto);
     }

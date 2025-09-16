@@ -6,12 +6,26 @@ import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    // 탈퇴한 사용자
+    @ExceptionHandler({
+            DisabledException.class,
+            InternalAuthenticationServiceException.class
+    })
+    public ResponseEntity<BaseResponseDto<String>> handleDeletedAccount(RuntimeException ex) {
+        return ResponseEntity.status(ExceptionMessage.DELETED_ACCOUNT.getStatus())
+                             .body(BaseResponseDto.error(
+                                     ExceptionMessage.DELETED_ACCOUNT.getStatus(),
+                                     ExceptionMessage.DELETED_ACCOUNT.getMessage()));
+    }
 
     // 로그인 비밀번호 틀림
     @ExceptionHandler(BadCredentialsException.class)

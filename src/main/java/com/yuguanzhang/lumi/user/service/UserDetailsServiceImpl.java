@@ -5,6 +5,7 @@ import com.yuguanzhang.lumi.user.dto.UserDetailsDto;
 import com.yuguanzhang.lumi.user.entity.User;
 import com.yuguanzhang.lumi.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,13 +23,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // email 기준으로 유저 조회
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new UsernameNotFoundException("User not found with email: " + email));
+        User user = userRepository.findByEmail(email)
+                                  .orElseThrow(() -> new UsernameNotFoundException(
+                                          "User not found with email: " + email));
         // UsernamePasswordAuthenticationToken = Spring Security에서 제공하는 클래스
 
         // 이메일 인증 여부 확인
         if (!user.getIsVerified()) {
             throw new UsernameNotFoundException("이메일이 확인되지 않았습니다.");
+        }
+
+        if (user.getIsDeleted()) {
+            throw new DisabledException("삭제된 계정입니다.");
         }
 
         // User 엔티티 → UserDetailsDto 변환
