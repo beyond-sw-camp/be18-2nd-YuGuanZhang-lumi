@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "EmailVerifications")
+@Table(name = "Email_Verifications")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

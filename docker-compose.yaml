@@ -1,3 +1,4 @@
+version: "3.9"
 
 networks:
   backend:
@@ -12,17 +13,16 @@ services:
     container_name: lumi
     restart: always
     ports:
-      - "${LOCAL_PORT}:8080"
+      - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_PROFILES_ACTIVE: dev
+      JWT_SECRET: ${JWT_SECRET}
       TZ:  Asia/Seoul
+    volumes:
+      - ${DEV_UPLOAD_DIR}:/spring-boot/uploads
     depends_on:
-      mariadb:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      - mariadb
+      - redis
     networks:
       - backend
 
@@ -50,13 +50,9 @@ services:
   redis:
     image: redis:8.2.1
     container_name: redis
-    ports:
-      - "${REDIS_PORT}:6379"
     restart: always
     volumes:
       - ./redis/data:/data
-      - ./redis/conf/redis.conf:/usr/local/conf/redis.conf
-    command: redis-server /usr/local/conf/redis.conf
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
