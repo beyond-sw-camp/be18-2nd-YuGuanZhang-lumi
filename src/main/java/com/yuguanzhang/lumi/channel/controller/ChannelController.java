@@ -7,12 +7,14 @@ import com.yuguanzhang.lumi.channel.dto.ChannelResponseDto;
 import com.yuguanzhang.lumi.channel.service.ChannelService;
 import com.yuguanzhang.lumi.common.dto.BaseResponseDto;
 import com.yuguanzhang.lumi.common.dto.PageResponseDto;
+import com.yuguanzhang.lumi.user.dto.UserDetailsDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,12 +37,14 @@ public class ChannelController {
     //채널 생성
     @PostMapping("/channels")
     public ResponseEntity<BaseResponseDto<ChannelResponseDto>> createChannel(
+            @AuthenticationPrincipal UserDetailsDto user,
             @Valid @RequestBody ChannelRequestDto channelRequestDto) {
 
-        ChannelResponseDto channelResponse = channelService.createChannel(channelRequestDto);
+        ChannelResponseDto channelResponse =
+                channelService.createChannel(user.getUser(), channelRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(BaseResponseDto.of(HttpStatus.CREATED, channelResponse));
+                             .body(BaseResponseDto.of(HttpStatus.CREATED, channelResponse));
     }
 
     //채널 리스트 조회
@@ -66,10 +70,11 @@ public class ChannelController {
     @PutMapping("/channels/{channel_id}")
     public ResponseEntity<BaseResponseDto<ChannelResponseDto>> updateChannel(
             @PathVariable("channel_id") Long channelId,
+            @AuthenticationPrincipal UserDetailsDto user,
             @Valid @RequestBody ChannelRequestDto channelRequestDto) {
 
         ChannelResponseDto channelResponse =
-                channelService.updateChannel(channelId, channelRequestDto);
+                channelService.updateChannel(channelId, user.getUser(), channelRequestDto);
 
         return ResponseEntity.ok(BaseResponseDto.of(HttpStatus.OK, channelResponse));
     }
@@ -77,9 +82,9 @@ public class ChannelController {
     @DeleteMapping("/channels/{channel_id}")
     public ResponseEntity<BaseResponseDto<ChannelResponseDto>> deleteChannel(
             @PathVariable("channel_id") Long channelId,
-            //아직 유저 없어서 유저로 못넘기고 파라미터로 일단 넘겨서 테스트 했습니다.
-            @RequestParam("requestUserId") Long requestUserId) {
-        ChannelResponseDto channelResponse = channelService.deleteChannel(channelId, requestUserId);
+            @AuthenticationPrincipal UserDetailsDto user) {
+        ChannelResponseDto channelResponse =
+                channelService.deleteChannel(channelId, user.getUser());
 
         return ResponseEntity.ok(BaseResponseDto.of(HttpStatus.OK, channelResponse));
     }

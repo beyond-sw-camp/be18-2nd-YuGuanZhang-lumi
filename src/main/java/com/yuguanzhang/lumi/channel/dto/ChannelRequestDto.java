@@ -10,15 +10,17 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ChannelRequestDto {
 
-    private final String name;
+    private String name;
 
-    private final String subject;
+    private String subject;
 
-    private final Long requestUserId;
 
     //받은 정보를 엔티티로 만들어 반환하는 메소드
     public Channel toEntity() {
-        return Channel.builder().name(this.name).subject(this.subject).build();
+        return Channel.builder()
+                      .name(this.name)
+                      .subject(this.subject)
+                      .build();
     }
 
 }

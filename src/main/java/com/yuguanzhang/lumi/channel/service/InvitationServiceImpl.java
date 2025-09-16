@@ -34,7 +34,7 @@ public class InvitationServiceImpl implements InvitationService {
         Channel channel = channelRepository.findById(channelId)
                                            .orElseThrow(() -> new EntityNotFoundException(
                                                    "채널이 존재하지 않습니다."));
-
+        
         //요청한 사람이 튜터인지 검증
         roleAuthorizationService.checkTutor(channelId, invitationRequestDto.getRequestUserId());
 

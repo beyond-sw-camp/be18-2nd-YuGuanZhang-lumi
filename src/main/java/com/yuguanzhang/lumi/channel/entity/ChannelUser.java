@@ -1,6 +1,7 @@
 package com.yuguanzhang.lumi.channel.entity;
 
 import com.yuguanzhang.lumi.role.entity.Role;
+import com.yuguanzhang.lumi.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -37,8 +38,9 @@ public class ChannelUser {
     @Column(name = "channel_user_id")
     private Long channelUserId;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     //@ManyToOne → 다대일 관계를 지정
     //fetch = FetchType.LAZY → 필요할 때만 관련 엔티티 조회, 성능 최적화

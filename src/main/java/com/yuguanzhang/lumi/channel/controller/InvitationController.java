@@ -24,10 +24,10 @@ public class InvitationController {
     public ResponseEntity<BaseResponseDto<InvitationResponseDto>> createInvitation(
             @PathVariable("channel_id") Long channelId,
             @RequestBody InvitationRequestDto invitationRequestDto) {
-
+        
         InvitationResponseDto invitationResponseDto =
                 invitationService.createInvitation(channelId, invitationRequestDto);
-   
+
         return ResponseEntity.status(HttpStatus.CREATED)
                              .body(BaseResponseDto.of(HttpStatus.CREATED, invitationResponseDto));
     }

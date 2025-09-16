@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Builder
 @Getter
 @AllArgsConstructor
@@ -12,7 +14,7 @@ public class ChannelUserResponseDto {
 
     private final Long channelId;
 
-    private final Long userId;
+    private final UUID userId;
 
     private final String roleName;
 
@@ -21,11 +23,17 @@ public class ChannelUserResponseDto {
     private final String data;
 
     public static ChannelUserResponseDto fromEntity(ChannelUser channelUser) {
-        return ChannelUserResponseDto.builder().channelId(channelUser.getChannel().getChannelId())
-                .userId(channelUser.getUserId())
-                .roleName(channelUser.getRole().getRoleName().name()) //enum -> String .name()으로 바꿈
-                .notificationEnabled(channelUser.isNotificationEnabled())
-                .data(channelUser.getData()).build();
+        return ChannelUserResponseDto.builder()
+                                     .channelId(channelUser.getChannel()
+                                                           .getChannelId())
+                                     .userId(channelUser.getUser()
+                                                        .getUserId())
+                                     .roleName(channelUser.getRole()
+                                                          .getRoleName()
+                                                          .name()) //enum -> String .name()으로 바꿈
+                                     .notificationEnabled(channelUser.isNotificationEnabled())
+                                     .data(channelUser.getData())
+                                     .build();
     }
 
 }

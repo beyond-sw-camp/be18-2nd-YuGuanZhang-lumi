@@ -17,11 +17,12 @@ public class ChannelUserRequestDto {
 
     private boolean notificationEnabled;
 
-    private final Long requestUserId;
 
     public ChannelUser toEntity() {
-        return ChannelUser.builder().data(this.data).notificationEnabled(this.notificationEnabled)
-                .build();
+        return ChannelUser.builder()
+                          .data(this.data)
+                          .notificationEnabled(this.notificationEnabled)
+                          .build();
     }
 
 }

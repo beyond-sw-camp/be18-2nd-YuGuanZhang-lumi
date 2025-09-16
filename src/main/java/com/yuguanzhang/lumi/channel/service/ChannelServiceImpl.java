@@ -11,6 +11,7 @@ import com.yuguanzhang.lumi.common.service.RoleAuthorizationService;
 import com.yuguanzhang.lumi.role.entity.Role;
 import com.yuguanzhang.lumi.role.entity.RoleName;
 import com.yuguanzhang.lumi.role.repositiry.RoleRepository;
+import com.yuguanzhang.lumi.user.entity.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,7 +38,7 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     @Transactional
-    public ChannelResponseDto createChannel(ChannelRequestDto channelRequestDto) {
+    public ChannelResponseDto createChannel(User user, ChannelRequestDto channelRequestDto) {
         //Channel 객체 생성
         Channel channel = channelRequestDto.toEntity(); //dto에 메소드 만들어서 사용
         channelRepository.save(channel);
@@ -50,7 +51,7 @@ public class ChannelServiceImpl implements ChannelService {
         //ChannelUser 객체 생성
         ChannelUser channelUser = ChannelUser.builder()
                                              .channel(channel)
-                                             .userId(channelRequestDto.getRequestUserId())
+                                             .user(user)
                                              .notificationEnabled(true)
                                              .role(tutorRole)
                                              .build();
@@ -58,7 +59,7 @@ public class ChannelServiceImpl implements ChannelService {
         //db에 저장(insert)
         channelUserRepository.save(channelUser);
 
-        return ChannelResponseDto.fromEntity(channel, channelRequestDto.getRequestUserId());
+        return ChannelResponseDto.fromEntity(channel, user.getUserId());
     }
 
     @Override
@@ -82,10 +83,11 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     @Transactional
-    public ChannelResponseDto updateChannel(Long channelId, ChannelRequestDto channelRequestDto) {
+    public ChannelResponseDto updateChannel(Long channelId, User user,
+                                            ChannelRequestDto channelRequestDto) {
 
         //권한 체크
-        roleAuthorizationService.checkTutor(channelId, channelRequestDto.getRequestUserId());
+        roleAuthorizationService.checkTutor(channelId, user.getUserId());
 
         //수정할 채널 가져오기
         Channel channel = channelRepository.findById(channelId)
@@ -100,10 +102,10 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public ChannelResponseDto deleteChannel(Long channelId, Long requestUserId) {
+    public ChannelResponseDto deleteChannel(Long channelId, User user) {
 
         //권한 체크
-        roleAuthorizationService.checkTutor(channelId, requestUserId);
+        roleAuthorizationService.checkTutor(channelId, user.getUserId());
 
         //삭제할 채널 가져오기
         Channel channel = channelRepository.findById(channelId)
