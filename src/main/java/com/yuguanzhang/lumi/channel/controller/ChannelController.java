@@ -1,0 +1,87 @@
+package com.yuguanzhang.lumi.channel.controller;
+
+
+import com.yuguanzhang.lumi.channel.dto.ChannelListResponseDto;
+import com.yuguanzhang.lumi.channel.dto.ChannelRequestDto;
+import com.yuguanzhang.lumi.channel.dto.ChannelResponseDto;
+import com.yuguanzhang.lumi.channel.service.ChannelService;
+import com.yuguanzhang.lumi.common.dto.BaseResponseDto;
+import com.yuguanzhang.lumi.common.dto.PageResponseDto;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api")
+@RequiredArgsConstructor
+public class ChannelController {
+
+    private final ChannelService channelService;
+
+    //채널 생성
+    @PostMapping("/channels")
+    public ResponseEntity<BaseResponseDto<ChannelResponseDto>> createChannel(
+            @Valid @RequestBody ChannelRequestDto channelRequestDto) {
+
+        ChannelResponseDto channelResponse = channelService.createChannel(channelRequestDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(BaseResponseDto.of(HttpStatus.CREATED, channelResponse));
+    }
+
+    //채널 리스트 조회
+    //요청 예시 : GET /api/channels?page=0&size=10&sort=createdAt,desc
+    @GetMapping("/channels")
+    public ResponseEntity<PageResponseDto<ChannelListResponseDto>> getChannels(Pageable pageable) {
+        Page<ChannelListResponseDto> channels = channelService.getChannels(pageable);
+
+        return ResponseEntity.ok(PageResponseDto.of(HttpStatus.OK, channels));
+
+    }
+
+    //채널 상세 조회
+    @GetMapping("/channels/{channel_id}")
+    public ResponseEntity<BaseResponseDto<ChannelResponseDto>> getChannel(
+            @PathVariable("channel_id") Long channelId) {
+        ChannelResponseDto channelResponse = channelService.getChannel(channelId);
+
+        return ResponseEntity.ok(BaseResponseDto.of(HttpStatus.OK, channelResponse));
+    }
+
+    //채널 수정
+    @PutMapping("/channels/{channel_id}")
+    public ResponseEntity<BaseResponseDto<ChannelResponseDto>> updateChannel(
+            @PathVariable("channel_id") Long channelId,
+            @Valid @RequestBody ChannelRequestDto channelRequestDto) {
+
+        ChannelResponseDto channelResponse =
+                channelService.updateChannel(channelId, channelRequestDto);
+
+        return ResponseEntity.ok(BaseResponseDto.of(HttpStatus.OK, channelResponse));
+    }
+
+    @DeleteMapping("/channels/{channel_id}")
+    public ResponseEntity<BaseResponseDto<ChannelResponseDto>> deleteChannel(
+            @PathVariable("channel_id") Long channelId,
+            //아직 유저 없어서 유저로 못넘기고 파라미터로 일단 넘겨서 테스트 했습니다.
+            @RequestParam("requestUserId") Long requestUserId) {
+        ChannelResponseDto channelResponse = channelService.deleteChannel(channelId, requestUserId);
+
+        return ResponseEntity.ok(BaseResponseDto.of(HttpStatus.OK, channelResponse));
+    }
+
+}

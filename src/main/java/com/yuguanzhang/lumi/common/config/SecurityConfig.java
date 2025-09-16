@@ -22,7 +22,9 @@ public class SecurityConfig { // 회원가입 페이지에 로그인 없이 접�
         http.csrf(csrf -> csrf.disable()) // Postman 테스트 시 CSRF 비활성화
                 .authorizeHttpRequests(
                         (authorize) -> authorize.requestMatchers("/api/login", "/sign-up",
-                                "/api/sign-up").permitAll().anyRequest().authenticated()
+                                        "/api/sign-up").permitAll()
+
+                                .anyRequest().permitAll()
                         // authenticated은 인증된 사용자에 대한 요청만 허가한다.
                 )
                 //.httpBasic(Customizer.withDefaults())
