@@ -36,8 +36,10 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         Optional<EmailVerification> existingVerification =
                 emailVerificationRepository.findByEmail(email);
 
-        String token = UUID.randomUUID().toString();
-        LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(10);
+        String token = UUID.randomUUID()
+                           .toString();
+        LocalDateTime expirationTime = LocalDateTime.now()
+                                                    .plusMinutes(10);
         LocalDateTime now = LocalDateTime.now();
 
         EmailVerification verification;
@@ -51,9 +53,13 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         } else {
             log.info("새로운 인증 기록을 생성합니다. 이메일: {}", email);
             // 회원가입 전에 이메일 인증 가능 구조
-            verification = EmailVerification.builder().email(email).verificationCode(token)
-                    .status(VerificationStatus.UNREAD).dateTimeAt(now).expirationAt(expirationTime)
-                    .build();
+            verification = EmailVerification.builder()
+                                            .email(email)
+                                            .verificationCode(token)
+                                            .status(VerificationStatus.UNREAD)
+                                            .dateTimeAt(now)
+                                            .expirationAt(expirationTime)
+                                            .build();
         }
 
         try {
@@ -61,7 +67,8 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
             emailVerificationRepository.save(verification);
 
             String redisKey = "email:verify:" + token;
-            redisTemplate.opsForValue().set(redisKey, email, 10, TimeUnit.MINUTES);
+            redisTemplate.opsForValue()
+                         .set(redisKey, email, 10, TimeUnit.MINUTES);
 
             // 나중에 수정고려 8080이 아니라 실무에서 어떡해 하는지 봐야할 듯
             String link = "http://localhost:8080/api/email/verify?token=" + token;
@@ -87,7 +94,8 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     @Transactional
     public String verifyEmail(String token) {
         String redisKey = "email:verify:" + token;
-        String email = redisTemplate.opsForValue().get(redisKey);
+        String email = redisTemplate.opsForValue()
+                                    .get(redisKey);
 
         if (email == null) {
             log.warn("유효하지 않거나 만료된 토큰입니다: {}", token);
@@ -103,12 +111,14 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         }
 
         EmailVerification verification = optionalVerification.get();
-        if (LocalDateTime.now().isAfter(verification.getExpirationAt())) {
+        if (LocalDateTime.now()
+                         .isAfter(verification.getExpirationAt())) {
             log.warn("토큰이 만료되었습니다. 이메일: {}", email);
             verification.markAsExpired();
             throw new IllegalArgumentException("이메일 인증에 실패했거나 만료되었습니다.");
         }
-        if (!verification.getVerificationCode().equals(token)) {
+        if (!verification.getVerificationCode()
+                         .equals(token)) {
             log.warn("인증 코드가 일치하지 않습니다. 토큰: {}", token);
             throw new IllegalArgumentException("이메일 인증에 실패했습니다.");
         }
@@ -119,13 +129,14 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         // Redis에서 토큰 삭제
         redisTemplate.delete(redisKey);
 
-        return "<html><body><h3>이메일 인증이 완료되었습니다.</h3></body></html>";
+        return "이메일 인증이 완료되었습니다.";
     }
 
     @Override
     public boolean isEmailVerified(String email) {
         return emailVerificationRepository.findByEmail(email)
-                .map(EmailVerification::getStatus) // Optional<EmailVerification> → Optional<VerificationStatus> 로 변환
-                .filter(status -> status == VerificationStatus.VERIFIED).isPresent();
+                                          .map(EmailVerification::getStatus) // Optional<EmailVerification> → Optional<VerificationStatus> 로 변환
+                                          .filter(status -> status == VerificationStatus.VERIFIED)
+                                          .isPresent();
     }
 }
