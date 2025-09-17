@@ -1,5 +1,7 @@
 package com.yuguanzhang.lumi.user.service.deleted;
 
+import com.yuguanzhang.lumi.common.exception.GlobalException;
+import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.user.dto.deleted.DeletedRequestDto;
 import com.yuguanzhang.lumi.user.dto.deleted.DeletedResponseDto;
 import com.yuguanzhang.lumi.user.entity.User;
@@ -19,8 +21,8 @@ public class DeletedServiceImpl implements DeletedService {
     public DeletedResponseDto deleted(DeletedRequestDto requestDto) {
 
         User user = userRepository.findByEmail(requestDto.getEmail())
-                                  .orElseThrow(
-                                          () -> new IllegalArgumentException("해당 이메일의 사용자가 없습니다."));
+                                  .orElseThrow(() -> new GlobalException(
+                                          ExceptionMessage.ROOM_USER_NOT_FOUND));
 
         user.markAsDeleted();
 
