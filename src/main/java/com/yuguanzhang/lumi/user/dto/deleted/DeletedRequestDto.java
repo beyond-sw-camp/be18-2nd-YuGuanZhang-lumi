@@ -1,12 +1,10 @@
-package com.yuguanzhang.lumi.email.dto;
+package com.yuguanzhang.lumi.user.dto.deleted;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-@Builder
-public class EmailVerificationDto {
+public class DeletedRequestDto {
     private final String email;
 }

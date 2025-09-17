@@ -10,4 +10,6 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
     List<Chat> findByRoom_RoomId(Long roomId);
 
     Optional<Chat> findByRoom_RoomIdAndChatId(Long roomId, Long chatId);
+
+    Optional<Chat> findTopByRoom_RoomIdOrderByCreatedAtDesc(Long roomId);
 }
