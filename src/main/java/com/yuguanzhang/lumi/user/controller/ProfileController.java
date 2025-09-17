@@ -2,8 +2,8 @@ package com.yuguanzhang.lumi.user.controller;
 
 import com.yuguanzhang.lumi.common.dto.BaseResponseDto;
 import com.yuguanzhang.lumi.user.dto.UserDetailsDto;
-import com.yuguanzhang.lumi.user.dto.search.SearchResoponseDto;
-import com.yuguanzhang.lumi.user.service.serach.SearchService;
+import com.yuguanzhang.lumi.user.dto.profile.ProfileResoponseDto;
+import com.yuguanzhang.lumi.user.service.profile.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,16 +14,16 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-public class SearchController {
+public class ProfileController {
 
-    private final SearchService searchService;
+    private final ProfileService profileService;
 
     @GetMapping("/api/user/profile")
-    public BaseResponseDto<SearchResoponseDto> searchUserProfile(
+    public BaseResponseDto<ProfileResoponseDto> searchUserProfile(
             @AuthenticationPrincipal UserDetailsDto userDetails) {
         UUID userId = userDetails.getUser()
                                  .getUserId();
-        SearchResoponseDto responseDto = searchService.getProfile(userId);
+        ProfileResoponseDto responseDto = profileService.getProfile(userId);
         return BaseResponseDto.of(HttpStatus.OK, responseDto);
     }
 
