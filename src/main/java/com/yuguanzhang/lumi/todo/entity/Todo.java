@@ -48,8 +48,8 @@ public class Todo extends BaseCreatedEntity {
         this.description = description;
     }
 
-    public void updateStatus() {
-        this.status = true;
+    public void updateStatus(Boolean status) {
+        this.status = status;
     }
 
 }

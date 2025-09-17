@@ -12,11 +12,15 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 public class TodoRequestDto {
-    private final String description;
-    private final LocalDate dueDate;
+    private String description;
+    private LocalDate dueDate;
 
-    public static Todo toEntity(User user, TodoRequestDto request) {
-        return Todo.builder().description(request.getDescription()).status(false).user(user)
-                   .dueDate(request.getDueDate()).build();
+    public Todo toEntity(User user) {
+        return Todo.builder()
+                   .description(this.description)
+                   .status(false)
+                   .user(user)
+                   .dueDate(this.dueDate)
+                   .build();
     }
 }

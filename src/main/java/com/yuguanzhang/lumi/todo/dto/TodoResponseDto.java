@@ -25,13 +25,4 @@ public class TodoResponseDto {
                               .dueDate(todo.getDueDate())
                               .build();
     }
-
-    // public static TodoResponseDto fromEntity(List<Todo> todo) {
-    //     return TodoResponseDto.builder()
-    //                           .todoId(todo.getTodoId())
-    //                           .description(todo.getDescription())
-    //                           .status(todo.getStatus())
-    //                           .dueDate(todo.getDueDate())
-    //                           .build();
-    // }
 }

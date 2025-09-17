@@ -56,8 +56,8 @@ public class TodoServiceImpl implements TodoService {
         List<Todo> todos = todoRepository.findByUser_UserIdAndDueDate(userId, dueDate);
 
         return todos.stream()
-                    .map((todo) -> TodoResponseDto.fromEntity(todo))
-                    .collect(Collectors.toList());
+                    .map(TodoResponseDto::fromEntity)
+                    .toList();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class TodoServiceImpl implements TodoService {
                                   .orElseThrow(
                                           () -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
 
-        Todo todo = TodoRequestDto.toEntity(user, request);
+        Todo todo = request.toEntity(user);
         Todo saved = todoRepository.save(todo);
 
         return TodoResponseDto.fromEntity(saved);
@@ -89,7 +89,7 @@ public class TodoServiceImpl implements TodoService {
         }
 
         if (request.getStatus() != null) {
-            todo.updateStatus();
+            todo.updateStatus(request.getStatus());
         }
 
         Todo saved = todoRepository.save(todo);

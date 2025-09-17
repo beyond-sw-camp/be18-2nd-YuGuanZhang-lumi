@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class DeletedRequestDto {
-    private final String email;
+    private String email;
 }
