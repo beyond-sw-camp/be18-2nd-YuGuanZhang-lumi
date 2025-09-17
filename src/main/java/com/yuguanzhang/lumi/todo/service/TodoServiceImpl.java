@@ -1,5 +1,7 @@
 package com.yuguanzhang.lumi.todo.service;
 
+import com.yuguanzhang.lumi.common.exception.GlobalException;
+import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.todo.dto.TodoRequestDto;
 import com.yuguanzhang.lumi.todo.dto.TodoResponseDto;
 import com.yuguanzhang.lumi.todo.dto.TodoUpdateRequestDto;
@@ -8,7 +10,6 @@ import com.yuguanzhang.lumi.todo.entity.Todo;
 import com.yuguanzhang.lumi.todo.repository.TodoRepository;
 import com.yuguanzhang.lumi.user.entity.User;
 import com.yuguanzhang.lumi.user.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -63,8 +64,8 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoResponseDto createTodo(UUID userId, TodoRequestDto request) {
         User user = userRepository.findById(userId)
-                                  .orElseThrow(
-                                          () -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
+                                  .orElseThrow(() -> new GlobalException(
+                                          ExceptionMessage.USER_NOT_FOUND));
 
         Todo todo = request.toEntity(user);
         Todo saved = todoRepository.save(todo);
@@ -75,13 +76,13 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoResponseDto updateTodo(UUID userId, TodoUpdateRequestDto request, Long todoId) {
         Todo todo = todoRepository.findById(todoId)
-                                  .orElseThrow(
-                                          () -> new EntityNotFoundException("해당 투두를 찾을 수 없습니다."));
+                                  .orElseThrow(() -> new GlobalException(
+                                          ExceptionMessage.TODO_NOT_FOUND));
 
         if (!todo.getUser()
                  .getUserId()
                  .equals(userId)) {
-            throw new IllegalArgumentException("해당 투두를 수정할 권한이 없습니다.");
+            throw new GlobalException(ExceptionMessage.UNAUTHORIZED_TODO_UPDATE);
         }
 
         if (request.getDescription() != null) {
@@ -100,13 +101,13 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public void deleteTodo(UUID userId, Long todoId) {
         Todo todo = todoRepository.findById(todoId)
-                                  .orElseThrow(
-                                          () -> new EntityNotFoundException("해당 투두를 찾을 수 없습니다."));
+                                  .orElseThrow(() -> new GlobalException(
+                                          ExceptionMessage.TODO_NOT_FOUND));
 
         if (!todo.getUser()
                  .getUserId()
                  .equals(userId)) {
-            throw new IllegalArgumentException("해당 투두를 삭제할 권한이 없습니다.");
+            throw new GlobalException(ExceptionMessage.UNAUTHORIZED_TODO_DELETE);
         }
 
         todoRepository.delete(todo);
