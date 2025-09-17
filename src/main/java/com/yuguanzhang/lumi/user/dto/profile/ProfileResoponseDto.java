@@ -13,7 +13,7 @@ public class ProfileResoponseDto {
     private final String email;
     private final String name;
 
-    public static ProfileResoponseDto searchResoponseDto(User user) {
+    public static ProfileResoponseDto profileResoponseDto(User user) {
         return new ProfileResoponseDto(user.getUserId(), user.getEmail(), user.getName());
     }
 }

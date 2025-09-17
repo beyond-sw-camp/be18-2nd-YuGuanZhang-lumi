@@ -1,5 +1,7 @@
 package com.yuguanzhang.lumi.user.service.signup;
 
+import com.yuguanzhang.lumi.common.exception.GlobalException;
+import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.email.repository.EmailVerificationRepository;
 import com.yuguanzhang.lumi.email.service.EmailVerificationService;
 import com.yuguanzhang.lumi.user.dto.sigup.SignupRequestDto;
@@ -24,15 +26,16 @@ public class SignUpServiceImpl implements SignUpService {
     @Transactional
     public SignupResponseDto processSignup(SignupRequestDto signupRequestDto) {
         if (signupRequestDto.getIsPrivacyAgreement() == null || !signupRequestDto.getIsPrivacyAgreement()) {
-            throw new IllegalArgumentException("개인정보 동의가 필요합니다.");
+            throw new GlobalException(ExceptionMessage.PRIVACY_AGREEMENT_REQUIRED);
         }
 
         if (!emailVerificationService.isEmailVerified(signupRequestDto.getEmail())) {
-            throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
+            throw new GlobalException(ExceptionMessage.EMAIL_NOT_FOUND);
         }
 
-        if (userRepository.findByEmail(signupRequestDto.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+        if (userRepository.findByEmail(signupRequestDto.getEmail())
+                          .isPresent()) {
+            throw new GlobalException(ExceptionMessage.EMAIL_ALREADY_USED);
         }
 
         User user = signupRequestDto.toEntity(passwordEncoder);
@@ -40,7 +43,8 @@ public class SignUpServiceImpl implements SignUpService {
         User savedUser = userRepository.save(user);
 
         emailVerificationRepository.findByEmail(signupRequestDto.getEmail())
-                .ifPresent(verification -> verification.associateUser(savedUser));
+                                   .ifPresent(
+                                           verification -> verification.associateUser(savedUser));
 
         return new SignupResponseDto("회원가입 성공", savedUser.getEmail(), savedUser.getName());
     }
@@ -48,6 +52,7 @@ public class SignUpServiceImpl implements SignUpService {
     @Override
     @Transactional(readOnly = true)
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+        return userRepository.findByEmail(email)
+                             .orElse(null);
     }
 }

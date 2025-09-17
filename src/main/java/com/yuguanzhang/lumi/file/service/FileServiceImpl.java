@@ -96,7 +96,7 @@ public class FileServiceImpl implements FileService {
             log.info("resource: {}", resource);
 
             if (!resource.exists() || !resource.isReadable()) {
-                throw new IllegalStateException("파일을 읽을 수 없습니다.");
+                throw new GlobalException(ExceptionMessage.FILE_NOT_READABLE);
             }
 
             String contentType = Files.probeContentType(target);

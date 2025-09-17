@@ -1,5 +1,7 @@
 package com.yuguanzhang.lumi.user.service.profile;
 
+import com.yuguanzhang.lumi.common.exception.GlobalException;
+import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.user.dto.profile.ProfileResoponseDto;
 import com.yuguanzhang.lumi.user.entity.User;
 import com.yuguanzhang.lumi.user.repository.UserRepository;
@@ -17,7 +19,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileResoponseDto getProfile(final UUID userId) {
         User user = userRepository.findById(userId)
-                                  .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        return ProfileResoponseDto.searchResoponseDto(user);
+                                  .orElseThrow(() -> new GlobalException(
+                                          ExceptionMessage.USER_NOT_FOUND));
+        return ProfileResoponseDto.profileResoponseDto(user);
     }
 }

@@ -1,5 +1,7 @@
 package com.yuguanzhang.lumi.user.service.logout;
 
+import com.yuguanzhang.lumi.common.exception.GlobalException;
+import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.common.jwt.dto.RefreshRequestDto;
 import com.yuguanzhang.lumi.common.jwt.refresh.RefreshTokenStore;
 import com.yuguanzhang.lumi.common.jwt.service.jwt.JwtService;
@@ -32,7 +34,8 @@ public class LogoutServiceImpl implements LogoutService {
 
             // DB에서 사용자 조회 (name 가져오기)
             User user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+                                      .orElseThrow(() -> new GlobalException(
+                                              ExceptionMessage.ROOM_USER_NOT_FOUND));
             name = user.getName();
         }
 
