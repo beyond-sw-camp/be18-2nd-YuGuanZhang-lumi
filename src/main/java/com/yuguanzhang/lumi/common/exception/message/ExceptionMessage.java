@@ -10,6 +10,11 @@ public enum ExceptionMessage {
     INVALID_CREDENTIALS("아이디 또는 비밀번호가 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
     DELETED_ACCOUNT("삭제된 계정입니다.", HttpStatus.UNAUTHORIZED),
     INTERNAL_SERVER_ERROR("서버 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
+    EMAIL_NOT_FOUND("이메일 인증이 완료되지 않았습니다.", HttpStatus.BAD_REQUEST),
+    EMAIL_VERIFICATION_FAILED("이메일 인증에 실패했거나 만료되었습니다.", HttpStatus.BAD_REQUEST),
+    EMAIL_ALREADY_USED("이미 사용중인 이메일 입니다.", HttpStatus.CONFLICT),
+    PRIVACY_AGREEMENT_REQUIRED("개인정보 동의가 필요합니다.", HttpStatus.BAD_REQUEST),
+
 
     USER_NOT_FOUND("사용자 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     ROOM_NOT_FOUND("채팅방 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),

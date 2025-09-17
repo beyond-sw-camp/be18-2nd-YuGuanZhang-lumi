@@ -1,5 +1,7 @@
 package com.yuguanzhang.lumi.user.service.login;
 
+import com.yuguanzhang.lumi.common.exception.GlobalException;
+import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.user.dto.login.LoginRequestDto;
 import com.yuguanzhang.lumi.user.dto.login.LoginResponseDto;
 import com.yuguanzhang.lumi.common.jwt.refresh.RefreshTokenStore;
@@ -36,7 +38,8 @@ public class LoginServiceImpl implements LoginService {
 
         // DB에서 유저 조회 (name을 가져오기 위해)
         User user = userRepository.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+                                  .orElseThrow(() -> new GlobalException(
+                                          ExceptionMessage.ROOM_USER_NOT_FOUND));
 
         // AccessToken, RefreshToken 발급
         String accessToken = jwtService.generateAccessToken(userDetails.getUsername());
@@ -47,6 +50,6 @@ public class LoginServiceImpl implements LoginService {
 
         // 생성한 JWT와 사용자 정보 반환
         return new LoginResponseDto(user.getName(), userDetails.getUsername(),   // email
-                accessToken, refreshToken);
+                                    accessToken, refreshToken);
     }
 }
