@@ -1,5 +1,6 @@
 package com.yuguanzhang.lumi.channel.entity;
 
+import com.yuguanzhang.lumi.common.entity.BaseTimeEntity;
 import com.yuguanzhang.lumi.role.entity.Role;
 import com.yuguanzhang.lumi.user.entity.User;
 import jakarta.persistence.Column;
@@ -24,14 +25,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "channel_users")
+@Table(name = "ChannelUsers")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class ChannelUser {
+public class ChannelUser extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,13 +64,13 @@ public class ChannelUser {
     //하지만 지금은 default true로 사용하니 문제 없음
     private boolean notificationEnabled = true; //해당 채널 알림 여부 default값 true
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    //    @CreatedDate
+    //    @Column(name = "created_at", nullable = false, updatable = false)
+    //    private LocalDateTime createdAt;
+    //
+    //    @LastModifiedDate
+    //    @Column(name = "updated_at")
+    //    private LocalDateTime updatedAt;
 
 
 

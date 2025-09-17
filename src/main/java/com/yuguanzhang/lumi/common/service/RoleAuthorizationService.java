@@ -2,6 +2,8 @@ package com.yuguanzhang.lumi.common.service;
 
 import com.yuguanzhang.lumi.channel.entity.ChannelUser;
 import com.yuguanzhang.lumi.channel.repository.ChannelUserRepository;
+import com.yuguanzhang.lumi.common.exception.GlobalException;
+import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.role.entity.RoleName;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +25,25 @@ public class RoleAuthorizationService {
 
         ChannelUser channelUser =
                 channelUserRepository.findByChannel_ChannelIdAndUser_UserId(channelId, userId)
-                                     .orElseThrow(() -> new EntityNotFoundException(
-                                             "채널에 속하지 않은 사용자입니다."));
+                                     .orElseThrow(() -> new GlobalException(
+                                             ExceptionMessage.CHANNEL_USER_NOT_FOUND));
 
         if (channelUser.getRole()
                        .getRoleName() != RoleName.TUTOR) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "튜터만 이 작업을 수행할 수 있습니다.");
+            throw new GlobalException(ExceptionMessage.TUTOR_ROLE_REQUIRED);
+        }
+    }
+
+    public void checkNotTutor(Long channelId, UUID userId) {
+
+        ChannelUser channelUser =
+                channelUserRepository.findByChannel_ChannelIdAndUser_UserId(channelId, userId)
+                                     .orElseThrow(() -> new GlobalException(
+                                             ExceptionMessage.CHANNEL_USER_NOT_FOUND));
+
+        if (channelUser.getRole()
+                       .getRoleName() == RoleName.TUTOR) {
+            throw new GlobalException(ExceptionMessage.TUTOR_NOT_AVAILABLE);
         }
     }
 

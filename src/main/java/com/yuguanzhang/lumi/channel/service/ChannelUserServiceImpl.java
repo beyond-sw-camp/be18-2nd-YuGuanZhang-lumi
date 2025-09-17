@@ -7,6 +7,10 @@ import com.yuguanzhang.lumi.channel.entity.Invitation;
 import com.yuguanzhang.lumi.channel.repository.ChannelRepository;
 import com.yuguanzhang.lumi.channel.repository.ChannelUserRepository;
 import com.yuguanzhang.lumi.channel.repository.InvitationRepository;
+import com.yuguanzhang.lumi.common.exception.GlobalException;
+import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
+import com.yuguanzhang.lumi.common.service.RoleAuthorizationService;
+import com.yuguanzhang.lumi.role.repositiry.RoleRepository;
 import com.yuguanzhang.lumi.user.entity.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +29,10 @@ import java.util.UUID;
 public class ChannelUserServiceImpl implements ChannelUserService {
 
     private final ChannelUserRepository channelUserRepository;
+
     private final InvitationRepository invitationRepository;
+
+    private final RoleAuthorizationService roleAuthorizationService;
 
 
     @Override
@@ -33,11 +40,11 @@ public class ChannelUserServiceImpl implements ChannelUserService {
     public ChannelUserResponseDto joinChannel(String code, User user) {
         //초대 조회
         Invitation invitation = invitationRepository.findByInvitationCode(code)
-                                                    .orElseThrow(() -> new EntityNotFoundException(
-                                                            "초대코드가 존재하지 않습니다."));
+                                                    .orElseThrow(() -> new GlobalException(
+                                                            ExceptionMessage.INVITATION_NOT_FOUND));
         //만료, 사용 여부 검증
         if (invitation.isExpired() || invitation.isUsed()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "초대가 만료되었거나 이미 사용되었습니다.");
+            throw new GlobalException(ExceptionMessage.INVITATION_NOT_AVAILABLE);
         }
 
         //이미 채널에 참여 중인지 검증
@@ -45,7 +52,7 @@ public class ChannelUserServiceImpl implements ChannelUserService {
                 invitation.getChannel()
                           .getChannelId(), user.getUserId());
         if (exist) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 채널에 참가한 사용자입니다.");
+            throw new GlobalException(ExceptionMessage.CHANNEL_ALREADY_JOINED);
         }
 
         //채널 유저 객체 생성 == 채널에 참가
@@ -77,8 +84,8 @@ public class ChannelUserServiceImpl implements ChannelUserService {
     public ChannelUserResponseDto getChannelUser(Long channelId, UUID userId) {
         ChannelUser channelUser =
                 channelUserRepository.findByChannel_ChannelIdAndUser_UserId(channelId, userId)
-                                     .orElseThrow(() -> new EntityNotFoundException(
-                                             "채널에 속하지 않은 사용자입니다."));
+                                     .orElseThrow(() -> new GlobalException(
+                                             ExceptionMessage.CHANNEL_USER_NOT_FOUND));
 
         return ChannelUserResponseDto.fromEntity(channelUser);
     }
@@ -91,8 +98,8 @@ public class ChannelUserServiceImpl implements ChannelUserService {
         ChannelUser channelUser =
                 channelUserRepository.findByChannel_ChannelIdAndUser_UserId(channelId,
                                                                             user.getUserId())
-                                     .orElseThrow(() -> new EntityNotFoundException(
-                                             "채널에 속하지 않은 사용자입니다."));
+                                     .orElseThrow(() -> new GlobalException(
+                                             ExceptionMessage.CHANNEL_USER_NOT_FOUND));
 
 
         //update 메소드
@@ -109,9 +116,10 @@ public class ChannelUserServiceImpl implements ChannelUserService {
         ChannelUser channelUser =
                 channelUserRepository.findByChannel_ChannelIdAndUser_UserId(channelId,
                                                                             user.getUserId())
-                                     .orElseThrow(() -> new EntityNotFoundException(
-                                             "채널에 속하지 않은 사용자입니다."));
-
+                                     .orElseThrow(() -> new GlobalException(
+                                             ExceptionMessage.CHANNEL_USER_NOT_FOUND));
+        //튜터가 아님을 검증
+        roleAuthorizationService.checkNotTutor(channelId, user.getUserId());
 
         channelUserRepository.delete(channelUser);
 
@@ -122,7 +130,7 @@ public class ChannelUserServiceImpl implements ChannelUserService {
         if (!channelUser.getUser()
                         .getUserId()
                         .equals(requestUserId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "본인만 수정/탈퇴할 수 있습니다.");
+            throw new GlobalException(ExceptionMessage.SELF_ACTION_ONLY);
         }
     }
 }

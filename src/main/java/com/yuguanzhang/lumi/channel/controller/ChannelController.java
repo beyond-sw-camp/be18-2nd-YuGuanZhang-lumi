@@ -1,7 +1,7 @@
 package com.yuguanzhang.lumi.channel.controller;
 
 
-import com.yuguanzhang.lumi.channel.dto.ChannelListResponseDto;
+import com.yuguanzhang.lumi.channel.dto.ChannelsResponseDto;
 import com.yuguanzhang.lumi.channel.dto.ChannelRequestDto;
 import com.yuguanzhang.lumi.channel.dto.ChannelResponseDto;
 import com.yuguanzhang.lumi.channel.service.ChannelService;
@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -50,8 +47,8 @@ public class ChannelController {
     //채널 리스트 조회
     //요청 예시 : GET /api/channels?page=0&size=10&sort=createdAt,desc
     @GetMapping("/channels")
-    public ResponseEntity<PageResponseDto<ChannelListResponseDto>> getChannels(Pageable pageable) {
-        Page<ChannelListResponseDto> channels = channelService.getChannels(pageable);
+    public ResponseEntity<PageResponseDto<ChannelsResponseDto>> getChannels(Pageable pageable) {
+        Page<ChannelsResponseDto> channels = channelService.getChannels(pageable);
 
         return ResponseEntity.ok(PageResponseDto.of(HttpStatus.OK, channels));
 

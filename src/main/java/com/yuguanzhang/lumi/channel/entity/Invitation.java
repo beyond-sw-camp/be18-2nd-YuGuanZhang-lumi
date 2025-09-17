@@ -1,5 +1,6 @@
 package com.yuguanzhang.lumi.channel.entity;
 
+import com.yuguanzhang.lumi.common.entity.BaseTimeEntity;
 import com.yuguanzhang.lumi.role.entity.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Invitation")
+@Table(name = "Invitations")
 @Getter
 @Setter
 @NoArgsConstructor

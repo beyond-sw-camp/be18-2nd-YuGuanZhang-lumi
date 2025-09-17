@@ -6,6 +6,8 @@ import com.yuguanzhang.lumi.channel.entity.Channel;
 import com.yuguanzhang.lumi.channel.entity.Invitation;
 import com.yuguanzhang.lumi.channel.repository.ChannelRepository;
 import com.yuguanzhang.lumi.channel.repository.InvitationRepository;
+import com.yuguanzhang.lumi.common.exception.GlobalException;
+import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.common.service.RoleAuthorizationService;
 import com.yuguanzhang.lumi.role.entity.Role;
 import com.yuguanzhang.lumi.role.repositiry.RoleRepository;
@@ -32,15 +34,16 @@ public class InvitationServiceImpl implements InvitationService {
 
         //초대를 생성한 채널 가져오기
         Channel channel = channelRepository.findById(channelId)
-                                           .orElseThrow(() -> new EntityNotFoundException(
-                                                   "채널이 존재하지 않습니다."));
-        
+                                           .orElseThrow(() -> new GlobalException(
+                                                   ExceptionMessage.CHANNEL_NOT_FOUND));
+
         //요청한 사람이 튜터인지 검증
         roleAuthorizationService.checkTutor(channelId, invitationRequestDto.getRequestUserId());
 
         //초대를 생성할 때 정한 역할 가져오기
         Role role = roleRepository.findById(invitationRequestDto.getRoleId())
-                                  .orElseThrow(() -> new EntityNotFoundException("역할이 존재하지 않습니다."));
+                                  .orElseThrow(() -> new GlobalException(
+                                          ExceptionMessage.ROLE_NOT_FOUND));
 
         //8자리 랜덤 문자열 (영문+숫자 혼합)
         String code;

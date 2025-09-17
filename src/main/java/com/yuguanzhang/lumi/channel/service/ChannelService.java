@@ -1,13 +1,11 @@
 package com.yuguanzhang.lumi.channel.service;
 
-import com.yuguanzhang.lumi.channel.dto.ChannelListResponseDto;
+import com.yuguanzhang.lumi.channel.dto.ChannelsResponseDto;
 import com.yuguanzhang.lumi.channel.dto.ChannelRequestDto;
 import com.yuguanzhang.lumi.channel.dto.ChannelResponseDto;
 import com.yuguanzhang.lumi.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 public interface ChannelService {
 
@@ -15,7 +13,7 @@ public interface ChannelService {
     ChannelResponseDto createChannel(User user, ChannelRequestDto channelRequestDto);
 
     //채널 리스트 조회
-    Page<ChannelListResponseDto> getChannels(Pageable pageable);
+    Page<ChannelsResponseDto> getChannels(Pageable pageable);
 
     //채널 상세 조회
     ChannelResponseDto getChannel(Long channelId);
