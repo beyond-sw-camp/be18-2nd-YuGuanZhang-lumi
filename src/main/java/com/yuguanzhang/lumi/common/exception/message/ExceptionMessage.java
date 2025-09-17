@@ -26,8 +26,23 @@ public enum ExceptionMessage {
     FILE_NOT_READABLE("파일을 읽을 수 없습니다.", HttpStatus.BAD_REQUEST),
     FILE_PATH_INVALID("허용되지 않은 파일 경로입니다.", HttpStatus.FORBIDDEN),
     FILE_INFO_ERROR("파일 정보 조회를 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
-    FILE_ALREADY_DELETED("이미 삭제된 파일입니다.", HttpStatus.GONE);
+    FILE_ALREADY_DELETED("이미 삭제된 파일입니다.", HttpStatus.GONE),
 
+    CHANNEL_NOT_FOUND("채널이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+
+    ROLE_NOT_FOUND("해당 역할이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    TUTOR_ROLE_REQUIRED("튜터만 이 작업을 수행할 수 있습니다.", HttpStatus.FORBIDDEN),
+    TUTOR_NOT_AVAILABLE("튜터는 이 작업을 수행할 수 없습니다.", HttpStatus.FORBIDDEN),
+
+    CHANNEL_USER_NOT_FOUND("채널에 속하지 않은 사용자입니다.", HttpStatus.NOT_FOUND),
+    CHANNEL_ALREADY_JOINED("이미 채널에 참가한 사용자입니다.", HttpStatus.CONFLICT),
+
+    INVITATION_NOT_FOUND("초대코드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    INVITATION_NOT_AVAILABLE("초대가 만료되었거나 이미 사용되었습니다.", HttpStatus.BAD_REQUEST),
+    SELF_ACTION_ONLY("본인만 수정/탈퇴할 수 있습니다.", HttpStatus.FORBIDDEN),
+
+
+    ;
     private final String message;
 
     private final HttpStatus status;

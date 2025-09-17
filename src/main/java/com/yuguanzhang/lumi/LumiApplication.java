@@ -10,8 +10,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 public class LumiApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(LumiApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(LumiApplication.class, args);
+	}
 
 }
