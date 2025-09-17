@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 public class DeletedServiceImpl implements DeletedService {
@@ -23,7 +21,7 @@ public class DeletedServiceImpl implements DeletedService {
         User user = userRepository.findByEmail(requestDto.getEmail())
                                   .orElseThrow(
                                           () -> new IllegalArgumentException("해당 이메일의 사용자가 없습니다."));
-        
+
         user.markAsDeleted();
 
         return new DeletedResponseDto(user.getEmail());

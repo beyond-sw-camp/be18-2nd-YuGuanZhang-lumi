@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UnreadUpdateResponseDto {
     private final Long roomId;
-    private final int unreadCount;
+    private final boolean hasUnread;
     private final String lastMessage;
     private final LocalDateTime lastMessageTime;
     private final UUID opponentId;

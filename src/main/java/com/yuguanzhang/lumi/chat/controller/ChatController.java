@@ -6,7 +6,7 @@ import com.yuguanzhang.lumi.chat.dto.ChatsResponseDto;
 import com.yuguanzhang.lumi.chat.dto.UnreadUpdateResponseDto;
 import com.yuguanzhang.lumi.chat.entity.RoomUser;
 import com.yuguanzhang.lumi.chat.service.ChatService;
-import com.yuguanzhang.lumi.common.dto.ResponseDto;
+import com.yuguanzhang.lumi.common.dto.BaseResponseDto;
 import com.yuguanzhang.lumi.user.dto.UserDetailsDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/chatrooms")
+@RequestMapping("/api/chatrooms")
 @RequiredArgsConstructor
 @Slf4j
 public class ChatController {
@@ -35,33 +35,33 @@ public class ChatController {
     private final SimpMessageSendingOperations template;
 
     @GetMapping
-    public ResponseEntity<ResponseDto<List<ChatRoomsResponseDto>>> getChatRooms(
+    public ResponseEntity<BaseResponseDto<ChatRoomsResponseDto>> getChatRooms(
             @AuthenticationPrincipal UserDetailsDto user) {
         List<ChatRoomsResponseDto> rooms = chatService.getChatRooms(user.getUser().getUserId());
 
-        ResponseDto<List<ChatRoomsResponseDto>> response = new ResponseDto<>(HttpStatus.OK, rooms);
+        BaseResponseDto<ChatRoomsResponseDto> response = BaseResponseDto.of(HttpStatus.OK, rooms);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{room_id}")
-    public ResponseEntity<ResponseDto<List<ChatsResponseDto>>> getChats(
+    public ResponseEntity<BaseResponseDto<ChatsResponseDto>> getChats(
             @AuthenticationPrincipal UserDetailsDto user, @PathVariable("room_id") Long roomId) {
         List<ChatsResponseDto> chats = chatService.getChats(user.getUser().getUserId(), roomId);
 
-        ResponseDto<List<ChatsResponseDto>> response = new ResponseDto<>(HttpStatus.OK, chats);
+        BaseResponseDto<ChatsResponseDto> response = BaseResponseDto.of(HttpStatus.OK, chats);
 
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{room_id}/chats/{chat_id}")
-    public ResponseEntity<ResponseDto<Void>> deleteChat(
+    public ResponseEntity<BaseResponseDto<Void>> deleteChat(
             @AuthenticationPrincipal UserDetailsDto user, @PathVariable("room_id") Long roomId,
             @PathVariable("chat_id") Long chatId) {
 
         chatService.deleteChat(user.getUser().getUserId(), roomId, chatId);
 
-        ResponseDto<Void> response = new ResponseDto<>(HttpStatus.OK, null);
+        BaseResponseDto<Void> response = BaseResponseDto.of(HttpStatus.OK, null);
 
         return ResponseEntity.ok(response);
 
@@ -69,22 +69,25 @@ public class ChatController {
 
     @MessageMapping("/{room_id}/chats")
     public void sendMessage(@AuthenticationPrincipal UserDetailsDto user,
-            @Payload ChatRequestDto chatRequestDto, @DestinationVariable("room_id") Long roomId) {
+                            @Payload ChatRequestDto chatRequestDto,
+                            @DestinationVariable("room_id") Long roomId) {
 
         log.info("user: {}", user);
 
         RoomUser receiverRoomUser =
                 chatService.postChat(chatRequestDto, user.getUser().getUserId(), roomId);
 
-        String receiverId = receiverRoomUser.getRoomUserId().getUser().getUserId().toString();
+        String receiverId = receiverRoomUser.getRoomUserId().getUserId().toString();
 
         // 메세지를 서버로 부터 받음
         template.convertAndSend("/sub/chatrooms/" + roomId, chatRequestDto);
 
         // 채팅 목록 업데이트 이벤트
         template.convertAndSendToUser(receiverId, "/queue/unread",
-                new UnreadUpdateResponseDto(roomId, receiverRoomUser.getUnreadCount(),
-                        chatRequestDto.getMessage(), LocalDateTime.now(),
-                        user.getUser().getUserId()));
+                                      new UnreadUpdateResponseDto(roomId,
+                                                                  receiverRoomUser.isHasUnread(),
+                                                                  chatRequestDto.getMessage(),
+                                                                  LocalDateTime.now(),
+                                                                  user.getUser().getUserId()));
     }
 }
