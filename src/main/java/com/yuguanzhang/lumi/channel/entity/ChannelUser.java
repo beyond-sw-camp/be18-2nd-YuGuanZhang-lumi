@@ -18,11 +18,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ChannelUsers")
@@ -63,16 +59,7 @@ public class ChannelUser extends BaseTimeEntity {
     //DB 에서는 nullable 여부를 생각하면 Boolean notificationEnabled로 객체형으로 쓰는 경우도 있음
     //하지만 지금은 default true로 사용하니 문제 없음
     private boolean notificationEnabled = true; //해당 채널 알림 여부 default값 true
-
-    //    @CreatedDate
-    //    @Column(name = "created_at", nullable = false, updatable = false)
-    //    private LocalDateTime createdAt;
-    //
-    //    @LastModifiedDate
-    //    @Column(name = "updated_at")
-    //    private LocalDateTime updatedAt;
-
-
+    
 
     public void updateData(String newData) {
         this.data = newData;

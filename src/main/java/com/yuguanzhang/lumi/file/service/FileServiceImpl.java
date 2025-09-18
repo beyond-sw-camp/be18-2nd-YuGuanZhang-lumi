@@ -3,7 +3,7 @@ package com.yuguanzhang.lumi.file.service;
 import com.yuguanzhang.lumi.common.exception.GlobalException;
 import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.file.dto.FileDownloadDto;
-import com.yuguanzhang.lumi.file.dto.FilePathInfo;
+import com.yuguanzhang.lumi.file.vo.FilePathInfo;
 import com.yuguanzhang.lumi.file.dto.FileUploadResponseDto;
 import com.yuguanzhang.lumi.file.entity.File;
 import com.yuguanzhang.lumi.file.enums.EntityType;

@@ -6,9 +6,7 @@ import com.yuguanzhang.lumi.channel.service.ChannelUserService;
 import com.yuguanzhang.lumi.common.dto.BaseResponseDto;
 import com.yuguanzhang.lumi.common.dto.PageResponseDto;
 import com.yuguanzhang.lumi.user.dto.UserDetailsDto;
-import com.yuguanzhang.lumi.user.entity.User;
 import com.yuguanzhang.lumi.user.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -54,8 +52,8 @@ public class ChannelUserController {
             @PathVariable("channel_id") Long channelId, Pageable pageable) {
         Page<ChannelUserResponseDto> channelUsers =
                 channelUserService.getChannelUsers(channelId, pageable);
-
-        return ResponseEntity.ok(PageResponseDto.of(HttpStatus.OK, channelUsers));
+        
+        return ResponseEntity.ok(PageResponseDto.page(HttpStatus.OK, channelUsers));
     }
 
 

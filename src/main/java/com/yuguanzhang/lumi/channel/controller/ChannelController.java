@@ -50,7 +50,7 @@ public class ChannelController {
     public ResponseEntity<PageResponseDto<ChannelsResponseDto>> getChannels(Pageable pageable) {
         Page<ChannelsResponseDto> channels = channelService.getChannels(pageable);
 
-        return ResponseEntity.ok(PageResponseDto.of(HttpStatus.OK, channels));
+        return ResponseEntity.ok(PageResponseDto.page(HttpStatus.OK, channels));
 
     }
 

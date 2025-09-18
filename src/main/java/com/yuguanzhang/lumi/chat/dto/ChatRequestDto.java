@@ -12,15 +12,20 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ChatRequestDto {
-    private final MessageType messageType;
+    private MessageType messageType;
 
-    private final String message;
+    private String message;
 
-    private final Long receiverId;
+    private Long receiverId;
 
     public Chat toEntity(Room room, User user) {
-        return Chat.builder().room(room).user(user).content(this.message)
-                .messageType(this.messageType).isRead(false).build();
+        return Chat.builder()
+                   .room(room)
+                   .user(user)
+                   .content(this.message)
+                   .messageType(this.messageType)
+                   .isRead(false)
+                   .build();
 
     }
 

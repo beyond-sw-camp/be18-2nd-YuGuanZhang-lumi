@@ -4,24 +4,18 @@ import com.yuguanzhang.lumi.channel.dto.ChannelUserRequestDto;
 import com.yuguanzhang.lumi.channel.dto.ChannelUserResponseDto;
 import com.yuguanzhang.lumi.channel.entity.ChannelUser;
 import com.yuguanzhang.lumi.channel.entity.Invitation;
-import com.yuguanzhang.lumi.channel.repository.ChannelRepository;
 import com.yuguanzhang.lumi.channel.repository.ChannelUserRepository;
 import com.yuguanzhang.lumi.channel.repository.InvitationRepository;
 import com.yuguanzhang.lumi.common.exception.GlobalException;
 import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.common.service.RoleAuthorizationService;
-import com.yuguanzhang.lumi.role.repositiry.RoleRepository;
 import com.yuguanzhang.lumi.user.entity.User;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -124,13 +118,5 @@ public class ChannelUserServiceImpl implements ChannelUserService {
         channelUserRepository.delete(channelUser);
 
         return ChannelUserResponseDto.fromEntity(channelUser);
-    }
-
-    private void validateSelf(ChannelUser channelUser, UUID requestUserId) {
-        if (!channelUser.getUser()
-                        .getUserId()
-                        .equals(requestUserId)) {
-            throw new GlobalException(ExceptionMessage.SELF_ACTION_ONLY);
-        }
     }
 }
