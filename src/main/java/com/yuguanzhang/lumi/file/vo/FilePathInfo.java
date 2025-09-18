@@ -1,4 +1,4 @@
-package com.yuguanzhang.lumi.file.dto;
+package com.yuguanzhang.lumi.file.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

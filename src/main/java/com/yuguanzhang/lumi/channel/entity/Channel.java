@@ -44,7 +44,6 @@ public class Channel extends BaseTimeEntity {
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChannelUser> channelUsers = new ArrayList<>();
 
-
     public void updateName(String newName) {
         this.name = newName;
     }

@@ -36,7 +36,7 @@ public class ChannelUserController {
     private final UserRepository userRepository;
 
     //유저 초대 성공시 채널에 추가
-    @PostMapping("/{channel_id}/participants")
+    @PostMapping("/participants")
     public ResponseEntity<BaseResponseDto<ChannelUserResponseDto>> joinChannel(
             @RequestParam String code, @AuthenticationPrincipal UserDetailsDto user) {
         ChannelUserResponseDto channelUserResponseDto =
@@ -53,7 +53,7 @@ public class ChannelUserController {
         Page<ChannelUserResponseDto> channelUsers =
                 channelUserService.getChannelUsers(channelId, pageable);
 
-        return ResponseEntity.ok(PageResponseDto.of(HttpStatus.OK, channelUsers));
+        return ResponseEntity.ok(PageResponseDto.page(HttpStatus.OK, channelUsers));
     }
 
 

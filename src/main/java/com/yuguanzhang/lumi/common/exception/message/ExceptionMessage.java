@@ -28,12 +28,15 @@ public enum ExceptionMessage {
     FILE_INFO_ERROR("파일 정보 조회를 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
     FILE_ALREADY_DELETED("이미 삭제된 파일입니다.", HttpStatus.GONE),
 
-    CHANNEL_NOT_FOUND("채널이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    TODO_NOT_FOUND("해당 투두를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    UNAUTHORIZED_TODO_UPDATE("해당 투두를 수정할 권한이 없습니다.", HttpStatus.FORBIDDEN),
+    UNAUTHORIZED_TODO_DELETE("해당 투두를 삭제할 권한이 없습니다.", HttpStatus.FORBIDDEN),
 
     ROLE_NOT_FOUND("해당 역할이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     TUTOR_ROLE_REQUIRED("튜터만 이 작업을 수행할 수 있습니다.", HttpStatus.FORBIDDEN),
     TUTOR_NOT_AVAILABLE("튜터는 이 작업을 수행할 수 없습니다.", HttpStatus.FORBIDDEN),
 
+    CHANNEL_NOT_FOUND("채널이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     CHANNEL_USER_NOT_FOUND("채널에 속하지 않은 사용자입니다.", HttpStatus.NOT_FOUND),
     CHANNEL_ALREADY_JOINED("이미 채널에 참가한 사용자입니다.", HttpStatus.CONFLICT),
 
@@ -43,6 +46,7 @@ public enum ExceptionMessage {
 
     GRADE_NOT_FOUND("성적이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     ;
+
     private final String message;
 
     private final HttpStatus status;
