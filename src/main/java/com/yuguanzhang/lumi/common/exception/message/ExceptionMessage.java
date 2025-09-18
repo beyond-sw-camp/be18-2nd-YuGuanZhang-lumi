@@ -41,7 +41,7 @@ public enum ExceptionMessage {
     INVITATION_NOT_AVAILABLE("초대가 만료되었거나 이미 사용되었습니다.", HttpStatus.BAD_REQUEST),
     SELF_ACTION_ONLY("본인만 수정/탈퇴할 수 있습니다.", HttpStatus.FORBIDDEN),
 
-
+    GRADE_NOT_FOUND("성적이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     ;
     private final String message;
 

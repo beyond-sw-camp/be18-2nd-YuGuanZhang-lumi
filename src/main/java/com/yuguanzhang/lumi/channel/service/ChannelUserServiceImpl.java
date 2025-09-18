@@ -125,12 +125,5 @@ public class ChannelUserServiceImpl implements ChannelUserService {
 
         return ChannelUserResponseDto.fromEntity(channelUser);
     }
-
-    private void validateSelf(ChannelUser channelUser, UUID requestUserId) {
-        if (!channelUser.getUser()
-                        .getUserId()
-                        .equals(requestUserId)) {
-            throw new GlobalException(ExceptionMessage.SELF_ACTION_ONLY);
-        }
-    }
+    
 }

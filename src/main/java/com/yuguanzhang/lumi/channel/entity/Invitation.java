@@ -1,6 +1,5 @@
 package com.yuguanzhang.lumi.channel.entity;
 
-import com.yuguanzhang.lumi.common.entity.BaseTimeEntity;
 import com.yuguanzhang.lumi.role.entity.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
