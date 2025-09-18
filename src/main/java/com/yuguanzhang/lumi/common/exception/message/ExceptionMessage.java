@@ -10,6 +10,11 @@ public enum ExceptionMessage {
     INVALID_CREDENTIALS("아이디 또는 비밀번호가 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
     DELETED_ACCOUNT("삭제된 계정입니다.", HttpStatus.UNAUTHORIZED),
     INTERNAL_SERVER_ERROR("서버 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
+    
+    EMAIL_NOT_FOUND("이메일 인증이 완료되지 않았습니다.", HttpStatus.BAD_REQUEST),
+    EMAIL_VERIFICATION_FAILED("이메일 인증에 실패했거나 만료되었습니다.", HttpStatus.BAD_REQUEST),
+    EMAIL_ALREADY_USED("이미 사용중인 이메일 입니다.", HttpStatus.CONFLICT),
+    PRIVACY_AGREEMENT_REQUIRED("개인정보 동의가 필요합니다.", HttpStatus.BAD_REQUEST),
 
     USER_NOT_FOUND("사용자 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     ROOM_NOT_FOUND("채팅방 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
@@ -25,7 +30,20 @@ public enum ExceptionMessage {
 
     TODO_NOT_FOUND("해당 투두를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     UNAUTHORIZED_TODO_UPDATE("해당 투두를 수정할 권한이 없습니다.", HttpStatus.FORBIDDEN),
-    UNAUTHORIZED_TODO_DELETE("해당 투두를 삭제할 권한이 없습니다.", HttpStatus.FORBIDDEN);
+    UNAUTHORIZED_TODO_DELETE("해당 투두를 삭제할 권한이 없습니다.", HttpStatus.FORBIDDEN),
+
+    ROLE_NOT_FOUND("해당 역할이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    TUTOR_ROLE_REQUIRED("튜터만 이 작업을 수행할 수 있습니다.", HttpStatus.FORBIDDEN),
+    TUTOR_NOT_AVAILABLE("튜터는 이 작업을 수행할 수 없습니다.", HttpStatus.FORBIDDEN),
+
+    CHANNEL_NOT_FOUND("채널이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    CHANNEL_USER_NOT_FOUND("채널에 속하지 않은 사용자입니다.", HttpStatus.NOT_FOUND),
+    CHANNEL_ALREADY_JOINED("이미 채널에 참가한 사용자입니다.", HttpStatus.CONFLICT),
+
+    INVITATION_NOT_FOUND("초대코드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    INVITATION_NOT_AVAILABLE("초대가 만료되었거나 이미 사용되었습니다.", HttpStatus.BAD_REQUEST),
+    SELF_ACTION_ONLY("본인만 수정/탈퇴할 수 있습니다.", HttpStatus.FORBIDDEN);
+
 
     private final String message;
 

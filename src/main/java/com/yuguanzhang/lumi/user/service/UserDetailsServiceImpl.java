@@ -1,5 +1,7 @@
 package com.yuguanzhang.lumi.user.service;
 
+import com.yuguanzhang.lumi.common.exception.GlobalException;
+import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.email.repository.EmailVerificationRepository;
 import com.yuguanzhang.lumi.user.dto.UserDetailsDto;
 import com.yuguanzhang.lumi.user.entity.User;
@@ -24,17 +26,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // email 기준으로 유저 조회
         User user = userRepository.findByEmail(email)
-                                  .orElseThrow(() -> new UsernameNotFoundException(
-                                          "User not found with email: " + email));
+                                  .orElseThrow(() -> new GlobalException(
+                                          ExceptionMessage.ROOM_USER_NOT_FOUND));
         // UsernamePasswordAuthenticationToken = Spring Security에서 제공하는 클래스
 
         // 이메일 인증 여부 확인
         if (!user.getIsVerified()) {
-            throw new UsernameNotFoundException("이메일이 확인되지 않았습니다.");
+            throw new GlobalException(ExceptionMessage.EMAIL_NOT_FOUND);
         }
 
         if (user.getIsDeleted()) {
-            throw new DisabledException("삭제된 계정입니다.");
+            throw new GlobalException(ExceptionMessage.DELETED_ACCOUNT);
         }
 
         // User 엔티티 → UserDetailsDto 변환

@@ -24,7 +24,7 @@ public class PageResponseDto<T> extends BaseResponseDto<T> {
         this.totalPages = pageData.getTotalPages();
     }
 
-    public static <T> PageResponseDto<T> of(HttpStatus status, Page<T> pageData) {
+    public static <T> PageResponseDto<T> page(HttpStatus status, Page<T> pageData) {
 
         return new PageResponseDto<>(status, pageData);
     }
