@@ -12,4 +12,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
                                                                                    LocalDateTime startDate,
                                                                                    LocalDateTime endDate);
 
+    List<Course> findByChannelUser_Channel_ChannelIdInAndStartDateBetweenOrderByStartDateAsc(
+            List<Long> channelIds, LocalDateTime startDate, LocalDateTime endDate);
+
 }

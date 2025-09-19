@@ -12,5 +12,4 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
     //채널 이름으로 채널 객체 조회
     Optional<Channel> findByName(String name);
 
-
 }

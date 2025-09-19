@@ -38,6 +38,8 @@ public class CourseServiceImpl implements CourseService {
     public Map<LocalDate, List<CoursesResponseDto>> getCourses(UUID userId, LocalDate startDate,
                                                                LocalDate endDate) {
 
+
+
         log.info("startDate:{}", startDate);
         startDate = (startDate == null) ?
                 LocalDate.now()
@@ -52,10 +54,11 @@ public class CourseServiceImpl implements CourseService {
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
 
+        List<Long> channelIds = channelUserRepository.findChannelIdsByUserId(userId);
 
         List<Course> courses =
-                courseRepository.findByChannelUserUserUserIdAndStartDateBetweenOrderByStartDateAsc(
-                        userId, startDateTime, endDateTime);
+                courseRepository.findByChannelUser_Channel_ChannelIdInAndStartDateBetweenOrderByStartDateAsc(
+                        channelIds, startDateTime, endDateTime);
 
         log.info("courses :{}", courses.toString());
 
@@ -78,9 +81,11 @@ public class CourseServiceImpl implements CourseService {
                                                  .atTime(23, 59, 59);
 
 
+        List<Long> channelIds = channelUserRepository.findChannelIdsByUserId(userId);
+
         List<Course> courses =
-                courseRepository.findByChannelUserUserUserIdAndStartDateBetweenOrderByStartDateAsc(
-                        userId, startDateTime, endDateTime);
+                courseRepository.findByChannelUser_Channel_ChannelIdInAndStartDateBetweenOrderByStartDateAsc(
+                        channelIds, startDateTime, endDateTime);
 
 
         return courses.stream()
