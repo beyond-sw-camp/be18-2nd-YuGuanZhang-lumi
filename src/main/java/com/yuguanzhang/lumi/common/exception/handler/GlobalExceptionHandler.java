@@ -9,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -17,8 +18,7 @@ public class GlobalExceptionHandler {
 
     // 탈퇴한 사용자
     @ExceptionHandler({
-            DisabledException.class,
-            InternalAuthenticationServiceException.class
+            DisabledException.class, InternalAuthenticationServiceException.class
     })
     public ResponseEntity<BaseResponseDto<String>> handleDeletedAccount(RuntimeException ex) {
         return ResponseEntity.status(ExceptionMessage.DELETED_ACCOUNT.getStatus())
@@ -67,4 +67,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getStatus())
                              .body(BaseResponseDto.error(ex.getStatus(), ex.getMessage()));
     }
+
+    // 회원가입 에러
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<BaseResponseDto<String>> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult()
+                                .getAllErrors()
+                                .get(0)
+                                .getDefaultMessage();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(BaseResponseDto.error(HttpStatus.BAD_REQUEST, errorMessage));
+    }
+
 }
