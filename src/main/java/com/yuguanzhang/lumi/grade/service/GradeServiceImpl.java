@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,7 +84,15 @@ public class GradeServiceImpl implements GradeService {
                      .collect(Collectors.groupingBy(GradeResponseDto::getCategory))
                      .entrySet()
                      .stream()
-                     .map(entry -> new GradeCategoryGroupDto(entry.getKey(), entry.getValue()))
+                     .map(entry -> {
+                         List<GradeResponseDto> sortedGrades = entry.getValue()
+                                                                    .stream()
+                                                                    .sorted(Comparator.comparing(
+                                                                            GradeResponseDto::getDate)) // 🔑 날짜 오름차순
+                                                                    .toList();
+
+                         return new GradeCategoryGroupDto(entry.getKey(), sortedGrades);
+                     })
                      .toList();
     }
 
