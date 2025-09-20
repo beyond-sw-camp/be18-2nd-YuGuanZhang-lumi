@@ -45,7 +45,8 @@ public enum ExceptionMessage {
     SELF_ACTION_ONLY("본인만 수정/탈퇴할 수 있습니다.", HttpStatus.FORBIDDEN),
 
     GRADE_NOT_FOUND("성적이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
-    ;
+    COURSE_NOT_FOUND("수업을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    UNAUTHORIZED_COURSE_DELETE("튜터만 수업을 삭제할 수 있습니다.", HttpStatus.FORBIDDEN);
 
     private final String message;
 
