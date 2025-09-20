@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/channels")
@@ -36,19 +35,17 @@ public class CourseController {
     private final CourseService courseService;
 
     @GetMapping("/courses")
-    public ResponseEntity<BaseResponseDto<Map<LocalDate, List<CoursesResponseDto>>>> getCourses(
+    public ResponseEntity<BaseResponseDto<CoursesResponseDto>> getCourses(
             @AuthenticationPrincipal UserDetailsDto user,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate endDate) {
-        Map<LocalDate, List<CoursesResponseDto>> course = courseService.getCourses(user.getUser()
-                                                                                       .getUserId(),
-                                                                                   startDate,
-                                                                                   endDate);
+        List<CoursesResponseDto> courses = courseService.getCourses(user.getUser()
+                                                                        .getUserId(), startDate,
+                                                                    endDate);
 
-        BaseResponseDto<Map<LocalDate, List<CoursesResponseDto>>> response =
-                BaseResponseDto.of(HttpStatus.OK, course);
+        BaseResponseDto<CoursesResponseDto> response = BaseResponseDto.of(HttpStatus.OK, courses);
 
         return ResponseEntity.ok(response);
     }

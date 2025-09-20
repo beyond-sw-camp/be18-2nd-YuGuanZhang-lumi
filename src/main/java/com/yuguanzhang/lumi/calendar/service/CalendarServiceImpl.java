@@ -11,6 +11,7 @@ import com.yuguanzhang.lumi.course.respository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,6 +27,7 @@ public class CalendarServiceImpl implements CalendarService {
     private final CourseRepository courseRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<CalendarsResponseDto> getCalendars(UUID userId, LocalDate startDate,
                                                    LocalDate endDate) {
 
@@ -48,6 +50,7 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CalendarResponseDto> getCalendarsByDate(UUID userId, LocalDate dueDate) {
         LocalDateTime startDateTime = DateTimeUtil.getStartOfDay(dueDate);
         LocalDateTime endDateTime = DateTimeUtil.getEndOfDay(dueDate);

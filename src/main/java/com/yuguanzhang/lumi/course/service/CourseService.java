@@ -7,12 +7,10 @@ import com.yuguanzhang.lumi.course.dto.CoursesResponseDto;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public interface CourseService {
-    Map<LocalDate, List<CoursesResponseDto>> getCourses(UUID userId, LocalDate startDate,
-                                                        LocalDate endDate);
+    List<CoursesResponseDto> getCourses(UUID userId, LocalDate startDate, LocalDate endDate);
 
     List<CourseResponseDto> getCoursesByDate(UUID userId, LocalDate dueDate);
 
