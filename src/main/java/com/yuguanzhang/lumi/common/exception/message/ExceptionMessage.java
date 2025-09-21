@@ -10,6 +10,7 @@ public enum ExceptionMessage {
     INVALID_CREDENTIALS("아이디 또는 비밀번호가 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
     DELETED_ACCOUNT("삭제된 계정입니다.", HttpStatus.UNAUTHORIZED),
     INTERNAL_SERVER_ERROR("서버 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
+
     EMAIL_NOT_FOUND("이메일 인증이 완료되지 않았습니다.", HttpStatus.BAD_REQUEST),
     EMAIL_VERIFICATION_FAILED("이메일 인증에 실패했거나 만료되었습니다.", HttpStatus.BAD_REQUEST),
     EMAIL_ALREADY_USED("이미 사용중인 이메일 입니다.", HttpStatus.CONFLICT),
@@ -44,6 +45,8 @@ public enum ExceptionMessage {
     INVITATION_NOT_FOUND("초대코드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     INVITATION_NOT_AVAILABLE("초대가 만료되었거나 이미 사용되었습니다.", HttpStatus.BAD_REQUEST),
 
+    MATERIAL_NOT_FOUND("수업 자료가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+
     GRADE_NOT_FOUND("성적이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
 
     ASSIGNMENT_NOT_FOUND("과제가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
@@ -53,7 +56,10 @@ public enum ExceptionMessage {
     UNAUTHORIZED_SUBMISSION_UPDATE("해당 제출을 수정할 권한이 없습니다.", HttpStatus.FORBIDDEN),
     UNAUTHORIZED_SUBMISSION_DELETE("해당 제출을 삭제할 권한이 없습니다.", HttpStatus.FORBIDDEN),
     EVALUATION_ALREADY_EXISTS("이미 평가가 완료된 제출입니다.", HttpStatus.BAD_REQUEST),
-    EVALUATION_NOT_FOUND("평가가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
+    EVALUATION_NOT_FOUND("평가가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+
+    COURSE_NOT_FOUND("수업을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    UNAUTHORIZED_COURSE_DELETE("튜터만 수업을 삭제할 수 있습니다.", HttpStatus.FORBIDDEN);
 
 
     private final String message;
