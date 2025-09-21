@@ -4,6 +4,8 @@ import com.yuguanzhang.lumi.file.entity.FileAssociation;
 import com.yuguanzhang.lumi.file.enums.EntityType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface FileAssociationRepository extends JpaRepository<FileAssociation, Long> {
     //id 와 type 으로 select
     List<FileAssociation> findByEntityIdAndEntityType(Long entityId, EntityType entityType);
