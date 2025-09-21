@@ -5,13 +5,9 @@ import com.yuguanzhang.lumi.channel.repository.ChannelUserRepository;
 import com.yuguanzhang.lumi.common.exception.GlobalException;
 import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.role.entity.RoleName;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.nio.file.AccessDeniedException;
 import java.util.UUID;
 
 @Service
