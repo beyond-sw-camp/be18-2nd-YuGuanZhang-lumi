@@ -47,4 +47,16 @@ public class RoleAuthorizationService {
         }
     }
 
+    public void checkStudent(Long channelId, UUID userId) {
+
+        ChannelUser channelUser =
+                channelUserRepository.findByChannel_ChannelIdAndUser_UserId(channelId, userId)
+                                     .orElseThrow(() -> new GlobalException(
+                                             ExceptionMessage.CHANNEL_USER_NOT_FOUND));
+        if (channelUser.getRole()
+                       .getRoleName() != RoleName.STUDENT) {
+            throw new GlobalException(ExceptionMessage.STUDENT_ROLE_REQUIRED);
+        }
+    }
+
 }
