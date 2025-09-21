@@ -11,8 +11,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class InvitationRequestDto {
 
-    private UUID requestUserId;
-
     private Long roleId;
 
 }

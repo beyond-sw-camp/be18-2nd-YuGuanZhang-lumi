@@ -16,6 +16,7 @@ public enum ExceptionMessage {
     EMAIL_ALREADY_USED("이미 사용중인 이메일 입니다.", HttpStatus.CONFLICT),
     PRIVACY_AGREEMENT_REQUIRED("개인정보 동의가 필요합니다.", HttpStatus.BAD_REQUEST),
 
+
     USER_NOT_FOUND("사용자 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     ROOM_NOT_FOUND("채팅방 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     ROOM_USER_NOT_FOUND("해당 채팅방에서 사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
@@ -45,10 +46,10 @@ public enum ExceptionMessage {
     SELF_ACTION_ONLY("본인만 수정/탈퇴할 수 있습니다.", HttpStatus.FORBIDDEN),
 
     MATERIAL_NOT_FOUND("수업 자료가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
-    
 
-    ;
-
+    GRADE_NOT_FOUND("성적이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    COURSE_NOT_FOUND("수업을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    UNAUTHORIZED_COURSE_DELETE("튜터만 수업을 삭제할 수 있습니다.", HttpStatus.FORBIDDEN);
 
     private final String message;
 
