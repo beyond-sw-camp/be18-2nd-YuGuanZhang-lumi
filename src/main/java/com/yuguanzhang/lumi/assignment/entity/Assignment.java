@@ -19,7 +19,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -41,7 +41,7 @@ public class Assignment extends BaseTimeEntity {
     private String content;
 
     @Column(name = "deadline_at", nullable = false)
-    private LocalDate deadlineAt;  // 제출 마감일 (날짜만)
+    private LocalDateTime deadlineAt;  // 제출 마감일 (날짜만)
 
     @Column(name = "is_evaluation", nullable = false)
     private boolean isEvaluation;      // 평가 여부
@@ -50,7 +50,7 @@ public class Assignment extends BaseTimeEntity {
     private boolean isSubmission;      // 제출 가능 여부
 
     @Column(name = "evaluation_deadline_at")
-    private LocalDate evaluationDeadlineAt;  // 평가 마감일 (날짜만)
+    private LocalDateTime evaluationDeadlineAt;  // 평가 마감일 (날짜만)
 
     // 선생님 (과제 생성자)
     @ManyToOne(fetch = FetchType.LAZY)

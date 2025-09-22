@@ -1,12 +1,13 @@
 package com.yuguanzhang.lumi.assignment.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yuguanzhang.lumi.assignment.entity.Assignment;
 import com.yuguanzhang.lumi.file.dto.FileUploadResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -20,13 +21,14 @@ public class AssignmentResponseDto {
 
     private final String content;
 
-    private final LocalDate deadlineAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private final LocalDateTime deadlineAt;
 
     private final boolean isEvaluation;
 
     private final boolean isSubmission;
 
-    private final LocalDate evaluationDeadlineAt;
+    private final LocalDateTime evaluationDeadlineAt;
 
     private final List<FileUploadResponseDto> files;
 

@@ -1,5 +1,7 @@
 package com.yuguanzhang.lumi.calendar.service;
 
+import com.yuguanzhang.lumi.assignment.entity.Assignment;
+import com.yuguanzhang.lumi.assignment.repository.AssignmentRepository;
 import com.yuguanzhang.lumi.calendar.dto.CalendarResponseDto;
 import com.yuguanzhang.lumi.calendar.dto.CalendarsResponseDto;
 import com.yuguanzhang.lumi.channel.repository.ChannelUserRepository;
@@ -25,6 +27,7 @@ import java.util.UUID;
 public class CalendarServiceImpl implements CalendarService {
     private final ChannelUserRepository channelUserRepository;
     private final CourseRepository courseRepository;
+    private final AssignmentRepository assignmentRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -40,11 +43,21 @@ public class CalendarServiceImpl implements CalendarService {
 
         List<Course> courses =
                 courseRepository.findCoursesInDateRange(channelIds, startDateTime, endDateTime);
+        List<Assignment> assignments =
+                assignmentRepository.findAssignmentsInDateRange(channelIds, startDateTime,
+                                                                endDateTime);
 
-        // 과제 제출 마감, 평가 마감 추가
+
         List<CalendarsResponseDto> responseDtos = new ArrayList<>();
 
         courses.forEach(course -> responseDtos.add(CalendarsResponseDto.fromCourse(course)));
+        assignments.forEach((assignment -> {
+            responseDtos.add(CalendarsResponseDto.fromAssignment(assignment));
+
+            if (assignment.isEvaluation()) {
+                responseDtos.add(CalendarsResponseDto.fromEvaluation(assignment));
+            }
+        }));
 
         return responseDtos;
     }
@@ -60,11 +73,20 @@ public class CalendarServiceImpl implements CalendarService {
 
         List<Course> courses =
                 courseRepository.findCoursesInDateRange(channelIds, startDateTime, endDateTime);
+        List<Assignment> assignments =
+                assignmentRepository.findAssignmentsInDateRange(channelIds, startDateTime,
+                                                                endDateTime);
 
         // 과제 제출 마감, 평가 마감 추가
         List<CalendarResponseDto> responseDtos = new ArrayList<>();
 
         courses.forEach(course -> responseDtos.add(CalendarResponseDto.fromCourse(course)));
+        assignments.forEach(assignment -> {
+            responseDtos.add(CalendarResponseDto.fromAssignment(assignment));
+            if (assignment.isEvaluation()) {
+                responseDtos.add(CalendarResponseDto.fromEvaluation(assignment));
+            }
+        });
 
         return responseDtos;
     }

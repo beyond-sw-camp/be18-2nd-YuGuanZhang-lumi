@@ -1,6 +1,7 @@
 package com.yuguanzhang.lumi.calendar.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yuguanzhang.lumi.assignment.entity.Assignment;
 import com.yuguanzhang.lumi.course.entity.Course;
 import com.yuguanzhang.lumi.role.entity.RoleName;
 import lombok.AllArgsConstructor;
@@ -41,11 +42,40 @@ public class CalendarsResponseDto {
                                    .build();
     }
 
-    // public static CalendarsResponseDto fromAssignment(Assignment assignment) {
-    //     return CalendarsResponseDto.builder().build();
-    // }
+    public static CalendarsResponseDto fromAssignment(Assignment assignment) {
+        return CalendarsResponseDto.builder()
+                                   .channelId(assignment.getChannelUser()
+                                                        .getChannel()
+                                                        .getChannelId())
+                                   .channelName(assignment.getChannelUser()
+                                                          .getChannel()
+                                                          .getName())
+                                   .entityId(assignment.getAssignmentId())
+                                   .entityType("ASSIGNMENT")
+                                   .roleName(assignment.getChannelUser()
+                                                       .getRole()
+                                                       .getRoleName())
+                                   .startDate(assignment.getUpdatedAt())
+                                   .endDate(assignment.getDeadlineAt())
+                                   .build();
+    }
 
-    // public static CalendarsResponseDto fromEvaludation(Assignment assignment) {
-    //     return CalendarsResponseDto.builder().build();
-    // }
+    public static CalendarsResponseDto fromEvaluation(Assignment evaluation) {
+        return CalendarsResponseDto.builder()
+                                   .channelId(evaluation.getChannelUser()
+                                                        .getChannel()
+                                                        .getChannelId())
+                                   .channelName(evaluation.getChannelUser()
+                                                          .getChannel()
+                                                          .getName())
+                                   .entityId(evaluation.getAssignmentId())
+                                   .entityType("EVALUATION")
+                                   .roleName(evaluation.getChannelUser()
+                                                       .getRole()
+                                                       .getRoleName())
+                                   .startDate(evaluation.getDeadlineAt()
+                                                        .plusDays(1))
+                                   .endDate(evaluation.getEvaluationDeadlineAt())
+                                   .build();
+    }
 }
