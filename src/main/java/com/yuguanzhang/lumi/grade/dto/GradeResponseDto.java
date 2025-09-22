@@ -1,5 +1,6 @@
 package com.yuguanzhang.lumi.grade.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yuguanzhang.lumi.grade.Entity.Grade;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ public class GradeResponseDto {
 
     private final int grade;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime date;
 
     private final Long channelUserId;
