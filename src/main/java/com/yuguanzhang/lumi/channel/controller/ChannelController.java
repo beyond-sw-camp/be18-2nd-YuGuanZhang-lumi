@@ -47,8 +47,9 @@ public class ChannelController {
     //채널 리스트 조회
     //요청 예시 : GET /api/channels?page=0&size=10&sort=createdAt,desc
     @GetMapping("/channels")
-    public ResponseEntity<PageResponseDto<ChannelsResponseDto>> getChannels(Pageable pageable) {
-        Page<ChannelsResponseDto> channels = channelService.getChannels(pageable);
+    public ResponseEntity<PageResponseDto<ChannelsResponseDto>> getChannels(
+            @AuthenticationPrincipal UserDetailsDto user, Pageable pageable) {
+        Page<ChannelsResponseDto> channels = channelService.getChannels(user.getUser(), pageable);
 
         return ResponseEntity.ok(PageResponseDto.page(HttpStatus.OK, channels));
 
@@ -57,8 +58,9 @@ public class ChannelController {
     //채널 상세 조회
     @GetMapping("/channels/{channel_id}")
     public ResponseEntity<BaseResponseDto<ChannelResponseDto>> getChannel(
+            @AuthenticationPrincipal UserDetailsDto user,
             @PathVariable("channel_id") Long channelId) {
-        ChannelResponseDto channelResponse = channelService.getChannel(channelId);
+        ChannelResponseDto channelResponse = channelService.getChannel(user.getUser(), channelId);
 
         return ResponseEntity.ok(BaseResponseDto.of(HttpStatus.OK, channelResponse));
     }
