@@ -15,6 +15,7 @@ import com.yuguanzhang.lumi.role.entity.RoleName;
 import com.yuguanzhang.lumi.role.repositiry.RoleRepository;
 import com.yuguanzhang.lumi.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChannelServiceImpl implements ChannelService {
 
     private final ChannelRepository channelRepository;
@@ -37,7 +39,10 @@ public class ChannelServiceImpl implements ChannelService {
     public ChannelResponseDto createChannel(User user, ChannelRequestDto channelRequestDto) {
         //Channel 객체 생성
         Channel channel = channelRequestDto.toEntity(); //dto에 메소드 만들어서 사용
+        log.info(channel.toString());
         channelRepository.save(channel);
+
+        log.info(channel.toString());
 
         //생성한 사람에게 TUTOR 역할 부여하기 위해 TUTOR인 Role 만들기
         Role tutorRole = roleRepository.findByRoleName(RoleName.TUTOR)
@@ -60,17 +65,17 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     @Transactional(readOnly = true) //조회 전용 트랜잭션
-    public Page<ChannelsResponseDto> getChannels(Pageable pageable) {
+    public Page<ChannelsResponseDto> getChannels(User user, Pageable pageable) {
         //채널 가져오기
-        Page<Channel> channels = channelRepository.findAll(pageable);
+        Page<Channel> channels = channelRepository.findByChannelUsers_User(user, pageable);
 
         return channels.map(ChannelsResponseDto::fromEntity);
     }
 
     @Override
-    public ChannelResponseDto getChannel(Long channelId) {
+    public ChannelResponseDto getChannel(User user, Long channelId) {
 
-        Channel channel = channelRepository.findById(channelId)
+        Channel channel = channelRepository.findByChannelIdAndChannelUsers_User(channelId, user)
                                            .orElseThrow(() -> new GlobalException(
                                                    ExceptionMessage.CHANNEL_NOT_FOUND));
 
@@ -81,7 +86,6 @@ public class ChannelServiceImpl implements ChannelService {
     @Transactional
     public ChannelResponseDto updateChannel(Long channelId, User user,
                                             ChannelRequestDto channelRequestDto) {
-
         //권한 체크
         roleAuthorizationService.checkTutor(channelId, user.getUserId());
 

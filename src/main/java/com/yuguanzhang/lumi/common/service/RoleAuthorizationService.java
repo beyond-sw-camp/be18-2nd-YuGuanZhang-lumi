@@ -5,13 +5,9 @@ import com.yuguanzhang.lumi.channel.repository.ChannelUserRepository;
 import com.yuguanzhang.lumi.common.exception.GlobalException;
 import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.role.entity.RoleName;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.nio.file.AccessDeniedException;
 import java.util.UUID;
 
 @Service
@@ -44,6 +40,18 @@ public class RoleAuthorizationService {
         if (channelUser.getRole()
                        .getRoleName() == RoleName.TUTOR) {
             throw new GlobalException(ExceptionMessage.TUTOR_NOT_AVAILABLE);
+        }
+    }
+
+    public void checkStudent(Long channelId, UUID userId) {
+
+        ChannelUser channelUser =
+                channelUserRepository.findByChannel_ChannelIdAndUser_UserId(channelId, userId)
+                                     .orElseThrow(() -> new GlobalException(
+                                             ExceptionMessage.CHANNEL_USER_NOT_FOUND));
+        if (channelUser.getRole()
+                       .getRoleName() != RoleName.STUDENT) {
+            throw new GlobalException(ExceptionMessage.STUDENT_ROLE_REQUIRED);
         }
     }
 
