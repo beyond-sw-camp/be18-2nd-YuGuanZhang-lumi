@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +57,7 @@ public class SubmissionServiceImpl implements SubmissionService {
 
         // 마감일 검증 (지났으면 제출 불가)
         if (assignment.getDeadlineAt()
-                      .isBefore(LocalDate.now())) {
+                      .isBefore(LocalDateTime.now())) {
             throw new GlobalException(ExceptionMessage.SUBMISSION_DEADLINE_PASSED);
         }
 
@@ -147,7 +147,7 @@ public class SubmissionServiceImpl implements SubmissionService {
 
         // 마감일 검증 (지났으면 제출 불가)
         if (assignment.getDeadlineAt()
-                      .isBefore(LocalDate.now())) {
+                      .isBefore(LocalDateTime.now())) {
             throw new GlobalException(ExceptionMessage.SUBMISSION_DEADLINE_PASSED);
         }
 

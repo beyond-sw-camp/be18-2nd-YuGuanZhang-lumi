@@ -5,6 +5,9 @@ import com.yuguanzhang.lumi.channel.repository.ChannelUserRepository;
 import com.yuguanzhang.lumi.common.exception.GlobalException;
 import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.common.service.RoleAuthorizationService;
+import com.yuguanzhang.lumi.common.util.DateRangeUtil;
+import com.yuguanzhang.lumi.common.util.DateTimeUtil;
+import com.yuguanzhang.lumi.common.util.LocalDateRange;
 import com.yuguanzhang.lumi.course.dto.CourseRequestDto;
 import com.yuguanzhang.lumi.course.dto.CourseResponseDto;
 import com.yuguanzhang.lumi.course.dto.CourseStatusUpdateRequestDto;
@@ -19,10 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.TreeMap;
 
 
 @Service
@@ -35,57 +35,37 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<LocalDate, List<CoursesResponseDto>> getCourses(UUID userId, LocalDate startDate,
-                                                               LocalDate endDate) {
-
-
-
-        log.info("startDate:{}", startDate);
-        startDate = (startDate == null) ?
-                LocalDate.now()
-                         .withDayOfMonth(1) :
-                startDate;
-
-        endDate = (endDate == null) ?
-                LocalDate.now()
-                         .withDayOfMonth((startDate.lengthOfMonth())) :
-                endDate;
-
-        LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
+    public List<CoursesResponseDto> getCourses(UUID userId, LocalDate startDate,
+                                               LocalDate endDate) {
+        LocalDateRange range = DateRangeUtil.getMonthlyRange(startDate, endDate);
+        LocalDateTime startDateTime = range.getStartDateTime();
+        LocalDateTime endDateTime = range.getEndDateTime();
 
         List<Long> channelIds = channelUserRepository.findChannelIdsByUserId(userId);
 
         List<Course> courses =
-                courseRepository.findByChannelUser_Channel_ChannelIdInAndStartDateBetweenOrderByStartDateAsc(
-                        channelIds, startDateTime, endDateTime);
+                courseRepository.findCoursesInDateRange(channelIds, startDateTime, endDateTime);
 
         log.info("courses :{}", courses.toString());
 
+
+
         return courses.stream()
-                      .collect(Collectors.groupingBy(course -> course.getStartDate()
-                                                                     .toLocalDate(), TreeMap::new,
-                                                     Collectors.mapping(
-                                                             CoursesResponseDto::fromEntity,
-                                                             Collectors.toList())));
+                      .map(CoursesResponseDto::fromEntity)
+                      .toList();
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<CourseResponseDto> getCoursesByDate(UUID userId, LocalDate dueDate) {
-        LocalDateTime startDateTime = (dueDate == null) ?
-                LocalDate.now()
-                         .atStartOfDay() :
-                dueDate.atStartOfDay();
-        LocalDateTime endDateTime = startDateTime.toLocalDate()
-                                                 .atTime(23, 59, 59);
+        LocalDateTime startDateTime = DateTimeUtil.getStartOfDay(dueDate);
+        LocalDateTime endDateTime = DateTimeUtil.getEndOfDay(dueDate);
 
 
         List<Long> channelIds = channelUserRepository.findChannelIdsByUserId(userId);
 
         List<Course> courses =
-                courseRepository.findByChannelUser_Channel_ChannelIdInAndStartDateBetweenOrderByStartDateAsc(
-                        channelIds, startDateTime, endDateTime);
+                courseRepository.findCoursesInDateRange(channelIds, startDateTime, endDateTime);
 
 
         return courses.stream()

@@ -17,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.TreeMap;
 
 @Service
 @RequiredArgsConstructor
@@ -31,15 +28,12 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<LocalDate, TodosResponseDto> getTodos(UUID userId, LocalDate startDate,
-                                                     LocalDate endDate) {
+    public List<TodosResponseDto> getTodos(UUID userId, LocalDate startDate, LocalDate endDate) {
 
         if (startDate == null) {
             startDate = LocalDate.now()
                                  .withDayOfMonth(1);
         }
-
-        log.info("startDate:{}", startDate);
 
         if (endDate == null) {
             endDate = startDate.withDayOfMonth((startDate.lengthOfMonth()));
@@ -48,12 +42,15 @@ public class TodoServiceImpl implements TodoService {
         List<Todo> todos =
                 todoRepository.findByUser_UserIdAndDueDateBetween(userId, startDate, endDate);
 
+        int incompleteCount = (int) todos.stream()
+                                         .filter(todo -> !todo.getStatus())
+                                         .count();
+        boolean allCompleted = !todos.isEmpty() && incompleteCount == 0;
+
         return todos.stream()
-                    .collect(Collectors.groupingBy(Todo::getDueDate, TreeMap::new,
-                                                   // 날짜별로 그룹화, 날짜 오름차순 정렬
-                                                   Collectors.collectingAndThen(Collectors.toList(),
-                                                                                // 같은 날짜의 Todo를 List로 모음
-                                                                                TodosResponseDto::fromEntity)));
+                    .map(todo -> TodosResponseDto.fromEntity(incompleteCount, allCompleted, todo))
+                    .toList();
+
     }
 
     @Override

@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/todos")
@@ -33,19 +32,17 @@ public class TodoController {
     private final TodoService todoService;
 
     @GetMapping
-    public ResponseEntity<BaseResponseDto<Map<LocalDate, TodosResponseDto>>> getTodos(
+    public ResponseEntity<BaseResponseDto<TodosResponseDto>> getTodos(
             @AuthenticationPrincipal UserDetailsDto user,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate endDate) {
 
-        Map<LocalDate, TodosResponseDto> todos = todoService.getTodos(user.getUser()
-                                                                          .getUserId(), startDate,
-                                                                      endDate);
+        List<TodosResponseDto> todos = todoService.getTodos(user.getUser()
+                                                                .getUserId(), startDate, endDate);
 
-        BaseResponseDto<Map<LocalDate, TodosResponseDto>> response =
-                BaseResponseDto.of(HttpStatus.OK, todos);
+        BaseResponseDto<TodosResponseDto> response = BaseResponseDto.of(HttpStatus.OK, todos);
 
         return ResponseEntity.ok(response);
     }

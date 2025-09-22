@@ -16,12 +16,12 @@ public class CourseResponseDto {
     private final Long courseId;
     private final Long channelId;
     private final String channelName;
+    private final String location;
+    private final StatusType statusType;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime startDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime endDate;
-    private final String location;
-    private final StatusType statusType;
 
     public static CourseResponseDto fromEntity(Course course) {
         return CourseResponseDto.builder()
@@ -34,6 +34,7 @@ public class CourseResponseDto {
                                                    .getName())
                                 .startDate(course.getStartDate())
                                 .endDate(course.getEndDate())
+                                .location(course.getLocation())
                                 .statusType(course.getStatusType())
                                 .build();
     }

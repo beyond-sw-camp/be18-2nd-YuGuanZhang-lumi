@@ -1,10 +1,11 @@
 package com.yuguanzhang.lumi.assignment.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -16,7 +17,8 @@ public class AssignmentRequestDto {
 
     private String content;
 
-    private LocalDate deadlineAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime deadlineAt;
 
     private boolean isEvaluation;
 
