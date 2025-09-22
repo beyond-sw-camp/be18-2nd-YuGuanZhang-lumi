@@ -83,7 +83,12 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
                     "<html><body>" + "<p>이메일 인증을 위해 아래 링크를 클릭해주세요:</p>" + "<a href=\"" + link + "\">" + link + "</a>" + "</body></html>",
                     true);
 
+            
+            long startTime = System.currentTimeMillis();
             mailSender.send(message);
+            long endTime = System.currentTimeMillis();
+            log.info("이메일 발송 성공. 이메일: {} | 소요 시간: {} ms", email, (endTime - startTime));
+            // ← 추가 끝
 
             log.info("이메일 발송 성공. 이메일: {}", email);
         } catch (Exception e) {

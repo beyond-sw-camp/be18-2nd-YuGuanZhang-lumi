@@ -29,6 +29,12 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public LoginResponseDto login(LoginRequestDto request) {
+        if (request.getEmail() == null || request.getEmail()
+                                                 .isBlank() || request.getPassword() == null || request.getPassword()
+                                                                                                       .isBlank()) {
+            throw new GlobalException(ExceptionMessage.ID_OR_PASSWORD_EMPTY);
+        }
+
         // 클라이언트가 보낸 이메일과 비밀번호로 인증 시도
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
