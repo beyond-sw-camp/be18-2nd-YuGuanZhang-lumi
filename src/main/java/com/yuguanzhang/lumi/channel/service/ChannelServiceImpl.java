@@ -64,22 +64,33 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    @Transactional(readOnly = true) //조회 전용 트랜잭션
+    @Transactional(readOnly = true)
     public Page<ChannelsResponseDto> getChannels(User user, Pageable pageable) {
         //채널 가져오기
         Page<Channel> channels = channelRepository.findByChannelUsers_User(user, pageable);
+
 
         return channels.map(ChannelsResponseDto::fromEntity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ChannelResponseDto getChannel(User user, Long channelId) {
 
         Channel channel = channelRepository.findByChannelIdAndChannelUsers_User(channelId, user)
                                            .orElseThrow(() -> new GlobalException(
                                                    ExceptionMessage.CHANNEL_NOT_FOUND));
 
-        return ChannelResponseDto.fromEntity(channel);
+        ChannelUser channelUser =
+                channelUserRepository.findByChannel_ChannelIdAndUser_UserId(channelId,
+                                                                            user.getUserId())
+                                     .orElseThrow(() -> new GlobalException(
+                                             ExceptionMessage.CHANNEL_USER_NOT_FOUND));
+
+        RoleName rolName = channelUser.getRole()
+                                      .getRoleName();
+
+        return ChannelResponseDto.fromEntity(channel, rolName);
     }
 
     @Override

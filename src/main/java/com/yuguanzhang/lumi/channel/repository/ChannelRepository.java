@@ -15,5 +15,4 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
     Page<Channel> findByChannelUsers_User(User user, Pageable pageable);
 
     Optional<Channel> findByChannelIdAndChannelUsers_User(Long channelId, User user);
-
 }

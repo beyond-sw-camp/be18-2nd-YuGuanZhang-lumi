@@ -39,7 +39,7 @@ public class CalendarResponseDto {
     private LocalDateTime evaluationDeadlineAt;
     private Boolean isEvaluation;
 
-    public static CalendarResponseDto fromCourse(Course course) {
+    public static CalendarResponseDto fromCourse(Course course, RoleName roleName) {
         return CalendarResponseDto.builder()
                                   .channelId(course.getChannelUser()
                                                    .getChannel()
@@ -49,9 +49,7 @@ public class CalendarResponseDto {
                                                      .getName())
                                   .entityId(course.getCourseId())
                                   .entityType("COURSE")
-                                  .roleName(course.getChannelUser()
-                                                  .getRole()
-                                                  .getRoleName())
+                                  .roleName(roleName)
                                   .location(course.getLocation())
                                   .statusType(course.getStatusType())
                                   .startDate(course.getStartDate())
@@ -59,7 +57,7 @@ public class CalendarResponseDto {
                                   .build();
     }
 
-    public static CalendarResponseDto fromAssignment(Assignment assignment) {
+    public static CalendarResponseDto fromAssignment(Assignment assignment, RoleName roleName) {
         return CalendarResponseDto.builder()
                                   .channelId(assignment.getChannelUser()
                                                        .getChannel()
@@ -69,15 +67,13 @@ public class CalendarResponseDto {
                                                          .getName())
                                   .entityId(assignment.getAssignmentId())
                                   .entityType("ASSIGNMENT")
-                                  .roleName(assignment.getChannelUser()
-                                                      .getRole()
-                                                      .getRoleName())
+                                  .roleName(roleName)
                                   .deadlineAt(assignment.getDeadlineAt())
                                   .isSubmission(assignment.isSubmission())
                                   .build();
     }
 
-    public static CalendarResponseDto fromEvaluation(Assignment evaluation) {
+    public static CalendarResponseDto fromEvaluation(Assignment evaluation, RoleName roleName) {
         return CalendarResponseDto.builder()
                                   .channelId(evaluation.getChannelUser()
                                                        .getChannel()
@@ -87,9 +83,7 @@ public class CalendarResponseDto {
                                                          .getName())
                                   .entityId(evaluation.getAssignmentId())
                                   .entityType("EVALUATION")
-                                  .roleName(evaluation.getChannelUser()
-                                                      .getRole()
-                                                      .getRoleName())
+                                  .roleName(roleName)
                                   .evaluationDeadlineAt(evaluation.getEvaluationDeadlineAt())
                                   .isEvaluation(evaluation.isEvaluation())
                                   .build();

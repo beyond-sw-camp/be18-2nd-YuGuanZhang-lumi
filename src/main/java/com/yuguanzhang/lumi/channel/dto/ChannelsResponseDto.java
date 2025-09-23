@@ -16,6 +16,7 @@ public class ChannelsResponseDto {
 
     private final String subject;
 
+
     public static ChannelsResponseDto fromEntity(Channel channel) {
         return ChannelsResponseDto.builder()
                                   .channelId(channel.getChannelId())
