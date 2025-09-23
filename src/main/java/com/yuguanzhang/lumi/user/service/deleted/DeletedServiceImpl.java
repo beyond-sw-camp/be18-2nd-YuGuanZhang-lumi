@@ -2,6 +2,7 @@ package com.yuguanzhang.lumi.user.service.deleted;
 
 import com.yuguanzhang.lumi.common.exception.GlobalException;
 import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
+import com.yuguanzhang.lumi.common.jwt.refresh.RefreshTokenStore;
 import com.yuguanzhang.lumi.user.dto.deleted.DeletedRequestDto;
 import com.yuguanzhang.lumi.user.dto.deleted.DeletedResponseDto;
 import com.yuguanzhang.lumi.user.entity.User;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeletedServiceImpl implements DeletedService {
 
     private final UserRepository userRepository;
+    private final RefreshTokenStore refreshTokenStore;
 
     @Override
     @Transactional
@@ -26,6 +28,7 @@ public class DeletedServiceImpl implements DeletedService {
 
         user.markAsDeleted();
 
+        refreshTokenStore.delete(user.getEmail());
         return new DeletedResponseDto(user.getEmail());
     }
 }
