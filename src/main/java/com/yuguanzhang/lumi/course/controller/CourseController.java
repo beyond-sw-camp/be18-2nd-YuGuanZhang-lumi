@@ -50,7 +50,7 @@ public class CourseController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/courses/{date}")
+    @GetMapping("/courses/date/{date}")
     public ResponseEntity<BaseResponseDto<CourseResponseDto>> getCoursesByDate(
             @AuthenticationPrincipal UserDetailsDto user,
             @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
