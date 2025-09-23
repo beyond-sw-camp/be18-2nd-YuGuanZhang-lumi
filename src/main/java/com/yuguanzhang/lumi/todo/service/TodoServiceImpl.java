@@ -13,12 +13,11 @@ import com.yuguanzhang.lumi.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,30 +27,34 @@ public class TodoServiceImpl implements TodoService {
     private final UserRepository userRepository;
 
     @Override
-    public Map<LocalDate, TodosResponseDto> getTodos(UUID userId, LocalDate startDate,
-                                                     LocalDate endDate) {
+    @Transactional(readOnly = true)
+    public List<TodosResponseDto> getTodos(UUID userId, LocalDate startDate, LocalDate endDate) {
 
         if (startDate == null) {
             startDate = LocalDate.now()
                                  .withDayOfMonth(1);
         }
 
-        log.info("startDate:{}", startDate);
-
         if (endDate == null) {
             endDate = startDate.withDayOfMonth((startDate.lengthOfMonth()));
         }
 
-        List<Todo> todos = todoRepository.findByUserIdAndMonthRange(userId, startDate, endDate);
+        List<Todo> todos =
+                todoRepository.findByUser_UserIdAndDueDateBetween(userId, startDate, endDate);
+
+        int incompleteCount = (int) todos.stream()
+                                         .filter(todo -> !todo.getStatus())
+                                         .count();
+        boolean allCompleted = !todos.isEmpty() && incompleteCount == 0;
 
         return todos.stream()
-                    .collect(Collectors.groupingBy(Todo::getDueDate, // 날짜별로 그루핑
-                                                   Collectors.collectingAndThen(Collectors.toList(),
-                                                                                // 같은 날짜의 Todo를 List로 모음
-                                                                                TodosResponseDto::fromEntity))); // 해당 List를 Dto로 변경
+                    .map(todo -> TodosResponseDto.fromEntity(incompleteCount, allCompleted, todo))
+                    .toList();
+
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TodoResponseDto> getTodosByDate(UUID userId, LocalDate dueDate) {
 
         List<Todo> todos = todoRepository.findByUser_UserIdAndDueDate(userId, dueDate);
@@ -62,6 +65,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @Transactional
     public TodoResponseDto createTodo(UUID userId, TodoRequestDto request) {
         User user = userRepository.findById(userId)
                                   .orElseThrow(() -> new GlobalException(
@@ -74,6 +78,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @Transactional
     public TodoResponseDto updateTodo(UUID userId, TodoUpdateRequestDto request, Long todoId) {
         Todo todo = todoRepository.findById(todoId)
                                   .orElseThrow(() -> new GlobalException(
@@ -99,6 +104,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @Transactional
     public void deleteTodo(UUID userId, Long todoId) {
         Todo todo = todoRepository.findById(todoId)
                                   .orElseThrow(() -> new GlobalException(

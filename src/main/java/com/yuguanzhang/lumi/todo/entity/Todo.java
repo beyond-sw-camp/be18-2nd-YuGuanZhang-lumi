@@ -35,6 +35,7 @@ public class Todo extends BaseCreatedEntity {
     private User user;
 
     @Column(name = "status")
+    @Builder.Default
     private Boolean status = false;
 
     @Column(name = "due_date")

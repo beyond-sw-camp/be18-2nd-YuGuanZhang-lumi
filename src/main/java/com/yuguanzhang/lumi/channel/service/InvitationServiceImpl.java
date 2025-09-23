@@ -11,7 +11,7 @@ import com.yuguanzhang.lumi.common.exception.message.ExceptionMessage;
 import com.yuguanzhang.lumi.common.service.RoleAuthorizationService;
 import com.yuguanzhang.lumi.role.entity.Role;
 import com.yuguanzhang.lumi.role.repositiry.RoleRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.yuguanzhang.lumi.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +29,7 @@ public class InvitationServiceImpl implements InvitationService {
     private final RoleAuthorizationService roleAuthorizationService;
 
     @Transactional
-    public InvitationResponseDto createInvitation(Long channelId,
+    public InvitationResponseDto createInvitation(Long channelId, User user,
                                                   InvitationRequestDto invitationRequestDto) {
 
         //초대를 생성한 채널 가져오기
@@ -38,7 +38,7 @@ public class InvitationServiceImpl implements InvitationService {
                                                    ExceptionMessage.CHANNEL_NOT_FOUND));
 
         //요청한 사람이 튜터인지 검증
-        roleAuthorizationService.checkTutor(channelId, invitationRequestDto.getRequestUserId());
+        roleAuthorizationService.checkTutor(channelId, user.getUserId());
 
         //초대를 생성할 때 정한 역할 가져오기
         Role role = roleRepository.findById(invitationRequestDto.getRoleId())

@@ -7,11 +7,10 @@ import com.yuguanzhang.lumi.todo.dto.TodosResponseDto;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public interface TodoService {
-    Map<LocalDate, TodosResponseDto> getTodos(UUID userId, LocalDate startDate, LocalDate endDate);
+    List<TodosResponseDto> getTodos(UUID userId, LocalDate startDate, LocalDate endDate);
 
     List<TodoResponseDto> getTodosByDate(UUID userId, LocalDate dueDate);
 

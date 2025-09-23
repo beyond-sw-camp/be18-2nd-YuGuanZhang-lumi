@@ -5,7 +5,6 @@ import com.yuguanzhang.lumi.role.entity.Role;
 import com.yuguanzhang.lumi.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.ToString;
 
 @Entity
 @Table(name = "ChannelUsers")
@@ -27,7 +26,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EntityListeners(AuditingEntityListener.class)
+@ToString
 public class ChannelUser extends BaseTimeEntity {
 
     @Id
@@ -59,7 +58,7 @@ public class ChannelUser extends BaseTimeEntity {
     //DB 에서는 nullable 여부를 생각하면 Boolean notificationEnabled로 객체형으로 쓰는 경우도 있음
     //하지만 지금은 default true로 사용하니 문제 없음
     private boolean notificationEnabled = true; //해당 채널 알림 여부 default값 true
-    
+
 
     public void updateData(String newData) {
         this.data = newData;

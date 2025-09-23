@@ -1,6 +1,6 @@
-# be18-2nd-3team-project
+# be18-2nd-YuGuanZhang-Lumi
 
-# 프로젝트명
+# Lumi
 
 # 1. 팀원 소개
 
@@ -114,13 +114,6 @@
   </ul>
   <img width="1343" height="679" alt="스크린샷 2025-08-14 오후 3 58 21" src="https://github.com/user-attachments/assets/61ef2523-ddc1-47f7-b745-75e50706f3ea" />
 
-</details>
-
-<details>
-  <summary>기능 명세서</summary>
-  <ul>
-    <li><a href="https://www.figma.com/design/BplxILKmHUej23Tsun2o6N/2nd_Project?node-id=0-1" target="_blank">기능명세서</a></li>
-  </ul>
 </details>
 
 <details>

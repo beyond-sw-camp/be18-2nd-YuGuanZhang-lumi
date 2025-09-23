@@ -33,6 +33,7 @@ public class ChatServiceImpl implements ChatService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<ChatRoomsResponseDto> getChatRooms(UUID userId) {
 
         // 사용자가 속한 방 목록 조회
@@ -62,7 +63,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ChatsResponseDto> getChats(UUID userId, Long roomId) {
         List<Chat> chatList = chatRepository.findByRoom_RoomId(roomId);
 

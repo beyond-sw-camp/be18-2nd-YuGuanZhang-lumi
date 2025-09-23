@@ -17,6 +17,7 @@ public enum ExceptionMessage {
     EMAIL_ALREADY_USED("이미 사용중인 이메일 입니다.", HttpStatus.CONFLICT),
     PRIVACY_AGREEMENT_REQUIRED("개인정보 동의가 필요합니다.", HttpStatus.BAD_REQUEST),
 
+
     USER_NOT_FOUND("사용자 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     ROOM_NOT_FOUND("채팅방 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     ROOM_USER_NOT_FOUND("해당 채팅방에서 사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
@@ -36,6 +37,7 @@ public enum ExceptionMessage {
     ROLE_NOT_FOUND("해당 역할이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     TUTOR_ROLE_REQUIRED("튜터만 이 작업을 수행할 수 있습니다.", HttpStatus.FORBIDDEN),
     TUTOR_NOT_AVAILABLE("튜터는 이 작업을 수행할 수 없습니다.", HttpStatus.FORBIDDEN),
+    STUDENT_ROLE_REQUIRED("학생만 이 작업을 수행할 수 있습니다.", HttpStatus.FORBIDDEN),
 
     CHANNEL_NOT_FOUND("채널이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     CHANNEL_USER_NOT_FOUND("채널에 속하지 않은 사용자입니다.", HttpStatus.NOT_FOUND),
@@ -43,7 +45,22 @@ public enum ExceptionMessage {
 
     INVITATION_NOT_FOUND("초대코드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     INVITATION_NOT_AVAILABLE("초대가 만료되었거나 이미 사용되었습니다.", HttpStatus.BAD_REQUEST),
-    SELF_ACTION_ONLY("본인만 수정/탈퇴할 수 있습니다.", HttpStatus.FORBIDDEN);
+
+    MATERIAL_NOT_FOUND("수업 자료가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+
+    GRADE_NOT_FOUND("성적이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+
+    ASSIGNMENT_NOT_FOUND("과제가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    SUBMISSION_DEADLINE_PASSED("제출 마감 기한이 지나 제출할 수 없습니다.", HttpStatus.FORBIDDEN),
+    SUBMISSION_ALREADY_EXISTS("이미 제출이 완료된 과제입니다.", HttpStatus.BAD_REQUEST),
+    SUBMISSION_NOT_FOUND("제출된 제출물이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    UNAUTHORIZED_SUBMISSION_UPDATE("해당 제출을 수정할 권한이 없습니다.", HttpStatus.FORBIDDEN),
+    UNAUTHORIZED_SUBMISSION_DELETE("해당 제출을 삭제할 권한이 없습니다.", HttpStatus.FORBIDDEN),
+    EVALUATION_ALREADY_EXISTS("이미 평가가 완료된 제출입니다.", HttpStatus.BAD_REQUEST),
+    EVALUATION_NOT_FOUND("평가가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+
+    COURSE_NOT_FOUND("수업을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    UNAUTHORIZED_COURSE_DELETE("튜터만 수업을 삭제할 수 있습니다.", HttpStatus.FORBIDDEN);
 
 
     private final String message;

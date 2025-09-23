@@ -46,6 +46,7 @@ public class Chat extends BaseCreatedEntity {
     private String content;
 
     @Column(name = "is_read")
+    @Builder.Default
     private Boolean isRead = false;
 
     public void updateIsRead() {

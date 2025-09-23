@@ -13,10 +13,10 @@ public interface ChannelService {
     ChannelResponseDto createChannel(User user, ChannelRequestDto channelRequestDto);
 
     //채널 리스트 조회
-    Page<ChannelsResponseDto> getChannels(Pageable pageable);
+    Page<ChannelsResponseDto> getChannels(User user, Pageable pageable);
 
     //채널 상세 조회
-    ChannelResponseDto getChannel(Long channelId);
+    ChannelResponseDto getChannel(User user, Long channelId);
 
     //채널 수정
     ChannelResponseDto updateChannel(Long channelId, User user,
