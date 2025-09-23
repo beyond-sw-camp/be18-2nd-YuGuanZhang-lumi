@@ -74,6 +74,16 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public CourseResponseDto getCourse(UUID userId, Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                                        .orElseThrow(() -> new GlobalException(
+                                                ExceptionMessage.COURSE_NOT_FOUND));
+
+        return CourseResponseDto.fromEntity(course);
+    }
+
+    @Override
     @Transactional
     public CourseResponseDto createCourse(UUID userId, Long channelId,
                                           CourseRequestDto courseRequestDto) {

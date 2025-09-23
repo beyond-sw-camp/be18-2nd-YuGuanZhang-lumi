@@ -17,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,14 +44,13 @@ public class TodoServiceImpl implements TodoService {
         List<Todo> todos =
                 todoRepository.findByUser_UserIdAndDueDateBetween(userId, startDate, endDate);
 
-        int incompleteCount = (int) todos.stream()
-                                         .filter(todo -> !todo.getStatus())
-                                         .count();
-        boolean allCompleted = !todos.isEmpty() && incompleteCount == 0;
+        Map<LocalDate, List<Todo>> grouped = todos.stream()
+                                                  .collect(Collectors.groupingBy(Todo::getDueDate));
 
-        return todos.stream()
-                    .map(todo -> TodosResponseDto.fromEntity(incompleteCount, allCompleted, todo))
-                    .toList();
+        return grouped.entrySet()
+                      .stream()
+                      .map(entry -> TodosResponseDto.fromEntity(entry.getKey(), entry.getValue()))
+                      .toList();
 
     }
 

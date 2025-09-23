@@ -14,6 +14,8 @@ public interface CourseService {
 
     List<CourseResponseDto> getCoursesByDate(UUID userId, LocalDate dueDate);
 
+    CourseResponseDto getCourse(UUID userId, Long courseId);
+
     CourseResponseDto createCourse(UUID userId, Long channelId, CourseRequestDto courseRequestDto);
 
     CourseResponseDto updateCourse(UUID userId, Long channelId, CourseRequestDto courseRequestDto,
