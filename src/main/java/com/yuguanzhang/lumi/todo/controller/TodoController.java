@@ -48,7 +48,7 @@ public class TodoController {
     }
 
     @GetMapping("/{date}")
-    public ResponseEntity<BaseResponseDto<TodoResponseDto>> getTodo(
+    public ResponseEntity<BaseResponseDto<TodoResponseDto>> getTodosByDate(
             @AuthenticationPrincipal UserDetailsDto user,
             @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate dueDate) {

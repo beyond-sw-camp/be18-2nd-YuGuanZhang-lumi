@@ -51,12 +51,24 @@ public class CourseController {
     }
 
     @GetMapping("/courses/{date}")
-    public ResponseEntity<BaseResponseDto<CourseResponseDto>> getCourse(
+    public ResponseEntity<BaseResponseDto<CourseResponseDto>> getCoursesByDate(
             @AuthenticationPrincipal UserDetailsDto user,
             @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate dueDate) {
         List<CourseResponseDto> courses = courseService.getCoursesByDate(user.getUser()
                                                                              .getUserId(), dueDate);
+
+        BaseResponseDto<CourseResponseDto> response = BaseResponseDto.of(HttpStatus.OK, courses);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/courses/{course_id}")
+    public ResponseEntity<BaseResponseDto<CourseResponseDto>> getCourse(
+            @AuthenticationPrincipal UserDetailsDto user,
+            @PathVariable("course_id") Long courseId) {
+        CourseResponseDto courses = courseService.getCourse(user.getUser()
+                                                                .getUserId(), courseId);
 
         BaseResponseDto<CourseResponseDto> response = BaseResponseDto.of(HttpStatus.OK, courses);
 

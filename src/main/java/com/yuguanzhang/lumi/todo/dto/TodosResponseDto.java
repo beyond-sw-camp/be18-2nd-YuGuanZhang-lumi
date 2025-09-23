@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Getter
@@ -15,12 +16,18 @@ public class TodosResponseDto {
     private final boolean allCompleted;
     private final LocalDate dueDate;
 
-    public static TodosResponseDto fromEntity(int incompleteCount, boolean allCompleted,
-                                              Todo todo) {
+    public static TodosResponseDto fromEntity(LocalDate dueDate, List<Todo> todos) {
+
+        int incompleteCount = (int) todos.stream()
+                                         .filter(todo -> !todo.getStatus())
+                                         .count();
+        boolean allCompleted = !todos.isEmpty() && incompleteCount == 0;
+
+
         return TodosResponseDto.builder()
-                               .incompleteCount((int) incompleteCount)
+                               .incompleteCount(incompleteCount)
                                .allCompleted(allCompleted)
-                               .dueDate(todo.getDueDate())
+                               .dueDate(dueDate)
                                .build();
     }
 }
