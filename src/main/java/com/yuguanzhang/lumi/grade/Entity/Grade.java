@@ -16,7 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -44,13 +44,13 @@ public class Grade extends BaseTimeEntity {
     private int grades;
 
     @Column(name = "date", nullable = false)
-    private LocalDateTime date;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "channel_user_id", nullable = false)
     private ChannelUser channelUser;
 
-    public void updateGrade(String title, String category, int grades, LocalDateTime date) {
+    public void updateGrade(String title, String category, int grades, LocalDate date) {
         this.title = title;
         this.category = category;
         this.grades = grades;
