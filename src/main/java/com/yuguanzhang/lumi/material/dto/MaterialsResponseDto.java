@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -18,6 +20,10 @@ public class MaterialsResponseDto {
 
     private final Long channelUserId;
 
+    private final LocalDateTime createdAt;
+
+    private final LocalDateTime updatedAt;
+
     public static MaterialsResponseDto fromEntity(Material material) {
         return MaterialsResponseDto.builder()
                                    .materialId(material.getMaterialId())
@@ -25,6 +31,8 @@ public class MaterialsResponseDto {
                                    .content(material.getContent())
                                    .channelUserId(material.getChannelUser()
                                                           .getChannelUserId())
+                                   .createdAt(material.getCreatedAt())
+                                   .updatedAt(material.getUpdatedAt())
                                    .build();
     }
 }

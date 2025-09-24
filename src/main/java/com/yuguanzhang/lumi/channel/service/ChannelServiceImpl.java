@@ -124,6 +124,8 @@ public class ChannelServiceImpl implements ChannelService {
                                                    ExceptionMessage.CHANNEL_NOT_FOUND));
 
         //채널 삭제
+        channel.getChannelUsers()
+               .clear();
         channelRepository.delete(channel);
 
         return ChannelResponseDto.fromEntity(channel);
