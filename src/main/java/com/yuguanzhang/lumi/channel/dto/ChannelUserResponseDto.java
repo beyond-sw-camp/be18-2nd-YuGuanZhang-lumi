@@ -22,6 +22,10 @@ public class ChannelUserResponseDto {
 
     private final String data;
 
+    private final String email;
+
+    private final String name;
+
     public static ChannelUserResponseDto fromEntity(ChannelUser channelUser) {
         return ChannelUserResponseDto.builder()
                                      .channelId(channelUser.getChannel()
@@ -33,6 +37,10 @@ public class ChannelUserResponseDto {
                                                           .name()) //enum -> String .name()으로 바꿈
                                      .notificationEnabled(channelUser.isNotificationEnabled())
                                      .data(channelUser.getData())
+                                     .email(channelUser.getUser()
+                                                       .getEmail())
+                                     .name(channelUser.getUser()
+                                                      .getName())
                                      .build();
     }
 
