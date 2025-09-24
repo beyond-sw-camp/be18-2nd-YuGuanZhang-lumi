@@ -10,15 +10,16 @@ import java.util.List;
 public interface GradeService {
 
     // 성적 생성
-    GradeResponseDto createGrade(Long channelUserId, GradeRequestDto gradeRequestDto, User user);
+    GradeResponseDto createGrade(Long channelId, GradeRequestDto gradeRequestDto, User user);
 
     // 성적 리스트 조회
-    List<GradeCategoryGroupDto> getGradesGroupedByCategory(Long channelUserId);
+    List<GradeCategoryGroupDto> getGradesGroupedByCategory(Long channelId, User user);
 
     // 성적 수정
-    GradeResponseDto updateGrade(Long gradeId, GradeRequestDto gradeRequestDto, User user);
+    GradeResponseDto updateGrade(Long channelId, Long gradeId, GradeRequestDto gradeRequestDto,
+                                 User user);
 
     // 성적 삭제
-    void deleteGrade(Long gradeId, User user);
+    void deleteGrade(Long channelId, Long gradeId, User user);
 
 }

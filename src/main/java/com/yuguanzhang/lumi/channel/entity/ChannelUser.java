@@ -1,10 +1,8 @@
 package com.yuguanzhang.lumi.channel.entity;
 
-import com.yuguanzhang.lumi.assignment.entity.Assignment;
 import com.yuguanzhang.lumi.common.entity.BaseTimeEntity;
 import com.yuguanzhang.lumi.role.entity.Role;
 import com.yuguanzhang.lumi.user.entity.User;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,9 +18,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "ChannelUsers")
@@ -55,11 +49,8 @@ public class ChannelUser extends BaseTimeEntity {
     private Role role;
 
     //글자수 제한이 있어야 할까?
-    @Column(name = "data", length = 255)
+    @Column(name = "data")
     private String data;
-
-    @OneToMany(mappedBy = "channelUser", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Assignment> assignments = new ArrayList<>();
 
     @Column(name = "notification_enabled", nullable = false)
     //boolean vs Boolean
