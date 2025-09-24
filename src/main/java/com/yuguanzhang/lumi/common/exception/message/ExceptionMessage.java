@@ -51,7 +51,7 @@ public enum ExceptionMessage {
     GRADE_NOT_FOUND("성적이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
 
     ASSIGNMENT_NOT_FOUND("과제가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
-    SUBMISSION_DEADLINE_PASSED("제출 마감 기한이 지나 제출할 수 없습니다.", HttpStatus.FORBIDDEN),
+    SUBMISSION_DEADLINE_PASSED("제출 마감 기한이 지나 제출할 수 없습니다.", HttpStatus.BAD_REQUEST),
     SUBMISSION_ALREADY_EXISTS("이미 제출이 완료된 과제입니다.", HttpStatus.BAD_REQUEST),
     SUBMISSION_NOT_FOUND("제출된 제출물이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     UNAUTHORIZED_SUBMISSION_UPDATE("해당 제출을 수정할 권한이 없습니다.", HttpStatus.FORBIDDEN),

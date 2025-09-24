@@ -67,9 +67,11 @@ public class Assignment extends BaseTimeEntity {
         this.content = assignmentRequestDto.getContent();
         this.deadlineAt = assignmentRequestDto.getDeadlineAt();
         this.isEvaluation = assignmentRequestDto.isEvaluation();
-        this.isSubmission = assignmentRequestDto.isSubmission();
         this.evaluationDeadlineAt = assignmentRequestDto.getDeadlineAt()
                                                         .plusDays(7);
+    }
 
+    public void updateIsSubmission(boolean isSubmission) {
+        this.isSubmission = isSubmission;
     }
 }
