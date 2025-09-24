@@ -67,8 +67,7 @@ public class ChannelServiceImpl implements ChannelService {
     @Transactional(readOnly = true)
     public Page<ChannelsResponseDto> getChannels(User user, Pageable pageable) {
         //채널 가져오기
-        Page<Channel> channels = channelRepository.findByChannelUsers_User(user, pageable);
-
+        Page<ChannelUser> channels = channelUserRepository.findByUser(user, pageable);
 
         return channels.map(ChannelsResponseDto::fromEntity);
     }
