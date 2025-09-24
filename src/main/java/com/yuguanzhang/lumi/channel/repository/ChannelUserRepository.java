@@ -1,6 +1,7 @@
 package com.yuguanzhang.lumi.channel.repository;
 
 import com.yuguanzhang.lumi.channel.entity.ChannelUser;
+import com.yuguanzhang.lumi.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,5 +28,7 @@ public interface ChannelUserRepository extends JpaRepository<ChannelUser, Long> 
     List<Long> findChannelIdsByUserId(UUID userId);
 
     List<ChannelUser> findByUserUserId(UUID userId);
+
+    Page<ChannelUser> findByUser(User user, Pageable pageable);
 
 }

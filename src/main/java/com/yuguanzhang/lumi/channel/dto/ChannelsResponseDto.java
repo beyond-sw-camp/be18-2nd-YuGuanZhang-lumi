@@ -1,6 +1,8 @@
 package com.yuguanzhang.lumi.channel.dto;
 
 import com.yuguanzhang.lumi.channel.entity.Channel;
+import com.yuguanzhang.lumi.channel.entity.ChannelUser;
+import com.yuguanzhang.lumi.role.entity.RoleName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,12 +18,19 @@ public class ChannelsResponseDto {
 
     private final String subject;
 
+    private final RoleName roleName;
 
-    public static ChannelsResponseDto fromEntity(Channel channel) {
+
+    public static ChannelsResponseDto fromEntity(ChannelUser cu) {
         return ChannelsResponseDto.builder()
-                                  .channelId(channel.getChannelId())
-                                  .name(channel.getName())
-                                  .subject(channel.getSubject())
+                                  .channelId(cu.getChannel()
+                                               .getChannelId())
+                                  .name(cu.getChannel()
+                                          .getName())
+                                  .roleName(cu.getRole()
+                                              .getRoleName())
+                                  .subject(cu.getChannel()
+                                             .getSubject())
                                   .build();
 
     }
