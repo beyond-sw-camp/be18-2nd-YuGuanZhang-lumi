@@ -22,8 +22,6 @@ public class AssignmentRequestDto {
 
     private boolean isEvaluation;
 
-    private boolean isSubmission;
-
     private List<Long> fileIds;
 
 }

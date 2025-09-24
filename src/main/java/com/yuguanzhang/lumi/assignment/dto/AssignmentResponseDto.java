@@ -28,9 +28,16 @@ public class AssignmentResponseDto {
 
     private final boolean isSubmission;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime evaluationDeadlineAt;
 
     private final List<FileUploadResponseDto> files;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private final LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private final LocalDateTime updatedAt;
 
     public static AssignmentResponseDto fromEntity(Assignment assignment,
                                                    List<FileUploadResponseDto> files) {
@@ -42,6 +49,8 @@ public class AssignmentResponseDto {
                                     .isEvaluation(assignment.isEvaluation())
                                     .isSubmission(assignment.isSubmission())
                                     .evaluationDeadlineAt(assignment.getEvaluationDeadlineAt())
+                                    .createdAt(assignment.getCreatedAt())
+                                    .updatedAt(assignment.getUpdatedAt())
                                     .files(files)
                                     .build();
     }

@@ -29,6 +29,12 @@ public class AssignmentsResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime evaluationDeadlineAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private final LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private final LocalDateTime updatedAt;
+
     public static AssignmentsResponseDto fromEntity(Assignment assignment) {
         return AssignmentsResponseDto.builder()
                                      .assignmentId(assignment.getAssignmentId())
@@ -38,6 +44,8 @@ public class AssignmentsResponseDto {
                                      .isEvaluation(assignment.isEvaluation())
                                      .isSubmission(assignment.isSubmission())
                                      .evaluationDeadlineAt(assignment.getEvaluationDeadlineAt())
+                                     .createdAt(assignment.getCreatedAt())
+                                     .updatedAt(assignment.getUpdatedAt())
                                      .build();
     }
 }

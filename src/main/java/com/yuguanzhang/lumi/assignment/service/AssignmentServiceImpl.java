@@ -52,7 +52,6 @@ public class AssignmentServiceImpl implements AssignmentService {
                                           .content(assignmentRequestDto.getContent())
                                           .deadlineAt(assignmentRequestDto.getDeadlineAt())
                                           .isEvaluation(assignmentRequestDto.isEvaluation())
-                                          .isSubmission(assignmentRequestDto.isSubmission())
                                           .evaluationDeadlineAt(assignmentRequestDto.getDeadlineAt()
                                                                                     .plusDays(
                                                                                             7)) // ✅ 제출마감 + 7일

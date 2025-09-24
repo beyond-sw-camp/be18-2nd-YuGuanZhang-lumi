@@ -72,6 +72,7 @@ public class SubmissionServiceImpl implements SubmissionService {
                                           .assignment(assignment)
                                           .channelUser(channelUser)
                                           .build();
+        assignment.updateIsSubmission(true);
 
         Submission saved = submissionRepository.save(submission);
 
