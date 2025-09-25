@@ -127,9 +127,11 @@
 <details>
   <summary>테스트 계획 및 결과 보고서</summary>
   <details>
-  <summary>테스트 계획 및 결과 보고서</summary>
-  
-</details>
+    <summary>로그인</summary>
+    <ul>
+      <li> <img width="851" height="536" alt="스크린샷 2025-09-25 오전 12 28 28" src="https://github.com/user-attachments/assets/8c1fdbaf-30d6-420f-a14f-76d6a5e3bfb9" /></li>
+    </ul>
+  </details>
 </details>
 
 # 5. 시스템 아키텍처 및 기술적 특징
