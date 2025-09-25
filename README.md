@@ -295,4 +295,6 @@
 </details>
 
 # 5. 시스템 아키텍처 및 기술적 특징
+<img width="1050" height="761" alt="아키텍처 그림" src="https://github.com/user-attachments/assets/68a01ca8-8549-4f75-bd12-3c26ccf7c3b2" />
+
 # 6. 회고록
