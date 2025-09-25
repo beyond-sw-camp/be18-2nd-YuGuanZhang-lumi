@@ -129,7 +129,28 @@
   <details>
     <summary>로그인</summary>
     <ul>
-      <li> <img width="851" height="536" alt="스크린샷 2025-09-25 오전 12 28 28" src="https://github.com/user-attachments/assets/8c1fdbaf-30d6-420f-a14f-76d6a5e3bfb9" /></li>
+      <li><img width="851" height="536" alt="스크린샷 2025-09-25 오전 12 28 28" src="https://github.com/user-attachments/assets/8c1fdbaf-30d6-420f-a14f-76d6a5e3bfb9" /></li>
+    </ul>
+    <ul>
+      <li><img width="849" height="626" alt="스크린샷 2025-09-25 오전 12 30 02" src="https://github.com/user-attachments/assets/42ac162a-2a0e-4d5e-8169-5f0be8daf562" /></li>
+    </ul>
+    <ul>
+      <li><img width="844" height="636" alt="스크린샷 2025-09-25 오전 12 31 05" src="https://github.com/user-attachments/assets/bbaad767-8402-4e90-9b6e-f80cd6430a67" /></li>
+    </ul>
+    <ul>
+      <li><img width="829" height="534" alt="스크린샷 2025-09-25 오전 12 33 13" src="https://github.com/user-attachments/assets/eba96d2b-b04c-4b94-86b9-d7b3d028ccf1" /></li>
+    </ul>
+    <ul>
+      <li><img width="844" height="534" alt="스크린샷 2025-09-25 오전 12 33 26" src="https://github.com/user-attachments/assets/b5ec5eba-1a12-48bc-afa3-9590dc3b6953" /></li>
+    </ul>
+    <ul>
+      <li><img width="835" height="623" alt="스크린샷 2025-09-25 오전 12 34 16" src="https://github.com/user-attachments/assets/a3c5d495-9486-4a22-9219-8d4220eb3c75" /></li>
+    </ul>
+    <ul>
+      <li><img width="843" height="616" alt="스크린샷 2025-09-25 오전 12 34 45" src="https://github.com/user-attachments/assets/92f06811-5297-4130-9c46-469cecb3c165" /></li>
+    </ul>
+    <ul>
+      <li><img width="835" height="491" alt="스크린샷 2025-09-25 오전 12 35 47" src="https://github.com/user-attachments/assets/8920f219-f980-470d-80e9-edc0ecc50ada" /></li>
     </ul>
   </details>
 </details>
