@@ -207,6 +207,91 @@
     <h4>과제 삭제</h4>
     <img width="1069" height="497" alt="스크린샷 2025-09-25 오전 12 40 38" src="https://github.com/user-attachments/assets/4544b075-0fac-4e87-a591-ce34f4d4d49b" />
   </details>
+
+  <details>
+    <summary>수업 관리</summary>
+    <h4>수업 등록</h4>
+    <img width="1065" height="670" alt="스크린샷 2025-09-25 오전 12 41 32" src="https://github.com/user-attachments/assets/2e62a78c-1c37-4866-85d8-56e51e14cf34" />
+    <h4>수업 수정</h4>
+    <img width="1068" height="680" alt="스크린샷 2025-09-25 오전 12 41 25" src="https://github.com/user-attachments/assets/cbea3ef1-6537-415b-a54c-f8cda19685b6" />
+    <h4>수업 상태 수정</h4>
+    <img width="1071" height="690" alt="스크린샷 2025-09-25 오전 12 41 39" src="https://github.com/user-attachments/assets/7a8579eb-8f5c-4ea8-a25a-9c68549bff28" />
+    <h4>수업 월별 조회</h4>
+    <img width="1066" height="661" alt="스크린샷 2025-09-25 오전 12 41 47" src="https://github.com/user-attachments/assets/b9b94577-296c-4e57-9333-35a9bcf1d1a0" />
+    <h4>수업 일별 조회</h4>
+    <img width="1074" height="655" alt="스크린샷 2025-09-25 오전 12 41 57" src="https://github.com/user-attachments/assets/fb01e621-5b74-449c-9322-3333774fdc34" />
+    <h4>수업 삭제</h4>
+    <img width="1066" height="505" alt="스크린샷 2025-09-25 오전 12 42 03" src="https://github.com/user-attachments/assets/99152f09-383f-455b-820b-f1f93b93207f" />
+  </details>
+
+  <details>
+    <summary>채널</summary>
+    <h4>채널 생성</h4>
+    <img width="1066" height="633" alt="스크린샷 2025-09-25 오전 12 49 16" src="https://github.com/user-attachments/assets/8285df99-9f1b-460d-a17d-700833042d99" />
+    <h4>채널 전체 조회</h4>
+    <img width="1075" height="685" alt="스크린샷 2025-09-25 오전 12 49 23" src="https://github.com/user-attachments/assets/5ce0468a-c8a0-4fa8-bcc3-54b95c19941f" />
+    <h4>채널 상세 조회</h4>
+    <img width="1063" height="641" alt="스크린샷 2025-09-25 오전 12 49 30" src="https://github.com/user-attachments/assets/72b5612a-9d29-4388-ad11-e2150daee969" />
+    <h4>채널 수정</h4>
+    <img width="1071" height="654" alt="스크린샷 2025-09-25 오전 11 02 24" src="https://github.com/user-attachments/assets/cad050cf-a5f4-4d6c-86e3-a279af05eec7" />
+    <h4>채널 삭제</h4>
+    <img width="1065" height="650" alt="스크린샷 2025-09-25 오전 11 02 33" src="https://github.com/user-attachments/assets/0be23032-1c85-4210-bf64-3304108615d8" />
+  </details>
+
+  <details>
+    <summary>캘린더</summary>
+    <h4>월별 조회</h4>
+    <img width="1058" height="490" alt="스크린샷 2025-09-25 오전 12 53 52" src="https://github.com/user-attachments/assets/6faf31eb-7a2d-48c1-9b1a-a035ecb666ca" />
+    <h4>일별 조회</h4>
+    <img width="1063" height="669" alt="스크린샷 2025-09-25 오전 12 54 00" src="https://github.com/user-attachments/assets/86b67de5-c944-448a-9641-153a5b068b37" />
+  </details>
+
+  <details>
+    <summary>파일</summary>
+    <h4>파일 업로드</h4>
+    <img width="1069" height="602" alt="스크린샷 2025-09-25 오전 12 56 57" src="https://github.com/user-attachments/assets/c73b5156-f9b5-47c9-98d3-9e189f635029" />
+    <h4>파일 삭제</h4>
+    <img width="1062" height="515" alt="스크린샷 2025-09-25 오전 12 57 07" src="https://github.com/user-attachments/assets/5cb40596-f36b-44a9-84e8-e631515357d1" />
+    <h4>파일 다운로드</h4>
+    <img width="1073" height="739" alt="스크린샷 2025-09-25 오전 12 57 15" src="https://github.com/user-attachments/assets/d1e7a8b6-1dc5-4f36-bd89-2da817495c25" />
+  </details>
+
+  <details>
+    <summary>투두</summary>
+    <h4>투두 등록</h4>
+    <img width="1070" height="655" alt="스크린샷 2025-09-25 오전 12 59 56" src="https://github.com/user-attachments/assets/f1268e9a-14d9-4c7e-8429-f0d21918e5b8" />
+    <h4>월별 투두 조회</h4>
+    <img width="1067" height="495" alt="스크린샷 2025-09-25 오전 12 59 40" src="https://github.com/user-attachments/assets/507cd9f5-a5d6-49b8-8f27-1a0ffc690feb" />
+    <h4>일별 투두 조회</h4>
+    <img width="1074" height="503" alt="스크린샷 2025-09-25 오전 12 59 48" src="https://github.com/user-attachments/assets/404dc782-3d9f-4508-b8d1-358036a3c329" />
+    <h4>투두 수정</h4>
+    <img width="1073" height="618" alt="스크린샷 2025-09-25 오전 1 00 03" src="https://github.com/user-attachments/assets/38e17235-4303-46d5-9342-758370888154" />
+    <h4>투두 삭제</h4>
+    <img width="1070" height="491" alt="스크린샷 2025-09-25 오전 1 00 10" src="https://github.com/user-attachments/assets/7237e3aa-6b10-4314-b9ef-6f8a839742ee" />
+  </details>
+
+<details>
+    <summary>성적</summary>
+    <h4>성적 생성</h4>
+    <img width="1070" height="651" alt="스크린샷 2025-09-25 오전 11 13 46" src="https://github.com/user-attachments/assets/22ba2e35-9167-49b5-bef5-c361e70eaaa2" />
+    <h4>성적 조회</h4>
+    <img width="1072" height="749" alt="스크린샷 2025-09-25 오전 11 13 55" src="https://github.com/user-attachments/assets/7300cbc5-6f9c-46c4-8e7b-44778d12bf11" />
+    <h4>성적 삭제</h4>
+    <img width="1064" height="491" alt="스크린샷 2025-09-25 오전 11 28 32" src="https://github.com/user-attachments/assets/5fa0ccb0-7c1d-4276-97bb-fb23dee6635d" />
+  </details>  
+
+<details>
+    <summary>제출</summary>
+    <h4>제출 생성</h4>
+    <img width="1063" height="724" alt="스크린샷 2025-09-25 오전 11 29 22" src="https://github.com/user-attachments/assets/b03959ef-321e-4ab4-b181-15e927f63c36" />
+    <h4>제출 조회</h4>
+    <img width="1071" height="773" alt="스크린샷 2025-09-25 오전 11 29 32" src="https://github.com/user-attachments/assets/c4afbaa9-5023-470a-a28f-6a100b56cc70" />
+    <h4>제출 수정</h4>
+    <img width="1073" height="726" alt="스크린샷 2025-09-25 오전 11 29 40" src="https://github.com/user-attachments/assets/882d80b6-d4e2-4bec-83a3-58dcbfb4c7cf" />
+    <h4>제출 삭제</h4>
+    <img width="1066" height="514" alt="스크린샷 2025-09-25 오전 11 30 18" src="https://github.com/user-attachments/assets/9852db26-592e-4956-b832-a0a7d46c60be" />
+  </details>  
+  
 </details>
 
 # 5. 시스템 아키텍처 및 기술적 특징
