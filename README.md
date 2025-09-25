@@ -18,7 +18,7 @@
 </table>
 
 # 2. 기술 스택
-✓Prontend
+✓Frontend
 
 ![Vue.js](https://img.shields.io/badge/Vue.js-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white)
 ![Vuetify](https://img.shields.io/badge/Vuetify-1867C0?style=for-the-badge&logo=vuetify&logoColor=white)
@@ -291,7 +291,34 @@
     <h4>제출 삭제</h4>
     <img width="1066" height="514" alt="스크린샷 2025-09-25 오전 11 30 18" src="https://github.com/user-attachments/assets/9852db26-592e-4956-b832-a0a7d46c60be" />
   </details>  
-  
+
+  <details>
+    <summary>채널유저</summary>
+    <h4>초대 생성</h4>
+    <img width="1068" height="639" alt="스크린샷 2025-09-25 오전 11 37 28" src="https://github.com/user-attachments/assets/6154860a-e85d-472c-a982-b5cd79752713" />
+    <h4>초대코드 인증</h4>
+    <img width="1065" height="663" alt="스크린샷 2025-09-25 오전 11 40 19" src="https://github.com/user-attachments/assets/9c7b28b6-0d96-4584-b1de-3de7ab32ceb7" />
+    <h4>채널 유저 전체 조회</h4>
+    <img width="1067" height="588" alt="스크린샷 2025-09-25 오전 11 41 00" src="https://github.com/user-attachments/assets/ba7682e5-53a9-409c-9cc5-b8c79278bd8b" />
+    <h4>채널 유저 상세 조회</h4>
+    <img width="1065" height="635" alt="스크린샷 2025-09-25 오전 11 41 09" src="https://github.com/user-attachments/assets/d91dbeac-ff1b-45fb-a631-90e8bccef87b" />
+    <h4>채널 유저 정보 수정</h4>
+    <img width="1068" height="674" alt="스크린샷 2025-09-25 오전 11 41 34" src="https://github.com/user-attachments/assets/4c5bf461-43c1-4f1f-af26-f874d1c4c8cb" />
+    <h4>채널 유저 탈퇴</h4>
+    <img width="1072" height="673" alt="스크린샷 2025-09-25 오전 11 41 42" src="https://github.com/user-attachments/assets/4c4a9c6d-9b79-4665-b98d-01036b137e45" />
+  </details>  
+
+   <details>
+    <summary>평가</summary>
+     <h4>평가 생성</h4>
+     <img width="1067" height="614" alt="스크린샷 2025-09-25 오후 12 12 27" src="https://github.com/user-attachments/assets/9ba261c1-5243-4ade-8315-dc47d6d27e70" />
+     <h4>평가 조회</h4>
+     <img width="1061" height="620" alt="스크린샷 2025-09-25 오후 12 12 35" src="https://github.com/user-attachments/assets/1bb12dfa-0dbb-4e5b-aea1-693a9b859487" />
+     <h4>평가 수정</h4>
+     <img width="1069" height="623" alt="스크린샷 2025-09-25 오후 12 12 42" src="https://github.com/user-attachments/assets/088a26b5-f745-4837-9455-36ab470ba6a1" />
+     <h4>평가 삭제</h4>
+     <img width="1061" height="490" alt="스크린샷 2025-09-25 오후 12 12 49" src="https://github.com/user-attachments/assets/6aa8f6d3-eaa9-465b-a00e-24cd9fccb220" />
+  </details>  
 </details>
 
 # 5. 시스템 아키텍처 및 기술적 특징
