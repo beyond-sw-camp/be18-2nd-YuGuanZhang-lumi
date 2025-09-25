@@ -126,7 +126,12 @@
 
 <details>
   <summary>테스트 계획 및 결과 보고서</summary>
-  
+  <details>
+  <summary>API 명세서</summary>
+  <ul>
+    <li><a href="https://goldenrod-wildebeest-a18.notion.site/API-2333689564888188814febb1f26786c9?source=copy_link" target="_blank">API 명세서</a></li>
+  </ul>
+</details>
 </details>
 
 # 5. 시스템 아키텍처 및 기술적 특징
