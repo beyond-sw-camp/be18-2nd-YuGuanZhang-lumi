@@ -126,7 +126,10 @@
 
 <details>
   <summary>테스트 계획 및 결과 보고서</summary>
+  <details>
+  <summary>테스트 계획 및 결과 보고서</summary>
   
+</details>
 </details>
 
 # 5. 시스템 아키텍처 및 기술적 특징
