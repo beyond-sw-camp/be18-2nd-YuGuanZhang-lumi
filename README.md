@@ -128,20 +128,44 @@
   <summary>테스트 계획 및 결과 보고서</summary>
   <details>
     <summary>회원가입</summary>
+      <h4>이메일 인증 발송</h4>
       <img width="851" height="536" alt="스크린샷 2025-09-25 오전 12 28 28" src="https://github.com/user-attachments/assets/d1f8893a-eb50-4087-9b06-4ace1bd482c3" />
-      <img width="849" height="626" alt="스크린샷 2025-09-25 오전 12 30 02" src="https://github.com/user-attachments/assets/23c346ef-ea9f-4c52-a4d3-6b9b2bef9296" />
+      <h4>이메일 인증</h4>
       <img width="835" height="491" alt="스크린샷 2025-09-25 오전 12 35 47" src="https://github.com/user-attachments/assets/0ee5b3b8-4913-452c-ba2d-046a9c21c11e" />
+      <h4>회원가입</h4>
+      <img width="849" height="626" alt="스크린샷 2025-09-25 오전 12 30 02" src="https://github.com/user-attachments/assets/23c346ef-ea9f-4c52-a4d3-6b9b2bef9296" />
+    
   </details>
   <details>
-    <summary>로그인</summary>
-      <img width="844" height="636" alt="스크린샷 2025-09-25 오전 12 31 05" src="https://github.com/user-attachments/assets/989971a1-a75f-4d08-b644-8fc880d511ca" />
-      <img width="844" height="534" alt="스크린샷 2025-09-25 오전 12 33 26" src="https://github.com/user-attachments/assets/05edeead-014b-421a-beba-67585c9f5b12" />
-  </details>  
+    <summary>로그인 / 로그아웃</summary>
+  <h4>로그인</h4>
+  <img width="844" height="636" alt="스크린샷 2025-09-25 오전 12 31 05" src="https://github.com/user-attachments/assets/989971a1-a75f-4d08-b644-8fc880d511ca" />
+  <h4>로그아웃</h4>
+  <img width="844" height="534" alt="스크린샷 2025-09-25 오전 12 33 26" src="https://github.com/user-attachments/assets/05edeead-014b-421a-beba-67585c9f5b12" />
+</details>
+ 
   <details>
     <summary>사용자</summary>
-     <img src="https://github.com/user-attachments/assets/27a33ea4-f2a8-4875-803f-3d96f95ce778" width="829" height="534" />
-     <img src="https://github.com/user-attachments/assets/e058c120-ad72-402b-9435-a137b0b5be80" width="835" height="623" />
-     <img src="https://github.com/user-attachments/assets/4b010be9-ddae-4c0d-82fd-9459f2dec6db" width="843" height="616" />
+     <h4>JWT 재발급</h4>
+     <img width="829" height="534" alt="스크린샷 2025-09-25 오전 12 33 13" src="https://github.com/user-attachments/assets/c3b349ce-f100-4a75-b415-5c7e8cbe67d6" />
+     <h4>사용자 정보 가져오기</h4>
+     <img width="835" height="623" alt="스크린샷 2025-09-25 오전 12 34 16" src="https://github.com/user-attachments/assets/648164c4-b34d-4d5b-a965-fa6e29b5e486" />
+     <h4>계정 탈퇴</h4>
+     <img width="843" height="616" alt="스크린샷 2025-09-25 오전 12 34 45" src="https://github.com/user-attachments/assets/992cc5e1-64c4-43e1-96b8-13b77546aa2a" />
+  </details>
+
+  <details>
+    <summary>과제</summary>
+    <h4>과제 생성</h4>
+    <img width="1065" height="777" alt="스크린샷 2025-09-25 오전 12 39 31" src="https://github.com/user-attachments/assets/79879dc8-2f49-4d2c-a310-af6381a71eb4" />
+    <h4>과제 전제 조회</h4>
+    <img width="1065" height="571" alt="스크린샷 2025-09-25 오전 12 39 49" src="https://github.com/user-attachments/assets/07143380-65ba-4e40-b201-e754d10471b6" />
+    <h4>과제 상세 조회</h4>
+    <img width="1072" height="777" alt="스크린샷 2025-09-25 오전 12 40 02" src="https://github.com/user-attachments/assets/7d0a545a-a3b0-4522-a64e-e05b47181fba" />
+    <h4>과제 수정</h4>
+    <img width="1057" height="755" alt="스크린샷 2025-09-25 오전 12 40 28" src="https://github.com/user-attachments/assets/058962b5-c245-47d2-9eb8-4594a71feeb0" />
+    <h4>과제 삭제</h4>
+    <img width="1069" height="497" alt="스크린샷 2025-09-25 오전 12 40 38" src="https://github.com/user-attachments/assets/4544b075-0fac-4e87-a591-ce34f4d4d49b" />
   </details>
 </details>
 
