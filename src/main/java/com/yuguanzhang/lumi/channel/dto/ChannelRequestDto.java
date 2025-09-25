@@ -1,6 +1,7 @@
 package com.yuguanzhang.lumi.channel.dto;
 
 import com.yuguanzhang.lumi.channel.entity.Channel;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ChannelRequestDto {
 
+    @NotBlank
     private String name;
 
     private String subject;

@@ -2,6 +2,7 @@ package com.yuguanzhang.lumi.assignment.service;
 
 import com.yuguanzhang.lumi.assignment.dto.EvaluationRequestDto;
 import com.yuguanzhang.lumi.assignment.dto.EvaluationResponseDto;
+import com.yuguanzhang.lumi.assignment.entity.Assignment;
 import com.yuguanzhang.lumi.assignment.entity.Evaluation;
 import com.yuguanzhang.lumi.assignment.entity.Submission;
 import com.yuguanzhang.lumi.assignment.repository.EvaluationRepository;
@@ -34,8 +35,13 @@ public class EvaluationServiceImpl implements EvaluationService {
         Submission submission = submissionRepository.findById(submissionId)
                                                     .orElseThrow(() -> new GlobalException(
                                                             ExceptionMessage.SUBMISSION_NOT_FOUND));
-        //이미 평가가 있으면 에러
-        if (submission.getEvaluation() != null) {
+        Assignment assignment = submission.getAssignment();
+
+        if (!assignment.isEvaluation()) {
+            throw new GlobalException(ExceptionMessage.EVALUATION_NOT_ALLOWED);
+        }
+        
+        if (evaluationRepository.existsBySubmission_SubmissionId(submission.getSubmissionId())) {
             throw new GlobalException(ExceptionMessage.EVALUATION_ALREADY_EXISTS);
         }
 
@@ -56,11 +62,11 @@ public class EvaluationServiceImpl implements EvaluationService {
         Submission submission = submissionRepository.findById(submissionId)
                                                     .orElseThrow(() -> new GlobalException(
                                                             ExceptionMessage.SUBMISSION_NOT_FOUND));
-        Evaluation evaluation = submission.getEvaluation();
-        if (evaluation == null) {
-            throw new GlobalException(ExceptionMessage.EVALUATION_NOT_FOUND);
-        }
 
+        Evaluation evaluation =
+                evaluationRepository.findBySubmission_SubmissionId(submission.getSubmissionId())
+                                    .orElseThrow(() -> new GlobalException(
+                                            ExceptionMessage.EVALUATION_NOT_FOUND));
         return EvaluationResponseDto.fromEntity(evaluation);
     }
 
@@ -74,10 +80,10 @@ public class EvaluationServiceImpl implements EvaluationService {
                                                     .orElseThrow(() -> new GlobalException(
                                                             ExceptionMessage.SUBMISSION_NOT_FOUND));
 
-        Evaluation evaluation = submission.getEvaluation();
-        if (evaluation == null) {
-            throw new GlobalException(ExceptionMessage.EVALUATION_NOT_FOUND);
-        }
+        Evaluation evaluation =
+                evaluationRepository.findBySubmission_SubmissionId(submission.getSubmissionId())
+                                    .orElseThrow(() -> new GlobalException(
+                                            ExceptionMessage.EVALUATION_NOT_FOUND));
 
         evaluation.updateGrade(dto.getGrade());
         evaluation.updateFeedback(dto.getFeedback());
@@ -94,14 +100,11 @@ public class EvaluationServiceImpl implements EvaluationService {
                                                     .orElseThrow(() -> new GlobalException(
                                                             ExceptionMessage.SUBMISSION_NOT_FOUND));
 
-        Evaluation evaluation = submission.getEvaluation();
-        if (evaluation == null) {
-            throw new GlobalException(ExceptionMessage.EVALUATION_NOT_FOUND);
-        }
+        Evaluation evaluation =
+                evaluationRepository.findBySubmission_SubmissionId(submission.getSubmissionId())
+                                    .orElseThrow(() -> new GlobalException(
+                                            ExceptionMessage.EVALUATION_NOT_FOUND));
 
-        // 삭제가 제출이랑 1:1 매핑이라 단독으로 삭제가 안돼서 제출에 있는 평가 객체를 null로 바꾸면
-        // jpa가 알아서 삭제해준다고 합니다.
-        submission.updateEvaluation(null);
-        
+        evaluationRepository.delete(evaluation);
     }
 }

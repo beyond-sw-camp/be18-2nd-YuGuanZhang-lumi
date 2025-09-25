@@ -57,9 +57,6 @@ public class Assignment extends BaseTimeEntity {
     @JoinColumn(name = "channel_user_id", nullable = false)
     private ChannelUser channelUser;
 
-    // 1:1 제출
-    @OneToOne(mappedBy = "assignment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Submission submission;
 
 
     public void updateAssignment(AssignmentRequestDto assignmentRequestDto) {

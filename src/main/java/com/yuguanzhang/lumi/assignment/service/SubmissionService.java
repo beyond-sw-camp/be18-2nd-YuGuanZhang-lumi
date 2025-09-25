@@ -9,7 +9,7 @@ public interface SubmissionService {
     SubmissionResponseDto createSubmission(Long channelId, Long assignmentId, User user,
                                            SubmissionRequestDto submissionRequestDto);
 
-    SubmissionResponseDto getSubmission(Long channelId, Long assignmentId);
+    SubmissionResponseDto getSubmission(Long channelId, Long assignmentId, User user);
 
     SubmissionResponseDto updateSubmission(Long channelId, Long assignmentId, Long submissionId,
                                            User user, SubmissionRequestDto submissionRequestDto);

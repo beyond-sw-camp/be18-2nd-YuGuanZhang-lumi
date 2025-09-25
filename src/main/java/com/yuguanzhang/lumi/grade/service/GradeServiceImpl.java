@@ -12,6 +12,7 @@ import com.yuguanzhang.lumi.grade.dto.GradeResponseDto;
 import com.yuguanzhang.lumi.grade.repository.GradeRepository;
 import com.yuguanzhang.lumi.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GradeServiceImpl implements GradeService {
 
     private final GradeRepository gradeRepository;
@@ -31,17 +33,20 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     @Transactional
-    public GradeResponseDto createGrade(Long channelUserId, GradeRequestDto gradeRequestDto,
+
+    public GradeResponseDto createGrade(Long channelId, GradeRequestDto gradeRequestDto,
                                         User user) {
 
         //채널에 참가한 유저 객체 가져오기
-        ChannelUser channelUser = channelUserRepository.findById(channelUserId)
-                                                       .orElseThrow(() -> new GlobalException(
-                                                               ExceptionMessage.CHANNEL_USER_NOT_FOUND));
+        ChannelUser channelUser =
+                channelUserRepository.findByChannel_ChannelIdAndUser_UserId(channelId,
+                                                                            user.getUserId())
+                                     .orElseThrow(() -> new GlobalException(
+                                             ExceptionMessage.CHANNEL_USER_NOT_FOUND));
+
         //그 유저가 그 채널의 튜터 검증
-        roleAuthorizationService.checkTutor(channelUser.getChannel()
-                                                       .getChannelId(), channelUser.getUser()
-                                                                                   .getUserId());
+        roleAuthorizationService.checkTutor(channelId, channelUser.getUser()
+                                                                  .getUserId());
 
         // 성적 생성
         Grade grade = Grade.builder()
@@ -60,12 +65,14 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<GradeCategoryGroupDto> getGradesGroupedByCategory(Long channelUserId) {
+    public List<GradeCategoryGroupDto> getGradesGroupedByCategory(Long channelId, User user) {
 
         //채널에 참가한 유저 객체 생성
-        ChannelUser channelUser = channelUserRepository.findById(channelUserId)
-                                                       .orElseThrow(() -> new GlobalException(
-                                                               ExceptionMessage.CHANNEL_USER_NOT_FOUND));
+        ChannelUser channelUser =
+                channelUserRepository.findByChannel_ChannelIdAndUser_UserId(channelId,
+                                                                            user.getUserId())
+                                     .orElseThrow(() -> new GlobalException(
+                                             ExceptionMessage.CHANNEL_USER_NOT_FOUND));
 
         // 그 유저가 생성한 모든 성적을 리스트로 가져옴
         List<GradeResponseDto> grades = gradeRepository.findByChannelUser(channelUser)
@@ -98,7 +105,8 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     @Transactional
-    public GradeResponseDto updateGrade(Long gradeId, GradeRequestDto gradeRequestDto, User user) {
+    public GradeResponseDto updateGrade(Long channelId, Long gradeId,
+                                        GradeRequestDto gradeRequestDto, User user) {
 
         //수정할 성적 객체 생성
         Grade grade = gradeRepository.findById(gradeId)
@@ -106,11 +114,7 @@ public class GradeServiceImpl implements GradeService {
                                              ExceptionMessage.GRADE_NOT_FOUND));
 
         //수정을 요청한 유저가 수정할 권한이 있는지 검증
-        roleAuthorizationService.checkTutor(grade.getChannelUser()
-                                                 .getChannel()
-                                                 .getChannelId(), grade.getChannelUser()
-                                                                       .getUser()
-                                                                       .getUserId());
+        roleAuthorizationService.checkTutor(channelId, user.getUserId());
 
         grade.updateGrade(gradeRequestDto.getTitle(), gradeRequestDto.getCategory(),
                           gradeRequestDto.getGrades(), gradeRequestDto.getDate());
@@ -120,7 +124,7 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     @Transactional
-    public void deleteGrade(Long gradeId, User user) {
+    public void deleteGrade(Long channelId, Long gradeId, User user) {
 
         //삭제할 성적 객체 생성
         Grade grade = gradeRepository.findById(gradeId)
@@ -128,11 +132,7 @@ public class GradeServiceImpl implements GradeService {
                                              ExceptionMessage.GRADE_NOT_FOUND));
 
         //삭제를 요청한 유저가 수정할 권한이 있는지 검증
-        roleAuthorizationService.checkTutor(grade.getChannelUser()
-                                                 .getChannel()
-                                                 .getChannelId(), grade.getChannelUser()
-                                                                       .getUser()
-                                                                       .getUserId());
+        roleAuthorizationService.checkTutor(channelId, user.getUserId());
 
         //성적 삭제
         gradeRepository.delete(grade);

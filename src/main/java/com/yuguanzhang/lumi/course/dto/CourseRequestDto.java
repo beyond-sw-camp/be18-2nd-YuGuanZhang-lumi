@@ -15,9 +15,11 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class CourseRequestDto {
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "시작 날짜를 입력해주세요.")
     private LocalDateTime startDate;
+
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "종료 날짜는 입력해주세요.")

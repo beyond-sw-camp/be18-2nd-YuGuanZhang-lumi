@@ -44,10 +44,11 @@ public class SubmissionController {
     @GetMapping("/{assignment_id}/submissions")
     public ResponseEntity<BaseResponseDto<SubmissionResponseDto>> getSubmission(
             @PathVariable("channel_id") Long channelId,
-            @PathVariable("assignment_id") Long assignmentId) {
+            @PathVariable("assignment_id") Long assignmentId,
+            @AuthenticationPrincipal UserDetailsDto user) {
 
         SubmissionResponseDto submissionResponseDto =
-                submissionService.getSubmission(channelId, assignmentId);
+                submissionService.getSubmission(channelId, assignmentId, user.getUser());
 
         return ResponseEntity.ok(BaseResponseDto.of(HttpStatus.OK, submissionResponseDto));
     }

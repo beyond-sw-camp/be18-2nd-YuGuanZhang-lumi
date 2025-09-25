@@ -18,6 +18,7 @@ import com.yuguanzhang.lumi.material.entity.Material;
 import com.yuguanzhang.lumi.material.repository.MaterialRepository;
 import com.yuguanzhang.lumi.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialRepository materialRepository;
@@ -48,8 +50,9 @@ public class MaterialServiceImpl implements MaterialService {
                                      .orElseThrow(() -> new GlobalException(
                                              ExceptionMessage.CHANNEL_USER_NOT_FOUND));
 
+
         //권한 검증
-        roleAuthorizationService.checkTutor(channelUser.getChannelUserId(), user.getUserId());
+        roleAuthorizationService.checkTutor(channelId, user.getUserId());
 
         Material material = Material.builder()
                                     .title(materialRequestDto.getTitle())
@@ -115,18 +118,13 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public MaterialResponseDto updateMaterial(Long channelId, User user, Long materialId,
                                               MaterialRequestDto materialRequestDto) {
-        ChannelUser channelUser =
-                channelUserRepository.findByChannel_ChannelIdAndUser_UserId(channelId,
-                                                                            user.getUserId())
-                                     .orElseThrow(() -> new GlobalException(
-                                             ExceptionMessage.CHANNEL_USER_NOT_FOUND));
 
         Material material = materialRepository.findById(materialId)
                                               .orElseThrow(() -> new GlobalException(
                                                       ExceptionMessage.MATERIAL_NOT_FOUND));
 
         //권한 검증
-        roleAuthorizationService.checkTutor(channelUser.getChannelUserId(), user.getUserId());
+        roleAuthorizationService.checkTutor(channelId, user.getUserId());
 
         material.updateTitle(materialRequestDto.getTitle());
         material.updateContent(materialRequestDto.getContent());
@@ -158,18 +156,13 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public void deleteMaterial(Long channelId, User user, Long materialId) {
-        ChannelUser channelUser =
-                channelUserRepository.findByChannel_ChannelIdAndUser_UserId(channelId,
-                                                                            user.getUserId())
-                                     .orElseThrow(() -> new GlobalException(
-                                             ExceptionMessage.CHANNEL_USER_NOT_FOUND));
 
         Material material = materialRepository.findById(materialId)
                                               .orElseThrow(() -> new GlobalException(
                                                       ExceptionMessage.MATERIAL_NOT_FOUND));
 
         //권한 검증
-        roleAuthorizationService.checkTutor(channelUser.getChannelUserId(), user.getUserId());
+        roleAuthorizationService.checkTutor(channelId, user.getUserId());
 
         //어소시에이션에서 삭제하려는 수업 자료와 관련된 파일 연결 삭제
         fileAssociationRepository.deleteByEntityIdAndEntityType(materialId, EntityType.MATERIAL);

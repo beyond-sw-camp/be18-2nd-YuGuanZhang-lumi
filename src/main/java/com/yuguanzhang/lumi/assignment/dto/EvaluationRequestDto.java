@@ -8,6 +8,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class EvaluationRequestDto {
+
     private Integer grade;
+
     private String feedback;
 }

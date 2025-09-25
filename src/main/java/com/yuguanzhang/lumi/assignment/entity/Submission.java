@@ -38,7 +38,7 @@ public class Submission extends BaseTimeEntity {
     private String description;
 
     // 과제와 1:1
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assignment_id", unique = true)
     private Assignment assignment;
 
@@ -46,9 +46,6 @@ public class Submission extends BaseTimeEntity {
     @JoinColumn(name = "channel_user_id", nullable = false)
     private ChannelUser channelUser;
 
-    // 1:1 평가
-    @OneToOne(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Evaluation evaluation;
 
     public void updateTitle(String title) {
         this.title = title;
@@ -58,7 +55,4 @@ public class Submission extends BaseTimeEntity {
         this.description = description;
     }
 
-    public void updateEvaluation(Evaluation evaluation) {
-        this.evaluation = evaluation;
-    }
 }
