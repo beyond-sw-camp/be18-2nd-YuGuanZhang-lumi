@@ -128,31 +128,20 @@
   <summary>테스트 계획 및 결과 보고서</summary>
   <details>
     <summary>회원가입</summary>
-    <ul>
-      <li><img width="851" height="536" alt="스크린샷 2025-09-25 오전 12 28 28" src="https://github.com/user-attachments/assets/d1f8893a-eb50-4087-9b06-4ace1bd482c3" /></li>
-    </ul>
-    <ul>
-      <li><img width="849" height="626" alt="스크린샷 2025-09-25 오전 12 30 02" src="https://github.com/user-attachments/assets/23c346ef-ea9f-4c52-a4d3-6b9b2bef9296" /></li>
-    </ul>
-    <ul>
-      <li><img width="835" height="491" alt="스크린샷 2025-09-25 오전 12 35 47" src="https://github.com/user-attachments/assets/0ee5b3b8-4913-452c-ba2d-046a9c21c11e" /></li>
-    </ul>
+      <img width="851" height="536" alt="스크린샷 2025-09-25 오전 12 28 28" src="https://github.com/user-attachments/assets/d1f8893a-eb50-4087-9b06-4ace1bd482c3" />
+      <img width="849" height="626" alt="스크린샷 2025-09-25 오전 12 30 02" src="https://github.com/user-attachments/assets/23c346ef-ea9f-4c52-a4d3-6b9b2bef9296" />
+      <img width="835" height="491" alt="스크린샷 2025-09-25 오전 12 35 47" src="https://github.com/user-attachments/assets/0ee5b3b8-4913-452c-ba2d-046a9c21c11e" />
   </details>
   <details>
     <summary>로그인</summary>
-     <ul>
-      <li><img width="844" height="636" alt="스크린샷 2025-09-25 오전 12 31 05" src="https://github.com/user-attachments/assets/989971a1-a75f-4d08-b644-8fc880d511ca" /></li>
-    </ul>
-    <ul>
-      <li><img width="844" height="534" alt="스크린샷 2025-09-25 오전 12 33 26" src="https://github.com/user-attachments/assets/05edeead-014b-421a-beba-67585c9f5b12" /></li>
-    </ul>
+      <img width="844" height="636" alt="스크린샷 2025-09-25 오전 12 31 05" src="https://github.com/user-attachments/assets/989971a1-a75f-4d08-b644-8fc880d511ca" />
+      <img width="844" height="534" alt="스크린샷 2025-09-25 오전 12 33 26" src="https://github.com/user-attachments/assets/05edeead-014b-421a-beba-67585c9f5b12" />
   </details>  
   <details>
     <summary>사용자</summary>
-   <img src="https://github.com/user-attachments/assets/27a33ea4-f2a8-4875-803f-3d96f95ce778" width="829" height="534" />
-   <img src="https://github.com/user-attachments/assets/e058c120-ad72-402b-9435-a137b0b5be80" width="835" height="623" />
-   <img src="https://github.com/user-attachments/assets/4b010be9-ddae-4c0d-82fd-9459f2dec6db" width="843" height="616" />
-
+     <img src="https://github.com/user-attachments/assets/27a33ea4-f2a8-4875-803f-3d96f95ce778" width="829" height="534" />
+     <img src="https://github.com/user-attachments/assets/e058c120-ad72-402b-9435-a137b0b5be80" width="835" height="623" />
+     <img src="https://github.com/user-attachments/assets/4b010be9-ddae-4c0d-82fd-9459f2dec6db" width="843" height="616" />
   </details>
 </details>
 
