@@ -19,6 +19,7 @@ import com.yuguanzhang.lumi.file.repository.FileAssociationRepository;
 import com.yuguanzhang.lumi.file.repository.FileRepository;
 import com.yuguanzhang.lumi.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class SubmissionServiceImpl implements SubmissionService {
 
     private final SubmissionRepository submissionRepository;
@@ -39,6 +40,7 @@ public class SubmissionServiceImpl implements SubmissionService {
     private final RoleAuthorizationService roleAuthorizationService;
 
     @Override
+    @Transactional
     public SubmissionResponseDto createSubmission(Long channelId, Long assignmentId, User user,
                                                   SubmissionRequestDto submissionRequestDto) {
         ChannelUser channelUser =
@@ -62,7 +64,8 @@ public class SubmissionServiceImpl implements SubmissionService {
         }
 
         //이미 제출이 존재하면 에러
-        if (assignment.getSubmission() != null) {
+        if (submissionRepository.existsByAssignment_AssignmentIdAndChannelUser_ChannelUserId(
+                assignmentId, channelUser.getChannelUserId())) {
             throw new GlobalException(ExceptionMessage.SUBMISSION_ALREADY_EXISTS);
         }
 
@@ -72,8 +75,8 @@ public class SubmissionServiceImpl implements SubmissionService {
                                           .assignment(assignment)
                                           .channelUser(channelUser)
                                           .build();
-        assignment.updateIsSubmission(true);
 
+        assignment.updateIsSubmission(true);
         Submission saved = submissionRepository.save(submission);
 
         List<FileUploadResponseDto> fileUploadResponseDtoList = new ArrayList<>();
@@ -99,15 +102,12 @@ public class SubmissionServiceImpl implements SubmissionService {
     }
 
     @Override
-    public SubmissionResponseDto getSubmission(Long channelId, Long assignmentId) {
-        Assignment assignment = assignmentRepository.findById(assignmentId)
-                                                    .orElseThrow(() -> new GlobalException(
-                                                            ExceptionMessage.ASSIGNMENT_NOT_FOUND));
+    @Transactional(readOnly = true)
+    public SubmissionResponseDto getSubmission(Long channelId, Long assignmentId, User user) {
 
-        Submission submission = assignment.getSubmission();
-        if (submission == null) {
-            throw new GlobalException(ExceptionMessage.SUBMISSION_NOT_FOUND);
-        }
+        Submission submission = submissionRepository.findByAssignment_AssignmentId(assignmentId)
+                                                    .orElseThrow(() -> new GlobalException(
+                                                            ExceptionMessage.SUBMISSION_NOT_FOUND));
 
         //id랑 type 으로 등록된 파일들 찾기
         List<FileAssociation> fileAssociations =
@@ -124,6 +124,7 @@ public class SubmissionServiceImpl implements SubmissionService {
     }
 
     @Override
+    @Transactional
     public SubmissionResponseDto updateSubmission(Long channelId, Long assignmentId,
                                                   Long submissionId, User user,
                                                   SubmissionRequestDto submissionRequestDto) {
@@ -182,12 +183,16 @@ public class SubmissionServiceImpl implements SubmissionService {
     }
 
     @Override
+    @Transactional
     public void deleteSubmission(Long channelId, Long assignmentId, Long submissionId, User user) {
 
 
         Submission submission = submissionRepository.findById(submissionId)
                                                     .orElseThrow(() -> new GlobalException(
                                                             ExceptionMessage.SUBMISSION_NOT_FOUND));
+        Assignment assignment = assignmentRepository.findById(assignmentId)
+                                                    .orElseThrow(() -> new GlobalException(
+                                                            ExceptionMessage.ASSIGNMENT_NOT_FOUND));
 
         // 권한 검증
         roleAuthorizationService.checkStudent(channelId, user.getUserId());
@@ -202,6 +207,9 @@ public class SubmissionServiceImpl implements SubmissionService {
 
         fileAssociationRepository.deleteByEntityIdAndEntityType(submissionId,
                                                                 EntityType.SUBMISSION);
+
+        assignment.updateIsSubmission(false);
+        log.info("제출 : {}", submission.getTitle());
         submissionRepository.delete(submission);
 
     }

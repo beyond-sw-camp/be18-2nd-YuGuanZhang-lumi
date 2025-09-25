@@ -58,6 +58,7 @@ public enum ExceptionMessage {
     UNAUTHORIZED_SUBMISSION_DELETE("해당 제출을 삭제할 권한이 없습니다.", HttpStatus.FORBIDDEN),
     EVALUATION_ALREADY_EXISTS("이미 평가가 완료된 제출입니다.", HttpStatus.BAD_REQUEST),
     EVALUATION_NOT_FOUND("평가가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    EVALUATION_NOT_ALLOWED("평가를 하지 않는 과제에 대해서는 평가를 작성할 수 없습니다.", HttpStatus.BAD_REQUEST),
 
     COURSE_NOT_FOUND("수업을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     UNAUTHORIZED_COURSE_DELETE("튜터만 수업을 삭제할 수 있습니다.", HttpStatus.FORBIDDEN);
