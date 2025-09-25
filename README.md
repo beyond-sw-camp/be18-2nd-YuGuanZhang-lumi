@@ -134,16 +134,15 @@
   <ul>
     <li><a href="https://docs.google.com/spreadsheets/d/1hU3ODNUjGjJ8DMJBtgb53_1PkK_MNOq-_kNV6GPlQLo/edit?gid=0#gid=0" target="_blank">요구사항 명세서</a></li>
   </ul>
-  <img width="1084" height="631" alt="image" src="https://github.com/user-attachments/assets/dfedcf8c-146f-4859-8d18-5bde531edbbb" />
+  <img width="948" height="590" alt="image" src="https://github.com/user-attachments/assets/f8dc4da2-9fc4-4ab2-9d2e-561344b8f91e" />
 </details>
 
 <details>
   <summary>ERD</summary>
   <ul>
-    <li><a href="https://www.erdcloud.com/d/BymTsRnEXr4jd5JFp" target="_blank">ERD</a></li>
+    <li><a href="https://www.erdcloud.com/p/bvxEFumiWireyp8mz" target="_blank">ERD</a></li>
   </ul>
-  <img width="1465" height="820" alt="image" src="https://github.com/user-attachments/assets/61cf47b3-bfdd-4884-b635-829b973e21ce" />
-
+  <img width="1400" height="905" alt="image" src="https://github.com/user-attachments/assets/cb65b2bb-621c-4266-bd19-b6d08898e73f" />
   
 </details>
 
@@ -152,7 +151,9 @@
   <ul>
     <li><a href="https://docs.google.com/spreadsheets/d/1hU3ODNUjGjJ8DMJBtgb53_1PkK_MNOq-_kNV6GPlQLo/edit?gid=561737687#gid=561737687" target="_blank">테이블 명세서</a></li>
   </ul>
-  <img width="1343" height="679" alt="스크린샷 2025-08-14 오후 3 58 21" src="https://github.com/user-attachments/assets/61ef2523-ddc1-47f7-b745-75e50706f3ea" />
+  <img width="1346" height="589" alt="image" src="https://github.com/user-attachments/assets/bb02768d-fbeb-404d-9d88-7382ad565576" />
+
+
 
 </details>
 
@@ -166,6 +167,9 @@
 
 <details>
   <summary>테스트 계획 및 결과 보고서</summary>
+    <ul>
+      <li><a href="https://docs.google.com/spreadsheets/d/1hU3ODNUjGjJ8DMJBtgb53_1PkK_MNOq-_kNV6GPlQLo/edit?gid=1886778291#gid=1886778291">BE 단위 테스트</a></li>
+    </ul>
   <details>
     <summary>회원가입</summary>
       <h4>이메일 인증 발송</h4>
@@ -325,3 +329,8 @@
 <img width="1050" height="761" alt="아키텍처 그림" src="https://github.com/user-attachments/assets/68a01ca8-8549-4f75-bd12-3c26ccf7c3b2" />
 
 # 6. 회고록
+| 이름                                    | 회고 내용                                           |
+|--------------|-----------------------------------------------------------------------------------------------------------------|
+|      김대의        |     |
+|      윤동기      |              |
+|      조용주        |      |
