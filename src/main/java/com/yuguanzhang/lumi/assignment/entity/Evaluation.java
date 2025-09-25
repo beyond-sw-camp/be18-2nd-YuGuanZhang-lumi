@@ -35,6 +35,8 @@ public class Evaluation extends BaseTimeEntity {
     @Column(name = "feedback")
     private String feedback;
 
+
+
     // 제출과 1:1
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "submission_id", unique = true)
@@ -43,6 +45,8 @@ public class Evaluation extends BaseTimeEntity {
     public void updateGrade(Integer grade) {
         this.grade = grade;
     }
+
+
 
     public void updateFeedback(String feedback) {
         this.feedback = feedback;
