@@ -146,18 +146,13 @@
     <ul>
       <li><img width="844" height="534" alt="스크린샷 2025-09-25 오전 12 33 26" src="https://github.com/user-attachments/assets/05edeead-014b-421a-beba-67585c9f5b12" /></li>
     </ul>
-  </details>
+  </details>  
   <details>
     <summary>사용자</summary>
-    <ul>
-      <li><img width="829" height="534" alt="스크린샷 2025-09-25 오전 12 33 13" src="https://github.com/user-attachments/assets/27a33ea4-f2a8-4875-803f-3d96f95ce778" /></li>
-    </ul>
-    <ul>
-      <li><img width="835" height="623" alt="스크린샷 2025-09-25 오전 12 34 16" src="https://github.com/user-attachments/assets/e058c120-ad72-402b-9435-a137b0b5be80" /></li>
-    </ul>
-     <ul>
-      <li><img width="843" height="616" alt="스크린샷 2025-09-25 오전 12 34 45" src="https://github.com/user-attachments/assets/4b010be9-ddae-4c0d-82fd-9459f2dec6db" /></li>
-    </ul>
+   <img src="https://github.com/user-attachments/assets/27a33ea4-f2a8-4875-803f-3d96f95ce778" width="829" height="534" />
+   <img src="https://github.com/user-attachments/assets/e058c120-ad72-402b-9435-a137b0b5be80" width="835" height="623" />
+   <img src="https://github.com/user-attachments/assets/4b010be9-ddae-4c0d-82fd-9459f2dec6db" width="843" height="616" />
+
   </details>
 </details>
 
